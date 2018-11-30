@@ -10,13 +10,33 @@ import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import ru.rian.dynamics.di.component.DaggerActivityComponent
+import ru.rian.dynamics.di.model.ActivityModule
+import ru.rian.dynamics.utils.Consts
+import ru.rian.dynamics.utils.PreferenceHelper.defaultPrefs
+import ru.rian.dynamics.utils.PreferenceHelper.get
+import ru.rian.dynamics.utils.PreferenceHelper.set
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        val activityComponent = DaggerActivityComponent.builder()
+            .appComponent(InitApp.get(this).component())
+            .activityModule(ActivityModule(this))
+            .build()
+        activityComponent.inject(this)
+
+        val prefs = defaultPrefs(this)
+        prefs[Consts.SharedPrefs.KEY] = "any_type_of_value"
+
+        val value: String? = prefs[Consts.SharedPrefs.KEY]
+        val anotherValue: Int? = prefs[Consts.SharedPrefs.KEY, 10]
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -50,9 +70,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
+        return when (item.itemId) {
+            R.id.action_settings -> true
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
