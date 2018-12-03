@@ -9,7 +9,17 @@ import ru.rian.dynamics.di.model.AppModule
 
 class InitApp : Application() {
 
+    init {
+        instance = this
+    }
+
     companion object {
+        private var instance: InitApp? = null
+
+        fun applicationContext(): Context {
+            return instance!!.applicationContext
+        }
+
         fun get(context: Context): InitApp {
             return context.applicationContext as InitApp
         }
@@ -17,7 +27,7 @@ class InitApp : Application() {
 
     fun component(): AppComponent {
         return DaggerAppComponent.builder()
-                .appModule(AppModule(this))
-                .build()
+            .appModule(AppModule(this))
+            .build()
     }
 }

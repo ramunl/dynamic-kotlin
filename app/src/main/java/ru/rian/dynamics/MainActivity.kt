@@ -20,7 +20,6 @@ import ru.rian.dynamics.utils.PreferenceHelper.set
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,11 +31,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .build()
         activityComponent.inject(this)
 
-        val prefs = defaultPrefs(this)
+        val prefs = defaultPrefs()
         prefs[Consts.SharedPrefs.KEY] = "any_type_of_value"
 
         val value: String? = prefs[Consts.SharedPrefs.KEY]
-        val anotherValue: Int? = prefs[Consts.SharedPrefs.KEY, 10]
+      // val anotherValue: Int? = prefs[Consts.SharedPrefs.KEY, 10]
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
