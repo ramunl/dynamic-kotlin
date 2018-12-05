@@ -1,0 +1,88 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/sign_up_inscription">
+
+        <LinearLayout
+            android:id="@+id/buttons_layout_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="start"
+                android:text=""
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/name_edit_text"
+                style="@style/CredentialsEditText"
+                android:hint=""
+                android:inputType="textPersonName|textCapWords"></EditText>
+
+            <EditText
+                android:id="@+id/last_name_edit_text"
+                style="@style/CredentialsEditText"
+                android:hint=""
+                android:inputType="textPersonName|textCapWords" />
+
+            <EditText
+                android:id="@+id/company_edit_text"
+                style="@style/CredentialsEditText"
+                android:hint=""
+                android:inputType="textCapWords" />
+
+            <EditText
+                android:id="@+id/profession_edit_text"
+                style="@style/CredentialsEditText"
+                android:hint=""
+                android:inputType="textCapWords" />
+
+
+            <EditText
+                android:id="@+id/position_edit_text"
+                style="@style/CredentialsEditText"
+                android:hint=""
+                android:inputType="textCapWords" />
+
+            <EditText
+                android:id="@+id/phone_number_edit_text"
+                style="@style/CredentialsEditText"
+                android:hint=""
+                android:inputType="phone" />
+
+            <EditText
+                android:id="@+id/e_mail_edit_text"
+                style="@style/CredentialsEditText"
+                android:hint=""
+                android:inputType="textEmailAddress" />
+        </LinearLayout>
+    </ScrollView>
+
+    <ProgressBar style="@style/RiaProgressBar" />
+
+
+    <com.devspark.robototextview.widget.RobotoTextView
+        android:id="@+id/sign_up_inscription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:text=""
+        android:textColor="@color/yellow_color_normal"
+        android:textSize="13sp" />
+</RelativeLayout>

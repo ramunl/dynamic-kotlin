@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".activity.ArticleActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:focusableInTouchMode="false"
+            android:textIsSelectable="true"
+            android:id="@+id/title_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="-0.01"
+            android:textColor="#190029"
+            android:textSize="22sp"
+            android:textStyle="normal" />
+
+        <RelativeLayout
+            android:id="@+id/story_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/story_title_small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="sans-serif"
+                android:letterSpacing="-0.01"
+                android:text="@string/story_title"
+                android:textColor="@color/drawer_item_normal_text_color"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_alignParentStart="true" />
+
+            <RelativeLayout
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/story_title_small"
+                android:background="@drawable/bg_story"
+                android:gravity="center_vertical"
+                android:layout_toRightOf="@+id/story_title_small">
+
+                <TextView
+                    android:layout_toStartOf="@+id/notification_img"
+                    android:id="@+id/story_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:fontFamily="sans-serif"
+                    android:letterSpacing="-0.01"
+                    android:padding="8dp"
+                    android:textColor="@color/drawer_item_normal_text_color"
+                    android:textSize="15sp"
+                    android:textStyle="normal"
+                    tools:text=""
+                    android:layout_toLeftOf="@+id/notification_img"
+                    android:layout_alignParentLeft="true" />
+
+                <ImageView
+                    android:clickable="true"
+                    android:layout_marginEnd="8dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_notifications_none_gray"
+                    android:id="@+id/notification_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_alignParentRight="true" />
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:focusableInTouchMode="false"
+            android:textIsSelectable="true"
+            android:id="@+id/date_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="-0.01"
+            android:textColor="#a4a4a4"
+            android:textSize="15sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:focusableInTouchMode="false"
+            android:id="@+id/body_test_view"
+            android:textIsSelectable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:letterSpacing="-0.01"
+            android:textColor="#190029"
+            android:textSize="17sp"
+            android:textStyle="normal" />
+
+
+    </LinearLayout>
+
+
+</ScrollView>

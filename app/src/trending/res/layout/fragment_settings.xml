@@ -1,0 +1,196 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/material_grey_300">
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_list_item_height"
+            android:background="?attr/selectableItemBackground">
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                style="@style/SettingsListItem"
+                android:text="@string/settings_notification_title"
+                app:robotoTextWeight="normal" />
+
+        </RelativeLayout>
+
+
+        <ImageView style="@style/SettingsListItemDivider" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:paddingEnd="10dp"
+            android:paddingRight="10dp">
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                style="@style/SettingsListItem"
+                android:text="@string/settings_notification_all_news"
+                app:robotoTextWeight="light" />
+
+            <com.rey.material.widget.Switch
+                android:id="@+id/all_news"
+                style="@style/Material.Widget.Switch"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/settings_list_item_height"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                app:sw_thumbColor="@drawable/switch_color_selector"
+                app:sw_trackColor="@drawable/switch_track_color_selector" />
+        </RelativeLayout>
+
+        <ImageView style="@style/SettingsListItemDivider" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:paddingEnd="10dp"
+            android:paddingRight="10dp">
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                style="@style/SettingsListItem"
+                android:text="@string/settings_notification_tapes"
+                app:robotoTextWeight="light" />
+
+            <com.rey.material.widget.Switch
+                android:id="@+id/my_flashes"
+                style="@style/Material.Widget.Switch"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/settings_list_item_height"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                app:sw_thumbColor="@drawable/switch_color_selector"
+                app:sw_trackColor="@drawable/switch_track_color_selector" />
+        </RelativeLayout>
+
+        <ImageView style="@style/SettingsListItemDivider" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:paddingEnd="10dp"
+            android:paddingRight="10dp">
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                style="@style/SettingsListItem"
+                android:text="@string/tapes_tab_title"
+                app:robotoTextWeight="light" />
+
+            <com.rey.material.widget.Switch
+                android:id="@+id/my_news"
+                style="@style/Material.Widget.Switch"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/settings_list_item_height"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                app:sw_thumbColor="@drawable/switch_color_selector"
+                app:sw_trackColor="@drawable/switch_track_color_selector" />
+        </RelativeLayout>
+
+        <ImageView style="@style/SettingsListItemDivider" />
+
+        <RelativeLayout
+            android:id="@+id/promo_settings_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:paddingEnd="10dp"
+            android:paddingRight="10dp">
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                style="@style/SettingsListItem"
+                android:id="@+id/promo_settings_text"
+                android:text="@string/tapes_tab_title"
+                app:robotoTextWeight="light" />
+
+            <com.rey.material.widget.Switch
+                android:id="@+id/promo_switch"
+                style="@style/Material.Widget.Switch"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/settings_list_item_height"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                app:sw_thumbColor="@drawable/switch_color_selector"
+                app:sw_trackColor="@drawable/switch_track_color_selector" />
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_list_item_height"
+            android:background="@color/material_grey_300" />
+
+        <RelativeLayout
+            android:id="@+id/about_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_list_item_height"
+            android:background="?attr/selectableItemBackground">
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                style="@style/SettingsListItem"
+                android:text="@string/settings_about_title"
+                app:robotoTextWeight="normal" />
+        </RelativeLayout>
+
+
+        <ImageView style="@style/SettingsListItemDivider" />
+
+        <RelativeLayout
+            android:id="@+id/lang_sett"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_list_item_height"
+            android:background="?attr/selectableItemBackground"
+            android:paddingEnd="10dp"
+            android:paddingRight="10dp">
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                style="@style/SettingsListItem"
+                android:text="@string/settings_lang_title"
+                app:robotoTextWeight="light" />
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:id="@+id/selected_lang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="10dp"
+                android:text="@string/lang_ru"
+                android:textSize="@dimen/list_item_title_text_size"
+                app:robotoTextWeight="light" />
+
+        </RelativeLayout>
+
+        <!-- <com.devspark.robototextview.widget.RobotoTextView
+             android:id="@+id/exit_btn"
+             style="@style/SettingsListItem"
+             android:text="@string/action_logout"
+             android:textColor="#d51f2c"
+             app:robotoTextWeight="normal" />
+
+         <ImageView style="@style/SettingsListItemDivider" />-->
+
+
+    </LinearLayout>
+</ScrollView>
+
+

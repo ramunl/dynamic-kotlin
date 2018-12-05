@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_user_feeds_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:gravity="center|top">
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/fragment_auth_terminal_login_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="start"
+        android:hint="@string/settings_terminal_login_placeholder"
+        android:maxLines="1"
+        android:minHeight="56dp"
+        android:singleLine="true"
+        android:textColorHint="@color/text_edit_auth_terminal_hint_color" />
+
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/fragment_auth_terminal_password_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_auth_terminal_login_edit_text"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="start"
+        android:hint="@string/settings_terminal_password_placeholder"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:minHeight="48dp"
+        android:singleLine="true"
+        android:textColorHint="@color/text_edit_auth_terminal_hint_color" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_auth_terminal_password_edit_text"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:autoLink="all"
+        android:fontFamily="@font/roboto_regular"
+        android:gravity="start"
+        android:text="@string/settings_terminal_description"
+        android:textAlignment="textStart"
+        android:textColor="@color/dark_purple"
+        android:textSize="17sp"
+        app:fontFamily="@font/roboto_regular" />
+
+    <ru.rian.dynamics.views.ProgressView
+        android:id="@+id/fragment_auth_terminal_progress_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

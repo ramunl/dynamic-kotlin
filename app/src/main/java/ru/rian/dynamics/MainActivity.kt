@@ -1,8 +1,8 @@
 package ru.rian.dynamics
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
+import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -25,28 +25,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        val activityComponent = DaggerActivityComponent.builder()
-            .appComponent(InitApp.get(this).component())
-            .activityModule(ActivityModule(this))
-            .build()
-        activityComponent.inject(this)
-
-        val prefs = defaultPrefs()
-        prefs[Consts.SharedPrefs.KEY] = "any_type_of_value"
-
-        val value: String? = prefs[Consts.SharedPrefs.KEY]
-      // val anotherValue: Int? = prefs[Consts.SharedPrefs.KEY, 10]
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
 
-        val toggle = ActionBarDrawerToggle(
+        /*val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        )
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
+        )*/
+      //  drawer_layout.addDrawerListener(toggle)
+      //  toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
     }

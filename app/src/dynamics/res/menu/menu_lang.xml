@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ru.rian.dynamics.LoginActivity">
+    <item
+        android:id="@+id/action_ok"
+        android:title=""
+        app:actionLayout="@layout/layout_menu_lang"
+        app:showAsAction="always" />
+</menu><!-- android:icon="@drawable/navigation_accept" -->
+

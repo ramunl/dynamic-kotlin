@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Название приложения на рабочем столе устройства -->
+    <string name="app_name">Al filo</string>
+    <!-- Логотип -->
+    <string name="ria_novosti">Sputnik Nóvosti</string>
+    <!-- Логотип -->
+    <string name="dynamics_of_the_day">Al filo Sputnik Nóvosti</string>
+    <string name="choose_lang_title">Seleccione el idioma</string>
+    <string name="choose_lang_info">Puede cambiar el idioma en configuración</string>
+    <string name="lang_ru">Русский</string>
+    <string name="lang_es">Español</string>
+    <string name="lang_en">English</string>
+    <string name="lang_ar">العربية</string>
+    <string name="lang_zh">中文</string>
+    <string name="continue_action">Continuar</string>
+    <string name="button_done">Listo</string>
+    <string name="try_again">Volver a intentar</string>
+    <string name="button_yes">Si</string>
+    <string name="button_no">No</string>
+    <string name="connection_error_title">Error de conexión</string>
+    <string name="connection_error_info">No es posible la conexión con el servidor, confirme que la conexión a internet y vuelva a intentarlo.</string>
+    <!-- Название раздела внутри приложения -->
+    <string name="news_tab_title">Al filo Sputnik Nóvosti</string>
+    <string name="news_today">Hoy</string>
+    <string name="news_show_new_articles">Mostrar nueva información</string>
+    <string name="news_no_content">No hay información</string>
+    <string name="news_sharing_title">Compartir</string>
+    <string name="search_hint">Búsqueda</string>
+    <string name="search_in_progress">Buscando…</string>
+    <string name="search_no_results">Sin resultado</string>
+    <string name="search_period">Período</string>
+    <string name="search_period_from">Del</string>
+    <string name="search_period_to">Al</string>
+    <string name="search_period_default">No determinado</string>
+    <string name="search_mode_all_words">Todas las palabras</string>
+    <string name="search_mode_phrase">Por frase coincidente</string>
+    <string name="search_mode_one_of">Por palabra</string>
+    <string name="search_reset">Reiniciar</string>
+    <!-- Название раздела внутри приложения -->
+    <string name="tapes_tab_title">Mi selección</string>
+    <string name="tapes_no_tapes">Para crear selección propia pulse +</string>
+    <string name="tapes_creation_hint">Qué busca</string>
+    <string name="tapes_created">Selección añadida</string>
+    <string name="tapes_remove">Anular selección</string>
+    <string name="tapes_delete">Suprimir</string>
+    <string name="tapes_tape_no_content">No hay información. Será informado en cuanto aparezca.</string>
+    <!-- Название раздела внутри приложения -->
+    <string name="settings_tab_title">Configuración</string>
+    <string name="settings_notification_title">Notificaciones</string>
+    <string name="settings_notification_all_news">Todas las informaciones</string>
+    <string name="settings_notification_flashes">FLASH</string>
+    <string name="settings_notification_tapes">Mis selecciones</string>
+    <string name="settings_about_title">Sobre la aplicación</string>
+    <string name="settings_about_version">Versión</string>
+    <string name="settings_about_copyright">Sputnik Nóvosti</string>
+    <string name="settings_about_text">Gracias por instalar la aplicación Al filo. Está destinado ante todo a profesionales de la información, los negocios y la administración.Contáctenos: e-mail: sales@sputniknews.com</string>
+    <string name="settings_lang_title">Idioma</string>
+    <string name="sharing_postfix">© Sputnik Nóvosti</string>
+    <string name="promo_alert_open">Abrir</string>
+    <string name="promo_alert_notification_title">Activar notificaciones del servicio de noticias</string>
+    <string name="promo_alert_notification_message">Las notificaciones siempre se pueden desactivar en Ajustes</string>
+    <string name="promo_alert_tape_title">Se agregó un nuevo servicio de noticias</string>
+    <string name="promo_alert_tape_message">El servicio de noticias está dedicado a</string>
+    <string name="terminal_title">Terminal</string>
+    <string name="logout">Salir</string>
+    <string name="settings_notification_general_feeds">Servicios de noticias principales</string>
+    <string name="settings_notification_user_feeds">Mis servicios de noticias</string>
+    <string name="settings_notification_story_feeds">Temas</string>
+    <string name="settings_terminal_login_placeholder">Usuario</string>
+    <string name="settings_terminal_password_placeholder">Contraseña</string>
+    <string name="settings_terminal_description">La terminal de noticias permite acceder las 24 horas a los productos informativos operativos de Rossiya Segodnya. Para suscribirse contacte sales@rian.ru</string>
+    <string name="settings_terminal_feed_waitings">Actualización de datos</string>
+    <string name="settings_terminal_feed_waitings_error">Error al cargar los datos</string>
+    <string name="done_button">Listo</string>
+    <string name="loading">Cargando</string>
+    <string name="create_feed_title">Crear un servicio de noticias</string>
+    <string name="create_feed_query_placeholder">Búsqueda</string>
+    <string name="create_feed_title_placeholder">Nombre del servicio de noticias</string>
+    <string name="create_feed_match_title">Qué se busca</string>
+    <string name="create_feed_match_allwords">Todas las palabras</string>
+    <string name="create_feed_match_phrase">Coincidencias de frases</string>
+    <string name="create_feed_match_any">Una de las palabras</string>
+    <string name="create_feed_match_extended">Búsqueda ampliada</string>
+    <string name="create_feed_fields_title">Dónde se busca</string>
+    <string name="create_feed_fields_head">Titulares</string>
+    <string name="create_feed_fields_body">Texto de la noticia</string>
+    <string name="create_feed_fields_keywords">Palabras clave</string>
+    <string name="create_feed_feeds_title">En qué servicios se realiza la búsqueda</string>
+    <string name="create_feed_feeds_all_feeds">En todos los servicios de noticias</string>
+    <string name="choose_feed_title">Seleccione el servicio de noticias</string>
+    <string name="article_controller_title">Noticia</string>
+    <string name="stories_tab_title">Temas</string>
+    <string name="create_tape_necessary_text_field">El campo de búsqueda debe estar rellenado</string>
+    <string name="cancel">Anular</string>
+    <string name="search_query_empty">No se ha encontrado ningún resultado</string>
+    <string name="story">Tema</string>
+    <string name="story_is_empty">No hay temas</string>
+    <string name="auth_terminal_no_filled_login_or_password">No se ha indicado el usuario o la constraseña</string>
+    <string name="auth_terminal_success">Ha accedido a la termninal</string>
+    <string name="content_add_user_feed_disabled_save_button_check_query">No se ha indicado la consulta</string>
+    <string name="content_add_user_feed_disabled_save_button_check_feeds">No está seleccionado ningún servicio de noticias</string>
+    <string name="content_add_user_feed_save_button">Guardar</string>
+    <string name="story_title">Tema:</string>
+    <!-- Warning: Empty value for "login_passsword_error" -->
+    <string name="login_passsword_error">Nombre de usuario o contraseña incorrectos</string>
+    <!-- Warning: Empty value for "login_cannot_be_empty" -->
+    <string name="login_cannot_be_empty">El campo de usuario debe estar rellenado</string>
+    <!-- Warning: Empty value for "entered_query" -->
+    <string name="entered_query">Introduzca los términos de búsqueda</string>
+    <!-- Warning: Empty value for "title_alert_promo_feed" -->
+    <string name="title_alert_promo_feed">Un nuevo servicio de noticias disponible</string>
+    <string name="settings_events_title">Sucesos</string>
+    <string name="notification_more_button">Más información</string>
+    <string name="notification_title_when_many">Están disponibles nuevos sucesos</string>
+    <string name="promo_alert_cancel">Más tarde</string>
+    <string name="notification_empty_title">Sin acontecimientos</string>
+    <string name="push_none">Desactivado</string>
+    <string name="push_all">Activado</string>
+    <string name="push_breaking">Flashes</string>
+
+</resources>

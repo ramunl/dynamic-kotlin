@@ -1,0 +1,95 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="40dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="40dp"
+    android:padding="10dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/article_pub_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="11.22.3333"
+                        android:fontFamily="@font/roboto_regular"
+                        app:fontFamily="@font/roboto_regular"
+                        android:textColor="@color/list_Item_date_color_grey"
+                        android:textSize="@dimen/list_item_date_text_size" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/article_pub_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:fontFamily="@font/roboto_regular"
+                        app:fontFamily="@font/roboto_regular"
+                        android:text="11.22"
+                        android:textColor="@color/list_Item_date_color_grey"
+                        android:textSize="@dimen/list_item_date_text_size" />
+
+                    <ImageView
+                        android:id="@+id/flash_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:background="@drawable/flash" />
+                </LinearLayout>
+
+                <com.malinskiy.materialicons.widget.IconTextView
+                    style="@style/LoginViewIconImage"
+                    android:id="@+id/share"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:text="{zmdi-share}" />
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/article_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start|top"
+                android:paddingBottom="10dp"
+                android:fontFamily="@font/roboto_regular"
+                app:fontFamily="@font/roboto_regular"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingTop="10dp"
+                android:text="Article title"
+                android:textColor="@color/list_Item_title_color_black"
+                android:textSize="@dimen/list_item_title_text_size" />
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+</RelativeLayout>

@@ -1,0 +1,32 @@
+<resources>
+    <color name="dark_purple">#F99600</color>
+    <color name="light_purple">#8A8A8A</color>
+    <color name="white">#FFFFFF</color>
+    <color name="button_text_color_normal">#000000</color>
+    <color name="button_text_color_pressed">#F4951B</color>
+    <color name="yellow_color_normal">#f99600</color>
+    <color name="tab_indicator_color">#FFFFFF</color>
+    <color name="list_Item_date_color_grey">#808080</color>
+    <color name="list_Item_title_color_black">#190029</color>
+    <color name="push_badge_color">#ec6400</color>
+    <color name="show_articles_btn_bg">#dddbdf</color>
+    <color name="show_articles_btn_pressed_bg">#d0ccd2</color>
+    <color name="list_item_btn_pressed_bg">#cccccc</color>
+    <color name="bg_item_normal_state">#FFFFFF</color>
+    <color name="inserted_text">#f99600</color>
+    <color name="dark_yellow">#C27500</color>
+    <color name="red">#C27500</color>
+    <color name="sign_up_text_color_normal">#7a7a7a</color>
+    <color name="sign_up_text_color_pressed">#473354</color>
+    <color name="transparent">#00000000</color>
+    <color name="switch_disabled">#F5F5F5</color>
+    <color name="small_icon_bg_color">#d68100</color>
+    <color name="small_icon_flash_bg_color">#fa5e00</color>
+    <color name="tab_text_color">#fdd599</color>
+    <color name="tab_selected_text_color">#ffffff</color>
+    <color name="fab_color">#fff99600</color>
+    <color name="drawer_item_normal_text_color">#000000</color>
+    <color name="drawer_item_additional_text_color">#000000</color>
+    <color name="navnar_statusbar_bg_color">#fff99600</color>
+
+</resources>

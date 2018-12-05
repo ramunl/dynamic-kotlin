@@ -1,0 +1,45 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="20dp">
+
+    <RadioGroup
+        android:id="@+id/search_filter_radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusableInTouchMode="false"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/all_words"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:buttonTint="@color/yellow_color_normal"
+            android:checked="false"
+            android:text="@string/search_mode_all_words"
+            android:textSize="@dimen/radio_btn_text_size" />
+
+        <RadioButton
+            android:id="@+id/phrase_coincidence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:buttonTint="@color/yellow_color_normal"
+            android:checked="false"
+            android:text="@string/search_mode_phrase"
+            android:textSize="@dimen/radio_btn_text_size" />
+
+        <RadioButton
+            android:id="@+id/the_only_word"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:buttonTint="@color/yellow_color_normal"
+            android:checked="false"
+            android:text="@string/search_mode_one_of"
+            android:textSize="@dimen/radio_btn_text_size" />
+
+    </RadioGroup>
+
+</RelativeLayout>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Название приложения на рабочем столе устройства -->
+    <string name="app_name">Sputnik Trending</string>
+    <!-- Логотип -->
+    <string name="ria_novosti">RIA Novosti</string>
+    <!-- Логотип -->
+    <string name="dynamics_of_the_day">Sputnik Trending</string>
+    <string name="choose_lang_title">Select Language</string>
+    <string name="choose_lang_info">You can change the edition in the settings</string>
+    <string name="lang_ru">Русский</string>
+    <string name="lang_es">Español</string>
+    <string name="lang_en">English</string>
+    <string name="lang_ar">العربية</string>
+    <string name="lang_zh">中文</string>
+    <string name="continue_action">Continue</string>
+    <string name="button_done">Ready</string>
+    <string name="try_again">Please TryAgain</string>
+    <string name="button_yes">Yes</string>
+    <string name="button_no">No</string>
+    <string name="connection_error_title">Connection error</string>
+    <string name="connection_error_info">Server cannot be reached. Please check your Internet connection and connect again.</string>
+    <!-- Название раздела внутри приложения -->
+    <string name="news_tab_title">Sputnik Trending</string>
+    <string name="news_today">Today</string>
+    <string name="news_show_new_articles">Show new articles</string>
+    <string name="news_no_content">No articles to display</string>
+    <string name="news_sharing_title">Share</string>
+    <string name="search_hint">Search</string>
+    <string name="search_in_progress">Searching ...</string>
+    <string name="search_no_results">No matches found</string>
+    <string name="search_period">Period:</string>
+    <string name="search_period_from">From</string>
+    <string name="search_period_to">To</string>
+    <string name="search_period_default">Nothing selected</string>
+    <string name="search_mode_all_words">All words</string>
+    <string name="search_mode_phrase">Matching phrases</string>
+    <string name="search_mode_one_of">One word</string>
+    <string name="search_reset">Reset</string>
+    <!-- Название раздела внутри приложения -->
+    <string name="tapes_tab_title">My wires</string>
+    <string name="tapes_no_tapes">To create your own wire \nclick on the plus</string>
+    <string name="tapes_creation_hint">Please enter your search query</string>
+    <string name="tapes_created">The wire has been added</string>
+    <string name="tapes_remove">Delete a news wire</string>
+    <string name="tapes_delete">Delete</string>
+    <string name="tapes_tape_no_content">There are no articles to display\nWhen articles appear\nyou will be notified</string>
+    <!-- Название раздела внутри приложения -->
+    <string name="settings_tab_title">Settings</string>
+    <string name="settings_notification_title">Notices</string>
+    <string name="settings_notification_all_news">All news</string>
+    <string name="settings_notification_tapes">Breaking news</string>
+    <string name="settings_notification_flashes">My wires</string>
+    <string name="settings_about_title">About</string>
+    <string name="settings_about_version">Version:</string>
+    <string name="settings_about_copyright">© Sputnik</string>
+    <string name="settings_about_text">Thank you for downloading the “Sputnik Trending” app. It is aimed first and foremost for a professional audience, including representatives of state authorities and business.\n\nContact details:\nE-mail: sales@sputniknews.com</string>
+    <string name="settings_lang_title">Language</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="promo_alert_open">Open</string>
+    <string name="latter">Later</string>
+
+    <string name="promo_alert_notification_title">Allow newswire notifications %s</string>
+    <string name="promo_alert_notification_message">Notifications can be switched off in settings</string>
+    <string name="promo_alert_tape_title">New news feed added</string>
+    <string name="promo_alert_tape_message">Dedicated newswire for the %s </string>
+
+</resources>

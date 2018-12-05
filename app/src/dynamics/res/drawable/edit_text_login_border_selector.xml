@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/textfield_default" android:state_enabled="true" android:state_window_focused="false" />
+
+    <item android:drawable="@drawable/textfield_disabled" android:state_enabled="false" android:state_window_focused="false" />
+
+    <item android:drawable="@drawable/textfield_pressed" android:state_pressed="true" />
+
+    <item android:drawable="@drawable/textfield_selected" android:state_enabled="true" android:state_focused="true" />
+
+    <item android:drawable="@drawable/textfield_default" android:state_enabled="true" />
+
+    <item android:drawable="@drawable/textfield_disabled_selected" android:state_focused="true" />
+
+    <item android:drawable="@drawable/textfield_disabled" />
+    <!--    <item>
+
+    </item>
+    <item android:state_window_focused="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:thickness="0dp"
+               android:shape="rectangle">
+            <stroke android:color="#F0C691" android:width="3dp"/>
+            <corners android:radius="5dp"/>
+            <gradient
+                android:startColor="#C8C8C8"
+                android:endColor="#FFFFFF"
+                android:type="linear"
+                android:angle="270"/>
+        </shape>
+    </item>
+-->
+</selector>

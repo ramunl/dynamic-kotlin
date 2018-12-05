@@ -1,0 +1,95 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginBottom="40dp"
+    android:layout_marginEnd="40dp"
+    android:layout_marginLeft="40dp"
+    android:layout_marginRight="40dp"
+    android:layout_marginStart="40dp"
+    android:layout_marginTop="40dp"
+    android:padding="10dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/promo_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start|top"
+                android:paddingBottom="10dp"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:fontFamily="@font/roboto_bold"
+                app:fontFamily="@font/roboto_bold"
+                android:paddingTop="10dp"
+                android:text="@string/promo_alert_notification_title"
+                android:textColor="@color/list_Item_title_color_black"
+                android:textSize="@dimen/list_item_title_text_size" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start|top"
+                android:paddingBottom="10dp"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:fontFamily="@font/roboto_regular"
+                app:fontFamily="@font/roboto_regular"
+                android:paddingTop="10dp"
+                android:text="@string/promo_alert_notification_message"
+                android:textColor="@color/list_Item_title_color_black"
+                android:textSize="@dimen/list_item_title_text_size" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/no"
+                    android:background="@android:color/transparent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:fontFamily="@font/roboto_bold"
+                    app:fontFamily="@font/roboto_bold"
+                    android:paddingTop="10dp"
+                    android:text=""
+                    android:textColor="@color/list_Item_title_color_black"
+                    android:textSize="@dimen/list_item_title_text_size" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/yes"
+                    android:background="@android:color/transparent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:fontFamily="@font/roboto_bold"
+                    app:fontFamily="@font/roboto_bold"
+                    android:paddingTop="10dp"
+                    android:text=""
+                    android:textColor="@color/yellow_color_normal"
+                    android:textSize="@dimen/list_item_title_text_size" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+</RelativeLayout>

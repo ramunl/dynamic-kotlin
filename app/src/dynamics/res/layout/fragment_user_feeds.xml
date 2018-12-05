@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_user_feeds_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/fragment_user_feeds_stub_image_view"
+        android:layout_width="118dp"
+        android:layout_height="118dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/special_project_placeholder" />
+
+    <TextView
+        android:id="@+id/fragment_user_feeds_stub_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_user_feeds_stub_image_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="7dp"
+        android:text="@string/tapes_no_tapes"
+        android:textAlignment="center" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fragment_user_feeds_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fragment_user_feeds_create_new_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/fragment_fab_margin"
+        android:layout_marginEnd="@dimen/fragment_fab_margin"
+        android:layout_marginLeft="@dimen/fragment_fab_margin"
+        android:layout_marginRight="@dimen/fragment_fab_margin"
+        android:scaleType="fitXY"
+        app:backgroundTint="@color/fab_color"
+        app:elevation="8dp"
+        android:layout_alignParentRight="true" />
+
+    <ru.rian.dynamics.views.ProgressView
+        android:id="@+id/fragment_user_feeds_progress_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

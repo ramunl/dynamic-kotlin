@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_view_container"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/settings_list_item_height"
+    android:background="?attr/selectableItemBackground"
+    android:paddingStart="10dp"
+    android:paddingEnd="2dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="2dp">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/news_line_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_line"
+        android:layout_centerVertical="true"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:gravity="center_vertical"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:fontFamily="@font/roboto_regular"
+        app:fontFamily="@font/roboto_regular"
+        android:text="article title"
+        android:textColor="@color/list_Item_title_color_black"
+        android:textSize="@dimen/list_item_title_text_size" />
+
+    <ImageView
+        android:id="@+id/bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="#CCCCCC" />
+
+    <ImageView
+        android:id="@+id/badge_new_article"
+        style="@style/NewArticlePushBadge"
+        android:layout_centerVertical="true" />
+
+</RelativeLayout>

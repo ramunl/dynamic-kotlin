@@ -1,25 +1,20 @@
 package ru.rian.dynamics.di.model
 
-import android.app.Activity
-import android.content.Context
 import dagger.Module
 import dagger.Provides
-import ru.rian.dynamics.di.ActivityContext
+import ru.rian.dynamics.DataManager
+import ru.rian.dynamics.SchedulerProvider
+import ru.rian.dynamics.ui.MainViewModel
 
 
 @Module
-class ActivityModule(val activity: Activity) {
+class ActivityModule(val schedulerProvider: SchedulerProvider) {
+
 
     @Provides
-    fun providesActivity(): Activity {
-        return activity
+    fun provideMainViewModel(dataManager: DataManager)
+            : MainViewModel {
+        return MainViewModel(dataManager, schedulerProvider)
     }
-
-    @Provides
-    @ActivityContext
-    fun providesContext(): Context {
-        return activity
-    }
-
 
 }

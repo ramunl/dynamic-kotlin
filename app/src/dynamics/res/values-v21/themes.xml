@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- the theme applied to the application or activity -->
+    <style name="CustomActionBarTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:statusBarColor">@color/navnar_statusbar_bg_color</item>
+        <item name="android:navigationBarColor">@color/navnar_statusbar_bg_color</item>
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:textCursorDrawable">@null</item>
+
+        <!-- Support library compatibility -->
+        <item name="actionBarStyle">@style/MyActionBar</item>
+    </style>
+    <style name="NoActionBarBarTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/dark_purple</item>
+    </style>
+
+
+    <!-- ActionBar styles -->
+    <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/dark_purple</item>
+        <item name="android:statusBarColor">@color/dark_purple</item>
+        <!-- Support library compatibility -->
+        <item name="background">@color/dark_purple</item>
+    </style>
+
+    <style name="CredentialsTheme" parent="CustomActionBarTheme">
+        <item name="android:windowBackground">@drawable/splash_background_vert</item>
+    </style>
+
+</resources>
