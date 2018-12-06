@@ -10,12 +10,6 @@ import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import ru.rian.dynamics.di.component.DaggerActivityComponent
-import ru.rian.dynamics.di.model.ActivityModule
-import ru.rian.dynamics.utils.Consts
-import ru.rian.dynamics.utils.PreferenceHelper.defaultPrefs
-import ru.rian.dynamics.utils.PreferenceHelper.get
-import ru.rian.dynamics.utils.PreferenceHelper.set
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 

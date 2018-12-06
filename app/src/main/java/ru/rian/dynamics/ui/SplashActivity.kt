@@ -29,7 +29,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_splash)
         compositeDisposable = CompositeDisposable()
         val activityComponent = DaggerActivityComponent
             .builder()
@@ -43,7 +43,7 @@ class SplashActivity : AppCompatActivity() {
         }
         disposable = mainViewModel.provideHS()
             ?.subscribe({ result ->
-
+                val res = result
                 mainViewModel.setIsLoading(false)
             }, { e -> e.printStackTrace() })
 

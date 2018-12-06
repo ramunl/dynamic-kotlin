@@ -6,7 +6,7 @@ import io.reactivex.Observable
 import ru.rian.dynamics.DataManager
 import ru.rian.dynamics.FlavorConstants
 import ru.rian.dynamics.SchedulerProvider
-import ru.rian.dynamics.retrofit.model.ApiRequest
+import ru.rian.dynamics.retrofit.model.ApiRequests
 import ru.rian.dynamics.utils.Consts.SharedPrefs.PLAYER_ID
 import ru.rian.dynamics.utils.LocaleHelper
 import ru.rian.dynamics.utils.PreferenceHelper
@@ -27,23 +27,23 @@ class MainViewModel @Inject constructor(
     }
 
 
-    fun provideHS(): Observable<List<ApiRequest>>? {
+    fun provideHS(): Observable<ApiRequests?>? {
         setIsLoading(true)
-        var retVal: Observable<List<ApiRequest>>? = null
+        var retVal: Observable<ApiRequests?>? = null
         val prefs = defaultPrefs()
         val playerId: String? = prefs[PLAYER_ID]
         if (TextUtils.isEmpty(playerId)) {
             OneSignal.idsAvailable { userId, _ ->
                 prefs[PLAYER_ID] = userId
-                reqHs(playerId)
+                retVal = reqHs(playerId)
             }
         } else {
-            reqHs(playerId)
+            retVal = reqHs(playerId)
         }
         return retVal;
     }
 
-    fun reqHs(userId: String?): Observable<List<ApiRequest>>? {
+    fun reqHs(userId: String?): Observable<ApiRequests?>? {
         return dataManager.requestHSQuery(FlavorConstants.QUERY_HS_APP_ID_DYNAMICS, userId, LocaleHelper.getLanguage())
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())

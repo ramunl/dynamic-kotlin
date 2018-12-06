@@ -30,7 +30,7 @@
                 android:id="@+id/name_edit_text"
                 style="@style/CredentialsEditText"
                 android:hint=""
-                android:inputType="textPersonName|textCapWords"></EditText>
+                android:inputType="textPersonName|textCapWords"/>
 
             <EditText
                 android:id="@+id/last_name_edit_text"
