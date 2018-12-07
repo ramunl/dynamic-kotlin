@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/rootLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -23,22 +24,5 @@
             app:pv_progressMode="indeterminate"
             android:layout_width="48dp"
             android:layout_height="48dp"/>
-
-    <android.support.v7.widget.AppCompatButton
-            android:id="@+id/enter_button"
-            android:visibility="gone"
-            android:layout_width="@dimen/enter_button_width"
-            android:layout_height="@dimen/enter_button_height"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/splash_logo"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/btn_bg_selector"
-            android:gravity="center"
-            android:fontFamily="@font/roboto_regular"
-            app:fontFamily="@font/roboto_regular"
-            android:textAllCaps="false"
-            android:text="@string/continue_action"
-            android:textColor="@color/white"
-            android:textSize="@dimen/top_bar_button_text_size"/>
 
 </RelativeLayout>

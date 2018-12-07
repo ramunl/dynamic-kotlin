@@ -14,6 +14,7 @@ import ru.rian.dynamics.utils.PreferenceHelper.defaultPrefs
 import javax.inject.Inject
 import ru.rian.dynamics.utils.PreferenceHelper.get
 import ru.rian.dynamics.utils.PreferenceHelper.set
+import java.lang.Exception
 
 class MainViewModel @Inject constructor(
     private var dataManager: DataManager,

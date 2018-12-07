@@ -1,6 +1,7 @@
 package ru.rian.dynamics.ui
 
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import io.reactivex.disposables.CompositeDisposable
@@ -41,12 +42,25 @@ class SplashActivity : AppCompatActivity() {
         if (mainViewModel.loading == true) {
             progressView.visibility = View.VISIBLE
         }
+        requestHS()
+
+    }
+
+    private fun requestHS() {
         disposable = mainViewModel.provideHS()
             ?.subscribe({ result ->
                 val res = result
+                progressView.visibility = View.GONE
                 mainViewModel.setIsLoading(false)
-            }, { e -> e.printStackTrace() })
-
+            }, { e ->
+                e.printStackTrace()
+                progressView.visibility = View.GONE
+                mainViewModel.setIsLoading(false)
+                Snackbar.make(rootLayout, getString(R.string.connection_error_title), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.try_again) { requestHS() }
+                    .setActionTextColor(resources.getColor(R.color.action_color))
+                    .show()
+            })
     }
 
     override fun onResume() {
