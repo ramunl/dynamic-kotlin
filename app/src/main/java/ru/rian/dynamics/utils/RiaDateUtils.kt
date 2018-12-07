@@ -16,7 +16,7 @@ object RiaDateUtils {
 
     private lateinit var locale: Locale
     var inputFormat = "kk:mm"
-    private var mDateFormat: DateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    private var mDateFormat: SimpleDateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
     private var inputParser = SimpleDateFormat(inputFormat, Locale.getDefault())
     private lateinit var filterTimeFormat: SimpleDateFormat
 
