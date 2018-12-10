@@ -4,16 +4,12 @@ package ru.rian.dynamics.utils
  * Created by Roman on 11/5/2015.
  */
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Configuration
-import android.content.res.Resources
 import android.os.Build
 import android.preference.PreferenceManager
 import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
-
-import java.util.Locale
+import java.util.*
 
 /**
  * This class is used to change your application locale and persist this change for the next time

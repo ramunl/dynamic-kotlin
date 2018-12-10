@@ -23,7 +23,7 @@
     </style>
 
     <style name="CredentialsTheme" parent="CustomActionBarTheme">
-        <item name="android:windowBackground">@drawable/splash_background_vert</item>
+        <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
 </resources>

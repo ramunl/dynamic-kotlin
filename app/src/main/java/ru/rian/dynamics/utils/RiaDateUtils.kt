@@ -1,13 +1,8 @@
 package ru.rian.dynamics.utils
 
 import android.text.format.Time
-import ru.rian.dynamics.InitApp
-import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
-import java.util.TimeZone
+import java.util.*
 
 /**
  * Created by Roman on 14.04.2015.
