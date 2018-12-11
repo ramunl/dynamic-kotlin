@@ -34,7 +34,7 @@
     <color name="drawer_item_normal_text_color">#ff473354</color>
     <color name="drawer_item_additional_text_color">#ff473354</color>
 
-    <color name="navnar_statusbar_bg_color">#33223D</color>
+    <color name="navbar_statusbar_bg_color">#33223D</color>
     <color name="black_87">#de000000</color>
     <color name="loading_bg_w_theme">#ffd8d8d8</color>
     <color name="loading_progress">#ff999999</color>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <ImageView
+            android:id="@+id/item_main_menu_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_menu_events"
+            android:layout_centerVertical="true"/>
+
+    <TextView
+            android:id="@+id/item_main_menu_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/menu_item_height"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/item_main_menu_image_view"
+            android:layout_toRightOf="@+id/item_main_menu_image_view"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/menu_margin_left"
+            android:paddingRight="@dimen/menu_margin_left"
+            android:textSize="18sp"
+            tools:text="@string/settings_events_title"/>
+
+    <ImageView
+            android:id="@+id/item_bubble"
+            android:scaleType="center"
+            android:layout_width="56dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="@dimen/menu_margin_left"
+            android:paddingRight="@dimen/menu_margin_left"
+            android:src="@drawable/bubble_orange"/>
+</RelativeLayout>

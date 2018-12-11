@@ -11,7 +11,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/navnar_statusbar_bg_color"
+        android:background="@color/navbar_statusbar_bg_color"
         app:elevation="0dp"
         app:theme="@style/ToolbarStyle" />
 

@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:background="@color/navnar_statusbar_bg_color"
+            android:background="@color/navbar_statusbar_bg_color"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
         <FrameLayout
@@ -41,7 +41,7 @@
     </RelativeLayout>
 
     <include
-        android:id="@+id/nav_view"
+        android:id="@+id/navView"
         layout="@layout/activity_tab_navigation_view"
         android:layout_width="@dimen/width_nav_drawer"
         android:layout_height="match_parent"
