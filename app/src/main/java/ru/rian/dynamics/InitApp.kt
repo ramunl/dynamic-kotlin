@@ -58,6 +58,7 @@ class InitApp : Application() {
             .init()
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
     }
+
     fun component(): AppComponent {
         return DaggerAppComponent.builder()
             .appModule(AppModule(this))

@@ -8,11 +8,10 @@ import ru.rian.dynamics.InitApp
 object PreferenceHelper {
 
 
-    fun defaultPrefs(): SharedPreferences
-             = PreferenceManager.getDefaultSharedPreferences(InitApp.applicationContext())
+    fun defaultPrefs(): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(InitApp.applicationContext())
 
-    fun customPrefs(context: Context, name: String): SharedPreferences
-            = context.getSharedPreferences(name, Context.MODE_PRIVATE)
+    fun customPrefs(context: Context, name: String): SharedPreferences =
+        context.getSharedPreferences(name, Context.MODE_PRIVATE)
 
     private inline fun SharedPreferences.edit(operation: (SharedPreferences.Editor) -> Unit) {
         val editor = this.edit()

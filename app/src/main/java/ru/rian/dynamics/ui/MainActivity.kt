@@ -1,31 +1,33 @@
 package ru.rian.dynamics.ui
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
+import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.drawer_menu_item_layout.view.*
+import ru.rian.dynamics.BuildConfig
 import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
+import ru.rian.dynamics.R.string.*
 import ru.rian.dynamics.SchedulerProvider
 import ru.rian.dynamics.di.component.DaggerActivityComponent
 import ru.rian.dynamics.di.model.ActivityModule
+import ru.rian.dynamics.retrofit.model.HSResult
+import ru.rian.dynamics.utils.PreferenceHelper
+import ru.rian.dynamics.utils.TRENDING
 import java.util.logging.Logger
 import javax.inject.Inject
-import android.view.View
-import kotlinx.android.synthetic.main.drawer_menu_item_layout.view.*
-import ru.rian.dynamics.BuildConfig
-import ru.rian.dynamics.R.string.*
-import ru.rian.dynamics.retrofit.model.HSResult
-import ru.rian.dynamics.utils.TRENDING
-
+import ru.rian.dynamics.utils.PreferenceHelper.get
+import ru.rian.dynamics.utils.PreferenceHelper.set
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -85,43 +87,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             addMenuItem(choose_lang_title, R.drawable.ic_menu_language, R.id.nav_lang)
         }
     }
-
-    /*
-    <item name="nav_news" type="id"/>
-    <item name="nav_tapes" type="id"/>
-    <item name="nav_terminal_login" type="id"/>
-    <item name="nav_terminal_logout" type="id"/>
-    <item name="nav_notifications" type="id"/>
-    <item name="nav_events" type="id"/>
-    <item name="nav_about" type="id"/>
-    <item name="nav_terminal" type="id"/>
-    <item name="nav_story" type="id"/>
-    <item name="nav_lang" type="id"/>
-    *     <!--<item
-                android:id="@+id/nav_terminal"
-                android:icon="@drawable/nav_terminal"
-                android:title="@string/terminal_title"/>
-        <item
-                android:id="@+id/nav_story"
-                android:icon="@drawable/ic_menu_story"
-                android:title="@string/stories_tab_title"/>
-        <item
-                android:id="@+id/nav_tapes"
-                android:icon="@drawable/ic_menu_my_feeds"
-                android:title="@string/tapes_tab_title"/>
-        <item
-                android:id="@+id/nav_notifications"
-                android:icon="@drawable/ic_menu_notifications"
-                android:title="@string/settings_notification_title"/>
-        <item
-                android:id="@+id/nav_events"
-                android:title=""
-                app:actionLayout="@layout/nav_events_layout"/>
-        <item
-                android:id="@+id/nav_about"
-                android:icon="@drawable/ic_menu_about"
-                android:title="@string/settings_about_title"/> -->
-    * */
 
     private fun addMenuItem(title: Int, iconResId: Int, itemId: Int) {
         addMenuItem(getString(title), iconResId, itemId)
@@ -188,7 +153,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun requestHS() {
         disposable = mainViewModel.provideHS()
             ?.subscribe({ result ->
+                putHStoPrefs(result)
                 addMenuItems(result)
+                requestFeeds()
             }, { e ->
                 e.printStackTrace()
                 Snackbar.make(rootLayout, getString(R.string.connection_error_title), Snackbar.LENGTH_INDEFINITE)
@@ -196,6 +163,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .setActionTextColor(resources.getColor(R.color.action_color))
                     .show()
             })
+    }
+
+    private fun requestFeeds() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun putHStoPrefs(result: HSResult?) {
+        val prefs = PreferenceHelper.defaultPrefs()
+        prefs["createFeed"] =  result?.apiRequestArray?.createFeed
+        prefs["deleteFeed"] =  result?.apiRequestArray?.deleteFeed
+        prefs["getArticles"] =  result?.apiRequestArray?.getArticles
+        prefs["getFeeds"] =  result?.apiRequestArray?.getFeeds
+        prefs["createFeed"] =  result?.apiRequestArray?.createFeed
+        prefs["login"] =  result?.apiRequestArray?.login
+        prefs["logout"] =  result?.apiRequestArray?.logout
+        prefs["synchronizeFeeds"] =  result?.apiRequestArray?.synchronizeFeeds
+        prefs["upsertSubscription"] =  result?.apiRequestArray?.upsertSubscription
     }
 
     override fun onResume() {

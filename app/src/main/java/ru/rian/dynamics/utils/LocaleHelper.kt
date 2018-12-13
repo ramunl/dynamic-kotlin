@@ -26,17 +26,17 @@ object LocaleHelper {
     private val SELECTED_LANGUAGE = "Locale.Helper.Selected.Language"
 
     fun onCreate() {
-        val lang = getPersistedData( Locale.getDefault().language)
-        setLocale( lang)
+        val lang = getPersistedData(Locale.getDefault().language)
+        setLocale(lang)
     }
 
-    fun onCreate( defaultLanguage: String) {
-        val lang = getPersistedData( defaultLanguage)
-        setLocale( lang)
+    fun onCreate(defaultLanguage: String) {
+        val lang = getPersistedData(defaultLanguage)
+        setLocale(lang)
     }
 
     fun getLanguage(): String? {
-        return getPersistedData( Locale.getDefault().language)
+        return getPersistedData(Locale.getDefault().language)
     }
 
     fun getLanguageStr(): String {
@@ -59,17 +59,17 @@ object LocaleHelper {
         return InitApp.applicationContext().getString(id)
     }
 
-    fun setLocale( language: String?) {
-        persist( language)
-        updateResources( language)
+    fun setLocale(language: String?) {
+        persist(language)
+        updateResources(language)
     }
 
-    private fun getPersistedData( defaultLanguage: String): String? {
+    private fun getPersistedData(defaultLanguage: String): String? {
         val preferences = PreferenceManager.getDefaultSharedPreferences(InitApp.applicationContext())
         return preferences.getString(SELECTED_LANGUAGE, defaultLanguage)
     }
 
-    private fun persist( language: String?) {
+    private fun persist(language: String?) {
         val preferences = PreferenceManager.getDefaultSharedPreferences(InitApp.applicationContext())
         val editor = preferences.edit()
 
@@ -83,7 +83,7 @@ object LocaleHelper {
         return resourceName
     }
 
-    private fun updateResources( language: String?) {
+    private fun updateResources(language: String?) {
         val locale = Locale(language)
         RiaDateUtils.setLocale(locale)
         Locale.setDefault(locale)
