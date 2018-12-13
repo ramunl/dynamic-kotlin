@@ -7,7 +7,7 @@
     android:minHeight="56dp">
 
     <ImageView
-        android:id="@+id/item_main_menu_image_view"
+        android:id="@+id/drawerMenuItemIcon"
         android:layout_width="56dp"
         android:layout_height="24dp"
         android:layout_centerVertical="true"
@@ -15,12 +15,12 @@
         android:paddingRight="@dimen/menu_margin_left" />
 
     <TextView
-        android:id="@+id/item_main_menu_text_view"
+        android:id="@+id/drawerMenuItemTitle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/menu_item_height"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/item_main_menu_image_view"
-        android:layout_toRightOf="@+id/item_main_menu_image_view"
+        android:layout_toEndOf="@+id/drawerMenuItemIcon"
+        android:layout_toRightOf="@+id/drawerMenuItemIcon"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/menu_margin_left"
         android:paddingRight="@dimen/menu_margin_left"

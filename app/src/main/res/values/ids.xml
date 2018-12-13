@@ -1,0 +1,11 @@
+<resources>
+    <item name="nav_news" type="id"/>
+    <item name="nav_tapes" type="id"/>
+    <item name="nav_terminal_logout" type="id"/>
+    <item name="nav_notifications" type="id"/>
+    <item name="nav_events" type="id"/>
+    <item name="nav_about" type="id"/>
+    <item name="nav_terminal" type="id"/>
+    <item name="nav_story" type="id"/>
+    <item name="nav_lang" type="id"/>
+</resources>

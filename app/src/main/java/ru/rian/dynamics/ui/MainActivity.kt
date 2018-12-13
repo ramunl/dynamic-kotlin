@@ -19,6 +19,13 @@ import ru.rian.dynamics.di.component.DaggerActivityComponent
 import ru.rian.dynamics.di.model.ActivityModule
 import java.util.logging.Logger
 import javax.inject.Inject
+import android.view.View
+import kotlinx.android.synthetic.main.drawer_menu_item_layout.view.*
+import ru.rian.dynamics.BuildConfig
+import ru.rian.dynamics.R.string.*
+import ru.rian.dynamics.retrofit.model.HSResult
+import ru.rian.dynamics.utils.TRENDING
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -47,10 +54,85 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        navView.inflateMenu( if (mainViewModel.isTokenPresented()) R.menu.nav_drawer_terminal else R.menu.nav_drawer_dynamic )
         navView.setNavigationItemSelectedListener(this)
 
         window.setBackgroundDrawableResource(R.color.transparent)
+    }
+
+    private fun addMenuItems(result: HSResult?) {
+        navView.inflateMenu(R.menu.nav_drawer_stub)
+        var isToken = mainViewModel.isTokenPresented()
+        addMenuItem(
+            if (isToken) getString(terminal_title) else result?.application,
+            R.drawable.ic_menu_ddn,
+            R.id.nav_news
+        )
+        if (isToken) {
+            addMenuItem(stories_tab_title, R.drawable.ic_menu_story, R.id.nav_story)
+        } else {
+            addMenuItem(terminal_title, R.drawable.ic_menu_terminal, R.id.nav_terminal)
+        }
+        addMenuItem(tapes_tab_title, R.drawable.ic_menu_my_feeds, R.id.nav_tapes)
+
+
+        addMenuItem(settings_notification_title, R.drawable.ic_menu_notifications, R.id.nav_notifications)
+        addMenuItem(settings_events_title, R.drawable.ic_menu_events, R.id.nav_events)
+        addMenuItem(settings_about_title, R.drawable.ic_menu_about, R.id.nav_about)
+        if (isToken) {
+            addMenuItem(logout, R.drawable.ic_menu_exit, R.id.nav_terminal_logout)
+        }
+        if (BuildConfig.FLAVOR.equals(TRENDING)) {
+            addMenuItem(choose_lang_title, R.drawable.ic_menu_language, R.id.nav_lang)
+        }
+    }
+
+    /*
+    <item name="nav_news" type="id"/>
+    <item name="nav_tapes" type="id"/>
+    <item name="nav_terminal_login" type="id"/>
+    <item name="nav_terminal_logout" type="id"/>
+    <item name="nav_notifications" type="id"/>
+    <item name="nav_events" type="id"/>
+    <item name="nav_about" type="id"/>
+    <item name="nav_terminal" type="id"/>
+    <item name="nav_story" type="id"/>
+    <item name="nav_lang" type="id"/>
+    *     <!--<item
+                android:id="@+id/nav_terminal"
+                android:icon="@drawable/nav_terminal"
+                android:title="@string/terminal_title"/>
+        <item
+                android:id="@+id/nav_story"
+                android:icon="@drawable/ic_menu_story"
+                android:title="@string/stories_tab_title"/>
+        <item
+                android:id="@+id/nav_tapes"
+                android:icon="@drawable/ic_menu_my_feeds"
+                android:title="@string/tapes_tab_title"/>
+        <item
+                android:id="@+id/nav_notifications"
+                android:icon="@drawable/ic_menu_notifications"
+                android:title="@string/settings_notification_title"/>
+        <item
+                android:id="@+id/nav_events"
+                android:title=""
+                app:actionLayout="@layout/nav_events_layout"/>
+        <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_menu_about"
+                android:title="@string/settings_about_title"/> -->
+    * */
+
+    private fun addMenuItem(title: Int, iconResId: Int, itemId: Int) {
+        addMenuItem(getString(title), iconResId, itemId)
+    }
+
+    private fun addMenuItem(title: String?, iconResId: Int, itemId: Int) {
+        val menuItem = navView.menu.add(0, itemId, 0, null)
+        var menuItemActionView = View.inflate(this, R.layout.drawer_menu_item_layout, null)
+        menuItemActionView.drawerMenuItemIcon.setImageResource(iconResId)
+        menuItemActionView.drawerMenuItemTitle.text = title
+        menuItem.actionView = menuItemActionView
     }
 
     override fun onBackPressed() {
@@ -80,12 +162,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-           /* R.id.nav_share -> {
+            /* R.id.nav_share -> {
 
-            }
-            R.id.nav_send -> {
+             }
+             R.id.nav_send -> {
 
-            }*/
+             }*/
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
@@ -106,10 +188,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun requestHS() {
         disposable = mainViewModel.provideHS()
             ?.subscribe({ result ->
-                //val res = result.also {  }
-                //val intent = Intent(this, MainActivity::class.java)
-                // intent.putExtra("sources", res.)
-                ///startActivity(intent)
+                addMenuItems(result)
             }, { e ->
                 e.printStackTrace()
                 Snackbar.make(rootLayout, getString(R.string.connection_error_title), Snackbar.LENGTH_INDEFINITE)
