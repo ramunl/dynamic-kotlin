@@ -4,11 +4,25 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import ru.rian.dynamics.InitApp
+import ru.rian.dynamics.retrofit.model.HSResult
 
 object PreferenceHelper {
 
 
-    fun defaultPrefs(): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(InitApp.applicationContext())
+    fun prefs(): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(InitApp.applicationContext())
+
+    fun putHStoPrefs(result: HSResult?) {
+        val prefs = prefs()
+        prefs["createFeed"] = result?.apiRequestArray?.createFeed
+        prefs["deleteFeed"] = result?.apiRequestArray?.deleteFeed
+        prefs["getArticles"] = result?.apiRequestArray?.getArticles
+        prefs["getFeeds"] = result?.apiRequestArray?.getFeeds
+        prefs["createFeed"] = result?.apiRequestArray?.createFeed
+        prefs["login"] = result?.apiRequestArray?.login
+        prefs["logout"] = result?.apiRequestArray?.logout
+        prefs["synchronizeFeeds"] = result?.apiRequestArray?.synchronizeFeeds
+        prefs["upsertSubscription"] = result?.apiRequestArray?.upsertSubscription
+    }
 
     fun customPrefs(context: Context, name: String): SharedPreferences =
         context.getSharedPreferences(name, Context.MODE_PRIVATE)

@@ -6,11 +6,12 @@ import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.onesignal.OneSignal
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.drawer_menu_item_layout.view.*
@@ -22,14 +23,25 @@ import ru.rian.dynamics.SchedulerProvider
 import ru.rian.dynamics.di.component.DaggerActivityComponent
 import ru.rian.dynamics.di.model.ActivityModule
 import ru.rian.dynamics.retrofit.model.HSResult
+import ru.rian.dynamics.utils.PLAYER_ID
 import ru.rian.dynamics.utils.PreferenceHelper
+import ru.rian.dynamics.utils.PreferenceHelper.get
+import ru.rian.dynamics.utils.PreferenceHelper.prefs
+import ru.rian.dynamics.utils.PreferenceHelper.putHStoPrefs
+import ru.rian.dynamics.utils.PreferenceHelper.set
 import ru.rian.dynamics.utils.TRENDING
 import java.util.logging.Logger
 import javax.inject.Inject
-import ru.rian.dynamics.utils.PreferenceHelper.get
-import ru.rian.dynamics.utils.PreferenceHelper.set
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    @Inject
+    lateinit var mainViewModel: MainViewModel
+    private lateinit var compositeDisposable: CompositeDisposable
+
+    companion object {
+        val Log = Logger.getLogger(MainActivity::class.java.name)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +55,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .build()
         activityComponent.inject(this)
 
-        requestHS()
+        val playerId: String? = prefs()[PLAYER_ID]
+        if (TextUtils.isEmpty(playerId)) {
+            OneSignal.idsAvailable { userId, _ ->
+                prefs()[PLAYER_ID] = userId
+                requestHS()
+            }
+        } else {
+            requestHS()
+        }
+
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -139,68 +160,46 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    private fun requestFeeds() {
+        var disposable = mainViewModel.provideFeeds()
+            ?.subscribe({ result ->
 
-    @Inject
-    lateinit var mainViewModel: MainViewModel
-    private lateinit var compositeDisposable: CompositeDisposable
-    private var disposable: Disposable? = null
-
-    companion object {
-        val Log = Logger.getLogger(MainActivity::class.java.name)
+            }, { e ->
+                showError(e)
+            })
+        compositeDisposable.add(disposable!!)
     }
 
+    private fun showError(e: Throwable) {
+        e.printStackTrace()
+        Snackbar.make(rootLayout, getString(R.string.connection_error_title), Snackbar.LENGTH_INDEFINITE)
+            .setAction(R.string.try_again) { requestHS() }
+            .setActionTextColor(resources.getColor(R.color.action_color))
+            .show()
+    }
 
     private fun requestHS() {
-        disposable = mainViewModel.provideHS()
+        var disposable = mainViewModel.provideHS()
             ?.subscribe({ result ->
                 putHStoPrefs(result)
                 addMenuItems(result)
                 requestFeeds()
             }, { e ->
-                e.printStackTrace()
-                Snackbar.make(rootLayout, getString(R.string.connection_error_title), Snackbar.LENGTH_INDEFINITE)
-                    .setAction(R.string.try_again) { requestHS() }
-                    .setActionTextColor(resources.getColor(R.color.action_color))
-                    .show()
+                showError(e)
             })
-    }
-
-    private fun requestFeeds() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    private fun putHStoPrefs(result: HSResult?) {
-        val prefs = PreferenceHelper.defaultPrefs()
-        prefs["createFeed"] =  result?.apiRequestArray?.createFeed
-        prefs["deleteFeed"] =  result?.apiRequestArray?.deleteFeed
-        prefs["getArticles"] =  result?.apiRequestArray?.getArticles
-        prefs["getFeeds"] =  result?.apiRequestArray?.getFeeds
-        prefs["createFeed"] =  result?.apiRequestArray?.createFeed
-        prefs["login"] =  result?.apiRequestArray?.login
-        prefs["logout"] =  result?.apiRequestArray?.logout
-        prefs["synchronizeFeeds"] =  result?.apiRequestArray?.synchronizeFeeds
-        prefs["upsertSubscription"] =  result?.apiRequestArray?.upsertSubscription
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (disposable != null) {
-            bind()
-        }
-    }
-
-    private fun bind() {
         compositeDisposable.add(disposable!!)
     }
 
-    private fun unbind() {
-        compositeDisposable.clear()
+
+    override fun onResume() {
+        super.onResume()
     }
+
 
     override fun onPause() {
         super.onPause()
         if (compositeDisposable.size() > 0) {
-            unbind()
+            compositeDisposable.clear()
         }
     }
 }
