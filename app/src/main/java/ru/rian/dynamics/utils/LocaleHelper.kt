@@ -56,7 +56,7 @@ object LocaleHelper {
         if (id == -1) {
             id = R.string.lang_ru
         }
-        return InitApp.applicationContext().getString(id)
+        return InitApp.appContext().getString(id)
     }
 
     fun setLocale(language: String?) {
@@ -65,12 +65,12 @@ object LocaleHelper {
     }
 
     private fun getPersistedData(defaultLanguage: String): String? {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(InitApp.applicationContext())
+        val preferences = PreferenceManager.getDefaultSharedPreferences(InitApp.appContext())
         return preferences.getString(SELECTED_LANGUAGE, defaultLanguage)
     }
 
     private fun persist(language: String?) {
-        val preferences = PreferenceManager.getDefaultSharedPreferences(InitApp.applicationContext())
+        val preferences = PreferenceManager.getDefaultSharedPreferences(InitApp.appContext())
         val editor = preferences.edit()
 
         editor.putString(SELECTED_LANGUAGE, language)
@@ -78,7 +78,7 @@ object LocaleHelper {
     }
 
     fun getStringResourceByName(resId: Int): String {
-        var resourceName = InitApp.applicationContext().resources.getResourceName(resId)
+        var resourceName = InitApp.appContext().resources.getResourceName(resId)
         resourceName = resourceName.substring(resourceName.indexOf('/') + 1)
         return resourceName
     }
@@ -88,7 +88,7 @@ object LocaleHelper {
         RiaDateUtils.setLocale(locale)
         Locale.setDefault(locale)
 
-        val resources = InitApp.applicationContext().resources
+        val resources = InitApp.appContext().resources
 
         val configuration = resources.configuration
         configuration.locale = locale
@@ -99,7 +99,6 @@ object LocaleHelper {
     }
 
     fun getString(resourceId: Int): String {
-        val ctx = InitApp.applicationContext()
         val lang = LocaleHelper.getLanguage()
         val locale = Locale(lang)
         return getLocaleStringResource(locale, resourceId)
@@ -108,11 +107,11 @@ object LocaleHelper {
     fun getLocaleStringResource(requestedLocale: Locale, resourceId: Int): String {
         val result: String
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) { // use latest api
-            val config = Configuration(InitApp.applicationContext().resources.configuration)
+            val config = Configuration(InitApp.appContext().resources.configuration)
             config.setLocale(requestedLocale)
-            result = InitApp.applicationContext().createConfigurationContext(config).getText(resourceId).toString()
+            result = InitApp.appContext().createConfigurationContext(config).getText(resourceId).toString()
         } else { // support older android versions
-            val resources = InitApp.applicationContext().resources
+            val resources = InitApp.appContext().resources
             val conf = resources.configuration
             val savedLocale = conf.locale
             conf.locale = requestedLocale

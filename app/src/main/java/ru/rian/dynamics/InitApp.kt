@@ -22,7 +22,7 @@ class InitApp : Application() {
     companion object {
         private var instance: InitApp? = null
 
-        fun applicationContext(): Context {
+        fun appContext(): Context {
             return instance!!.applicationContext
         }
 

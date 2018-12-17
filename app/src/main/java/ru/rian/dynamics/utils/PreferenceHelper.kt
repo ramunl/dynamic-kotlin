@@ -9,7 +9,7 @@ import ru.rian.dynamics.retrofit.model.HSResult
 object PreferenceHelper {
 
 
-    fun prefs(): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(InitApp.applicationContext())
+    fun prefs(): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(InitApp.appContext())
 
     fun putHStoPrefs(result: HSResult?) {
         val prefs = prefs()
