@@ -9,19 +9,29 @@ import ru.rian.dynamics.retrofit.model.HSResult
 
 
 interface ApiInterface {
-
-    @GET("v3/handshake")
-    fun requestHS(
+    /*
+    @GET("{feedsPath}")
+    fun <T> requestGet(
+        @Path("feedsPath") feedsPath: String?,
         @Query("appId") appId: String,
         @Query("deviceId") deviceId: String?,
         @Query("lang") lang: String?
-    ): Observable<HSResult>
+    ): Observable<T>
+    */
 
     @GET("{feedsPath}")
-    fun requestFeeds(
+    fun requestFeed(
+        @Path("feedsPath") feedsPath: String?,
         @Query("appId") appId: String,
-        @Query("deviceId") deviceId: String,
-        @Path("feedsPath") feedsPath: String?
+        @Query("deviceId") deviceId: String?,
+        @Query("lang") lang: String?
     ): Observable<FeedResponse>
+
+    @GET("{hsPath}")
+    fun requestHS(
+        @Path("hsPath") hsPath: String?,
+        @Query("appId") appId: String,
+        @Query("deviceId") deviceId: String?
+    ): Observable<HSResult>
 
 }

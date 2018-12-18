@@ -1,8 +1,10 @@
 package ru.rian.dynamics.utils;
 
 
-const val TRENDING: String = "trending"
 
+const val BASE_URL: String ="http://mterm.rian.ru/api/v3/"
+const val HS_PATH: String = "handshake"
+const val TRENDING: String = "trending"
 const val PLAYER_ID: String = "PLAYER_ID"
 
 const val PROMO_DIALOG_FLAG: String = "PROMO_DIALOG_FLAG"

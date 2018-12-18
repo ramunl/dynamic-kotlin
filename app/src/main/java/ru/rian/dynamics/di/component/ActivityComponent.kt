@@ -7,7 +7,7 @@ import ru.rian.dynamics.di.model.NetModule
 import ru.rian.dynamics.ui.MainActivity
 
 @PerActivity
-@Component(modules = [NetModule::class, DbModule::class, ActivityModule::class], dependencies = [AppComponent::class])
+@Component(modules = [NetModule::class, ActivityModule::class], dependencies = [AppComponent::class])
 
 interface ActivityComponent {
     fun inject(activity: MainActivity)

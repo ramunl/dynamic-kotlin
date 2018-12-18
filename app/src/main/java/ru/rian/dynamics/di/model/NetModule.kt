@@ -9,6 +9,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.rian.dynamics.BuildConfig
 import ru.rian.dynamics.retrofit.ApiInterface
+import ru.rian.dynamics.utils.BASE_URL
 import javax.inject.Singleton
 
 @Module
@@ -22,11 +23,11 @@ class NetModule {
             }).build()
 
         return Retrofit.Builder()
-            .baseUrl("https://mterm.rian.ru/api/")
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
+           .baseUrl(BASE_URL)
+           .client(client)
+           .addConverterFactory(GsonConverterFactory.create())
+           .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+           .build()
     }
 
     @Provides

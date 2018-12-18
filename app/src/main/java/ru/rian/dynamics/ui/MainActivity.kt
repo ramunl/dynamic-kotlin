@@ -82,13 +82,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         viewModelFeed = ViewModelProviders.of(this, viewModelFactory).get(FeedViewModel::class.java)
 
         compositeDisposable.add(
-            viewModelFeed.allFeeds()
+            viewModelFeed.getFeedsAsync()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(Schedulers.io())
                 .subscribe(
                     {
+                        var feeds = viewModelFeed.getFeeds()
+                        var len = feeds.size
                         showBadge = it.size > 1
-                        invalidateOptionsMenu() },
+                        invalidateOptionsMenu()
+                    },
                     { e -> showError(e) })
         )
 
@@ -187,12 +190,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun requestFeeds() {
         var disposable = mainViewModel.provideFeeds()
-            ?.subscribe({ result ->
-                result?.feeds
-                invalidateOptionsMenu()
-            }, { e ->
-                showError(e)
-            })
+            ?.subscribe(
+                { result ->
+                    viewModelFeed.insert(result?.feeds!!)
+                    var feeds = viewModelFeed.getFeeds()
+                    var len = feeds.size
+                    invalidateOptionsMenu()
+                },
+                { e ->
+                    showError(e)
+                })
         compositeDisposable.add(disposable!!)
     }
 
@@ -200,7 +207,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         e.printStackTrace()
         Snackbar.make(
             rootLayout,
-            if (BuildConfig.DEBUG) e.toString() else getString(R.string.connection_error_title), Snackbar.LENGTH_INDEFINITE)
+            if (BuildConfig.DEBUG) e.toString() else getString(R.string.connection_error_title),
+            Snackbar.LENGTH_INDEFINITE
+        )
             .setAction(R.string.try_again) { requestHS() }
             .setActionTextColor(resources.getColor(R.color.action_color))
             .show()

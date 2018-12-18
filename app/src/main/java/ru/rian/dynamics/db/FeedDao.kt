@@ -4,6 +4,8 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
+import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import ru.rian.dynamics.retrofit.model.Feed
 
@@ -18,7 +20,10 @@ interface FeedDao {
 
 
     @Query("SELECT * FROM Feed")
-    fun getAllFeeds(): Observable<List<Feed>>
+    fun getFeedsAsync(): Flowable<List<Feed>>
+
+    @Query("SELECT * FROM Feed")
+    fun getFeeds(): List<Feed>
 
     @Insert
     fun insert(feeds: List<Feed>)

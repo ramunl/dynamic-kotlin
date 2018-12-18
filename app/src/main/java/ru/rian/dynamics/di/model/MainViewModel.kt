@@ -1,11 +1,14 @@
 package ru.rian.dynamics.di.model
 
+import android.net.Uri
 import android.text.TextUtils
 import io.reactivex.Observable
 import ru.rian.dynamics.DataManager
 import ru.rian.dynamics.SchedulerProvider
 import ru.rian.dynamics.retrofit.model.FeedResponse
 import ru.rian.dynamics.retrofit.model.HSResult
+import ru.rian.dynamics.retrofit.model.Source
+import ru.rian.dynamics.utils.HS_PATH
 import ru.rian.dynamics.utils.PreferenceHelper.get
 import ru.rian.dynamics.utils.PreferenceHelper.prefs
 import ru.rian.dynamics.utils.TOKEN_STRING_KEY
@@ -31,16 +34,17 @@ class MainViewModel @Inject constructor( private var dataManager: DataManager, p
     }
 
     private fun reqHs(): Observable<HSResult?>? {
-        return dataManager.requestHSQuery()
+        return dataManager.requestGet<HSResult?>(HS_PATH)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .map { result -> result }
     }
 
     private fun reqFeeds(): Observable<FeedResponse?>? {
-        return dataManager.requestFeeds()
+        val source: Source? = prefs()["getFeeds"]!!
+        return dataManager.requestGet<FeedResponse?>(source!!.url!!)
             .subscribeOn(schedulerProvider.io())
-            .observeOn(schedulerProvider.ui())
+            .observeOn(schedulerProvider.io())
             .map { result -> result }
     }
 }

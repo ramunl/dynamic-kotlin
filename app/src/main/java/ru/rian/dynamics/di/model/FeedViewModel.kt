@@ -19,7 +19,6 @@ package ru.rian.dynamics.di.model
 import android.arch.lifecycle.ViewModel
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import ru.rian.dynamics.db.FeedDao
 import ru.rian.dynamics.retrofit.model.Feed
 
@@ -33,17 +32,19 @@ class FeedViewModel(private val dataSource: FeedDao) : ViewModel() {
      * @return a [Flowable] that will emit every time the user name has been updated.
      */
     // for every emission of the user, get the user name
-    fun allFeeds(): Observable<List<Feed>> {
-        return dataSource.getAllFeeds().map { result -> result }
+    fun getFeedsAsync(): Flowable<List<Feed>> {
+        return dataSource.getFeedsAsync().map { result -> result }
     }
-
+    fun getFeeds(): List<Feed> {
+        return dataSource.getFeeds().map { result -> result }
+    }
     /**
      * Update the user name.
      * @param userName the new user name
      * *
      * @return a [Completable] that completes when the user name is updated
      */
-    fun updateUserName(feeds: List<Feed>): Completable {
+    fun insert(feeds: List<Feed>): Completable {
         return Completable.fromAction {
             dataSource.insert(feeds)
         }
@@ -57,7 +58,7 @@ class FeedViewModel(private val dataSource: FeedDao) : ViewModel() {
 
     @Provides
     fun provideFeeds(db: DynamicsDataBase): List<Feed> {
-        return db.feedDao().getAllFeeds()
+        return db.feedDao().getFeedsAsync()
     }
 
     @Provides

@@ -11,7 +11,7 @@ data class FeedResponse(
 @Entity
 data class Feed(
     @PrimaryKey
-    @SerializedName("sid") var sid: String? = null,
+    @SerializedName("sid") var sid: String = "",
     @SerializedName("lang") var lang: String? = null,
     @SerializedName("title") var title: String? = null,
     @SerializedName("subTitle") var subTitle: String? = null,
