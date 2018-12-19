@@ -27,43 +27,17 @@ import ru.rian.dynamics.retrofit.model.Feed
  */
 class FeedViewModel(private val dataSource: FeedDao) : ViewModel() {
 
-    /**
-     * Get the user name of the user.
-     * @return a [Flowable] that will emit every time the user name has been updated.
-     */
-    // for every emission of the user, get the user name
-    fun getFeedsAsync(): Flowable<List<Feed>> {
-        return dataSource.getFeedsAsync().map { result -> result }
+    fun getFeeds(): Flowable<List<Feed>> {
+        return dataSource.getAllFeeds().map { result -> result }
     }
-    fun getFeeds(): List<Feed> {
-        return dataSource.getFeeds().map { result -> result }
+
+    fun getFeedsByType(type:String): Flowable<List<Feed>> {
+        return dataSource.getAllFeeds(type).map { result -> result }
     }
-    /**
-     * Update the user name.
-     * @param userName the new user name
-     * *
-     * @return a [Completable] that completes when the user name is updated
-     */
+
     fun insert(feeds: List<Feed>): Completable {
         return Completable.fromAction {
             dataSource.insert(feeds)
         }
     }
-
-    /*
-    *   @Provides
-    fun insertFeeds(db: DynamicsDataBase, feeds: List<Feed>) {
-        return db.feedDao().insert(feeds)
-    }
-
-    @Provides
-    fun provideFeeds(db: DynamicsDataBase): List<Feed> {
-        return db.feedDao().getFeedsAsync()
-    }
-
-    @Provides
-    fun provideFeedById(sid: String, db: DynamicsDataBase): Feed {
-        return db.feedDao().getFeedsById(sid).first()
-    }
-    * */
 }

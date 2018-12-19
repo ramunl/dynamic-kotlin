@@ -8,7 +8,7 @@ data class FeedResponse(
     @SerializedName("feeds") var feeds: List<Feed>? = null
 )
 
-@Entity
+@Entity(tableName = "Feed")
 data class Feed(
     @PrimaryKey
     @SerializedName("sid") var sid: String = "",

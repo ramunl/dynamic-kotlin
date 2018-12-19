@@ -30,13 +30,13 @@ import ru.rian.dynamics.di.model.ActivityModule
 import ru.rian.dynamics.di.model.FeedViewModel
 import ru.rian.dynamics.di.model.Injection
 import ru.rian.dynamics.di.model.MainViewModel
+import ru.rian.dynamics.retrofit.model.Feed
 import ru.rian.dynamics.retrofit.model.HSResult
-import ru.rian.dynamics.utils.PLAYER_ID
+import ru.rian.dynamics.utils.*
 import ru.rian.dynamics.utils.PreferenceHelper.get
 import ru.rian.dynamics.utils.PreferenceHelper.prefs
 import ru.rian.dynamics.utils.PreferenceHelper.putHStoPrefs
 import ru.rian.dynamics.utils.PreferenceHelper.set
-import ru.rian.dynamics.utils.TRENDING
 import java.util.logging.Logger
 import javax.inject.Inject
 
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var compositeDisposable: CompositeDisposable
     private lateinit var viewModelFeed: FeedViewModel
     private lateinit var viewModelFactory: ViewModelFactory
-    var showBadge = false
+    var showBadgeFeedBtnFlag = false
 
     companion object {
         val Log = Logger.getLogger(MainActivity::class.java.name)
@@ -76,20 +76,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             requestHS()
         }
 
-
         viewModelFactory = Injection.provideViewModelFactory(this)
 
         viewModelFeed = ViewModelProviders.of(this, viewModelFactory).get(FeedViewModel::class.java)
 
         compositeDisposable.add(
-            viewModelFeed.getFeedsAsync()
+            viewModelFeed.getFeedsByType(FEED_TYPE_COMMON)
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
-                        var feeds = viewModelFeed.getFeeds()
-                        var len = feeds.size
-                        showBadge = it.size > 1
+                        showBadgeFeedBtnFlag = it.size > 1
+                        toolbar.title = it[0].title
                         invalidateOptionsMenu()
                     },
                     { e -> showError(e) })
@@ -153,13 +151,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-
         addMainMenuItem(
             menu,
-            ic_terminal_feeds_badge,
-            if (showBadge) menu_action_toolbar_select_feed else ic_terminal_feeds
+            if (showBadgeFeedBtnFlag) ic_terminal_feeds_badge else ic_terminal_feeds,
+            menu_action_toolbar_select_feed
         )
+        menuInflater.inflate(R.menu.main, menu)
         return true
     }
 
@@ -188,19 +185,30 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+
     private fun requestFeeds() {
         var disposable = mainViewModel.provideFeeds()
             ?.subscribe(
                 { result ->
-                    viewModelFeed.insert(result?.feeds!!)
-                    var feeds = viewModelFeed.getFeeds()
-                    var len = feeds.size
+                    insertFeeds(result?.feeds!!)
+                    // var feeds = viewModelFeed.getFeeds()
+                    //  var len = feeds.size
                     invalidateOptionsMenu()
                 },
                 { e ->
                     showError(e)
                 })
         compositeDisposable.add(disposable!!)
+    }
+
+    private fun insertFeeds(feeds: List<Feed>) {
+        compositeDisposable.add(
+            viewModelFeed.insert(feeds)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ },
+                    { e -> showError(e) })
+        )
     }
 
     private fun showError(e: Throwable) {

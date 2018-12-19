@@ -1,6 +1,7 @@
 package ru.rian.dynamics.ui
 
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import kotlinx.android.synthetic.main.drawer_menu_item_layout.view.*
 import ru.rian.dynamics.InitApp
@@ -21,6 +22,7 @@ fun addDrawerMenuItem(menu: Menu, title: String?, iconResId: Int, itemId: Int) {
 
 fun addMainMenuItem(menu: Menu, iconResId: Int, itemId: Int, title: String? = "") {
     val menuItem = menu.add(0, itemId, 0, title)
+    menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
     menuItem.icon = InitApp.appContext().resources.getDrawable(iconResId)
 }
 

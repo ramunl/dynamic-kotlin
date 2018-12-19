@@ -1,9 +1,6 @@
 package ru.rian.dynamics.db
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Delete
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
@@ -18,19 +15,24 @@ interface FeedDao {
     @Query("SELECT * FROM Feed WHERE sid LIKE :feedId")
     fun getFeedsById(feedId: String): List<Feed>
 
-
     @Query("SELECT * FROM Feed")
-    fun getFeedsAsync(): Flowable<List<Feed>>
+    fun getAllFeeds(): Flowable<List<Feed>>
 
-    @Query("SELECT * FROM Feed")
-    fun getFeeds(): List<Feed>
 
-    @Insert
+    @Query("SELECT * FROM Feed WHERE type LIKE :type")
+    fun getAllFeeds(type: String): Flowable<List<Feed>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(feeds: List<Feed>)
+
+ //   @Insert
+  //  fun insert(feeds: List<Feed>)
 
     @Insert
     fun insert(feed: Feed)
 
     @Delete
     fun delete(feed: Feed)
+
+
 }

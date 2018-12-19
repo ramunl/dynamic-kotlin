@@ -1,6 +1,8 @@
 package ru.rian.dynamics.utils;
 
 
+const val FEED_TYPE_USER: String = "user-feed"
+const val FEED_TYPE_COMMON: String = "feed"
 
 const val BASE_URL: String ="http://mterm.rian.ru/api/v3/"
 const val HS_PATH: String = "handshake"
