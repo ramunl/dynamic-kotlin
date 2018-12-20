@@ -1,6 +1,9 @@
 package ru.rian.dynamics.utils;
 
 
+enum class FragmentId{
+    ARTICLE_FRAGMENT_ID
+}
 const val FEED_TYPE_USER: String = "user-feed"
 const val FEED_TYPE_COMMON: String = "feed"
 

@@ -4,6 +4,9 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -16,6 +19,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import ru.rian.dynamics.BuildConfig
 import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
@@ -32,15 +36,25 @@ import ru.rian.dynamics.di.model.Injection
 import ru.rian.dynamics.di.model.MainViewModel
 import ru.rian.dynamics.retrofit.model.Feed
 import ru.rian.dynamics.retrofit.model.HSResult
-import ru.rian.dynamics.utils.*
+import ru.rian.dynamics.ui.dummy.DummyContent
+import ru.rian.dynamics.utils.FEED_TYPE_COMMON
+import ru.rian.dynamics.utils.FragmentId
+import ru.rian.dynamics.utils.PLAYER_ID
 import ru.rian.dynamics.utils.PreferenceHelper.get
 import ru.rian.dynamics.utils.PreferenceHelper.prefs
 import ru.rian.dynamics.utils.PreferenceHelper.putHStoPrefs
 import ru.rian.dynamics.utils.PreferenceHelper.set
+import ru.rian.dynamics.utils.TRENDING
 import java.util.logging.Logger
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+    ArticleFragment.OnListFragmentInteractionListener {
+
+    override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     @Inject
     lateinit var mainViewModel: MainViewModel
@@ -51,6 +65,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     companion object {
         val Log = Logger.getLogger(MainActivity::class.java.name)
+    }
+
+
+    private fun AppCompatActivity.replaceFragment(fragment: Fragment, frameId: FragmentId) {
+        supportFragmentManager.inTransaction { replace(frameId.ordinal, fragment) }
+    }
+
+    private inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
+        beginTransaction().func().commit()
+    }
+
+    /*fun addFragment(fragment: Fragment, frameId: Int) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment, "rageComicDetails")
+            .addToBackStack(null)
+            .commit()
+    }*/
+
+    private fun AppCompatActivity.addFragment(fragment: Fragment, frameId: FragmentId) {
+        supportFragmentManager.inTransaction { add(R.id.fragmentContainer, fragment, frameId.name) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,6 +121,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .subscribe(
                     {
                         showBadgeFeedBtnFlag = it.size > 1
+                        addFragment(ArticleFragment.newInstance(it[0].sid), FragmentId.ARTICLE_FRAGMENT_ID)
                         toolbar.title = it[0].title
                         invalidateOptionsMenu()
                     },
@@ -191,8 +226,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             ?.subscribe(
                 { result ->
                     insertFeeds(result?.feeds!!)
-                    // var feeds = viewModelFeed.getFeeds()
-                    //  var len = feeds.size
                     invalidateOptionsMenu()
                 },
                 { e ->
