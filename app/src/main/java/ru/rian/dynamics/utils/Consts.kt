@@ -1,4 +1,18 @@
-package ru.rian.dynamics.utils;
+package ru.rian.dynamics.utils
+
+
+
+
+const val getHandshake = "getHandshake"
+const val getArticles = "getArticles"
+const val login = "login"
+const val logout = "logout"
+const val getFeeds = "getFeeds"
+const val createFeed = "createFeed"
+const val deleteFeed = "deleteFeed"
+const val synchronizeFeeds = "synchronizeFeeds"
+const val upsertSubscription = "upsertSubscription"
+const val getNotifications = "getNotifications"
 
 
 enum class FragmentId{

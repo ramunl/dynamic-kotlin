@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }*/
 
     private fun AppCompatActivity.addFragment(fragment: Fragment, frameId: FragmentId) {
-        supportFragmentManager.inTransaction { add(R.id.fragmentContainer, fragment, frameId.name) }
+        supportFragmentManager.inTransaction { replace(R.id.fragmentContainer, fragment, frameId.name) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

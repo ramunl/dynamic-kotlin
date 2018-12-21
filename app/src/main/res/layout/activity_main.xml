@@ -5,6 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/drawer_layout"
         android:padding="0dp"
+        android:background="@color/white"
         android:layout_margin="0dp"
         android:theme="@style/NoActionBarBarTheme"
         android:layout_width="match_parent"

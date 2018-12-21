@@ -19,7 +19,6 @@ object PreferenceHelper {
         prefs["deleteFeed"] = result?.apiRequestArray?.deleteFeed
         prefs["getArticles"] = result?.apiRequestArray?.getArticles
         prefs["getFeeds"] = result?.apiRequestArray?.getFeeds
-        prefs["createFeed"] = result?.apiRequestArray?.createFeed
         prefs["login"] = result?.apiRequestArray?.login
         prefs["logout"] = result?.apiRequestArray?.logout
         prefs["synchronizeFeeds"] = result?.apiRequestArray?.synchronizeFeeds

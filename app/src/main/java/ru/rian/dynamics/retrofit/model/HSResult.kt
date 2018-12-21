@@ -18,6 +18,7 @@ data class ApiRequests(
     @SerializedName("synchronizeFeeds") var synchronizeFeeds: Source? = null,
     @SerializedName("upsertSubscription") var upsertSubscription: Source? = null,
     @SerializedName("getNotifications") var getNotifications: Source? = null
+
 )
 
 data class Source(
