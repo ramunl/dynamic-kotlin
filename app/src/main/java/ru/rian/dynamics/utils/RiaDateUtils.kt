@@ -68,7 +68,7 @@ object RiaDateUtils {
         return aDate / 1000L
     }
 
-    fun getDateFromTimeStamp(aDate: Long): Date {
+    fun getDateFromTimeStamp(aDate: Int): Date {
         val cal = Calendar.getInstance()
         cal.timeInMillis = aDate * 1000L
         //cal.add(Calendar.HOUR_OF_DAY, -1);//<-------- fix Russian GMT +4 to GMT +3
@@ -98,9 +98,9 @@ object RiaDateUtils {
 
     }
 
-    fun formatTime(date: Date): String {
+    fun formatTime(createdAt: Int?): String {
+        var date = getDateFromTimeStamp(createdAt!!)
         return mDateFormat.format(date)
-
     }
 
     fun formatDateTime(date: Date): String {
@@ -115,7 +115,7 @@ object RiaDateUtils {
     }
 
     fun formatDateTime(createdAt: Int): String {
-        val date = RiaDateUtils.getDateFromTimeStamp(createdAt.toLong())
+        val date = RiaDateUtils.getDateFromTimeStamp(createdAt)
         return formatDateTime(date)
     }
 }

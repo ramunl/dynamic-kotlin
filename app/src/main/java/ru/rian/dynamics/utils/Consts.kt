@@ -18,6 +18,8 @@ const val getNotifications = "getNotifications"
 enum class FragmentId{
     ARTICLE_FRAGMENT_ID
 }
+
+const val FEED_TYPE_STORY: String = "story"
 const val FEED_TYPE_USER: String = "user-feed"
 const val FEED_TYPE_COMMON: String = "feed"
 
@@ -50,3 +52,4 @@ const val FEEDS: String = "FEEDS"
 const val EVENTS: String = "EVENTS"
 const val FEED_SELECTED: String = "FEED_SELECTED"
 const val FEEDS_NEW: String = "FEEDS_NEW"
+fun asd()  = {}

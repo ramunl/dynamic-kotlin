@@ -1,6 +1,5 @@
 package ru.rian.dynamics.di.model
 
-import android.net.Uri
 import android.text.TextUtils
 import io.reactivex.Observable
 import ru.rian.dynamics.DataManager
@@ -17,7 +16,10 @@ import ru.rian.dynamics.utils.getArticles
 import ru.rian.dynamics.utils.getFeeds
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor( private var dataManager: DataManager, private var schedulerProvider: SchedulerProvider) {
+class MainViewModel @Inject constructor(
+    private var dataManager: DataManager,
+    private var schedulerProvider: SchedulerProvider
+) {
 
     var loading: Boolean? = null
     private val prefs = prefs()
@@ -36,9 +38,10 @@ class MainViewModel @Inject constructor( private var dataManager: DataManager, p
         return reqFeeds()
     }
 
-    fun provideArticles(): Observable<ArticleResponse?>? {
-        return reqArticles()
+    fun provideArticles(feed: String): Observable<ArticleResponse?>? {
+        return reqArticles(feed)
     }
+
     private fun reqHs(): Observable<HSResult?>? {
         return dataManager.requestGet<HSResult?>(HS_PATH)
             .subscribeOn(schedulerProvider.io())
@@ -54,11 +57,11 @@ class MainViewModel @Inject constructor( private var dataManager: DataManager, p
             .map { result -> result }
     }
 
-    private fun reqArticles(): Observable<ArticleResponse?>? {
+    private fun reqArticles(feed: String): Observable<ArticleResponse?>? {
         val source: Source? = prefs()[getArticles]!!
-        return dataManager.requestGet<ArticleResponse?>(source!!.url!!)
+        return dataManager.requestGet<ArticleResponse?>(source!!.url!!, feed, "20")
             .subscribeOn(schedulerProvider.io())
-            .observeOn(schedulerProvider.io())
+            .observeOn(schedulerProvider.ui())
             .map { result -> result }
     }
 }

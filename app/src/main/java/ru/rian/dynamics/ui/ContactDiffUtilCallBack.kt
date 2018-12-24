@@ -2,14 +2,16 @@ package ru.rian.dynamics.ui
 
 import android.os.Bundle
 import android.support.v7.util.DiffUtil
-import com.developers.diffutil.Person
+import ru.rian.dynamics.retrofit.model.Article
 import java.util.logging.Logger
 
 /**
  * Created by Amanjeet Singh on 17/1/18.
  */
-class ContactDiffUtilCallBack(val newList: List<Person>,
-                              val oldList: List<Person>) : DiffUtil.Callback() {
+class ContactDiffUtilCallBack(
+    private val newList: List<Article>,
+    private val oldList: List<Article>
+) : DiffUtil.Callback() {
 
 
     companion object {
@@ -37,16 +39,11 @@ class ContactDiffUtilCallBack(val newList: List<Person>,
     }
 
     override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
-        val newPerson = newList[newItemPosition]
-        val oldPerson = oldList[oldItemPosition]
+        val newArticle = newList[newItemPosition]
+        val oldArticle = oldList[oldItemPosition]
         val bundle = Bundle()
-        if (!(newPerson.name == oldPerson.name)) {
-            log.info("Changes put")
-            bundle.putString("name", newPerson.name)
-        }
-        if (!(newPerson.status == oldPerson.status)) {
-            log.info("Changes put to status")
-            bundle.putString("status", newPerson.status)
+        if (newArticle.id != oldArticle.id) {
+            bundle.putParcelable("article", newArticle)
         }
         return bundle
     }

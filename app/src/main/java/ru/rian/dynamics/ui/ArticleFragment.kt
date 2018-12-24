@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_article_list.view.*
 import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
@@ -17,8 +18,7 @@ import ru.rian.dynamics.SchedulerProvider
 import ru.rian.dynamics.di.component.DaggerFragmentComponent
 import ru.rian.dynamics.di.model.ActivityModule
 import ru.rian.dynamics.di.model.MainViewModel
-import ru.rian.dynamics.ui.ContactDiffUtilCallBack.Companion.log
-import ru.rian.dynamics.ui.dummy.DummyContent.DummyItem
+import ru.rian.dynamics.retrofit.model.Article
 import javax.inject.Inject
 
 /**
@@ -28,7 +28,7 @@ import javax.inject.Inject
  */
 class ArticleFragment : Fragment() {
 
-    // TODO: Customize parameters
+    private lateinit var compositeDisposable: CompositeDisposable
     private var feedId: String? = null
     private val columnCount = 1
     @Inject
@@ -42,7 +42,7 @@ class ArticleFragment : Fragment() {
         arguments?.let {
             feedId = it.getString(ARG_FEED_ID)
         }
-
+        compositeDisposable = CompositeDisposable()
         val fragmentComponent = DaggerFragmentComponent
             .builder()
             .appComponent(InitApp.get(context!!).component())
@@ -51,37 +51,43 @@ class ArticleFragment : Fragment() {
         fragmentComponent.inject(this)
     }
 
-    private fun requestFeeds() {
-        var disposable = mainViewModel.provideArticles()
+    private fun requestArticles() {
+        var disposable = mainViewModel.provideArticles(feedId!!)
             ?.subscribe(
                 { result ->
-
+                    updateList(result!!.articles)
                 },
                 { e ->
-                    showError(e)
+                    showError((context as SnackContainerProvider), e, ::requestArticles)
                 })
         compositeDisposable.add(disposable!!)
     }
+
+    private fun updateList(articles: List<Article>?) {
+        articlesAdapter.updateData(articles)
+    }
+
+    lateinit var articlesAdapter: ArticlesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        requestArticles()
         val view = inflater.inflate(R.layout.fragment_article_list, container, false)
-        if (view.recycler_view_main is RecyclerView) {
-            with(view.recycler_view_main) {
+        if (view.recyclerView is RecyclerView) {
+            articlesAdapter = ArticlesAdapter(view.context, ArrayList())
+            view.recyclerView.adapter = articlesAdapter
+            (view.recyclerView.adapter as ArticlesAdapter)
+            with(view.recyclerView) {
                 layoutManager = when {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                val dataSource = DataSource()
-                adapter = ArticlesAdapter(context, dataSource.getData())
                 val layoutManager = LinearLayoutManager(context)
                 val dividerItemDecoration = DividerItemDecoration(context, layoutManager.orientation)
-                recycler_view_main.addItemDecoration(dividerItemDecoration)
+                recyclerView.addItemDecoration(dividerItemDecoration)
                 view.swipeRefreshLayout.setOnRefreshListener {
-                    (adapter as ArticlesAdapter).updateData(dataSource.getUpdatedData())
-                    log.info(dataSource.getUpdatedData()[0].status)
                     view.swipeRefreshLayout.isRefreshing = false
                 }
             }
@@ -116,7 +122,7 @@ class ArticleFragment : Fragment() {
      */
     interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: DummyItem?)
+        fun onListFragmentInteraction(item: Article?)
     }
 
     companion object {

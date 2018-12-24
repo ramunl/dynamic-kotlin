@@ -13,13 +13,13 @@ import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.onesignal.OneSignal
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import kotlinx.android.synthetic.main.content_main.*
 import ru.rian.dynamics.BuildConfig
 import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
@@ -34,9 +34,9 @@ import ru.rian.dynamics.di.model.ActivityModule
 import ru.rian.dynamics.di.model.FeedViewModel
 import ru.rian.dynamics.di.model.Injection
 import ru.rian.dynamics.di.model.MainViewModel
+import ru.rian.dynamics.retrofit.model.Article
 import ru.rian.dynamics.retrofit.model.Feed
 import ru.rian.dynamics.retrofit.model.HSResult
-import ru.rian.dynamics.ui.dummy.DummyContent
 import ru.rian.dynamics.utils.FEED_TYPE_COMMON
 import ru.rian.dynamics.utils.FragmentId
 import ru.rian.dynamics.utils.PLAYER_ID
@@ -50,9 +50,12 @@ import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    ArticleFragment.OnListFragmentInteractionListener {
+    ArticleFragment.OnListFragmentInteractionListener, SnackContainerProvider {
+    override fun getSnackContainer(): View {
+        return activityRootLayout
+    }
 
-    override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
+    override fun onListFragmentInteraction(item: Article?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -125,7 +128,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         toolbar.title = it[0].title
                         invalidateOptionsMenu()
                     },
-                    { e -> showError(e) })
+                    { e -> showError(this, e, ::requestFeeds) })
         )
 
         fab.setOnClickListener { view ->
@@ -229,7 +232,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     invalidateOptionsMenu()
                 },
                 { e ->
-                    showError(e)
+                    showError(this, e, ::requestFeeds)
                 })
         compositeDisposable.add(disposable!!)
     }
@@ -240,21 +243,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ },
-                    { e -> showError(e) })
+                    { e -> showError(this, e, ::requestHS) })
         )
     }
 
-    private fun showError(e: Throwable) {
-        e.printStackTrace()
-        Snackbar.make(
-            rootLayout,
-            if (BuildConfig.DEBUG) e.toString() else getString(R.string.connection_error_title),
-            Snackbar.LENGTH_INDEFINITE
-        )
-            .setAction(R.string.try_again) { requestHS() }
-            .setActionTextColor(resources.getColor(R.color.action_color))
-            .show()
-    }
 
     private fun requestHS() {
         var disposable = mainViewModel.provideHS()
@@ -263,7 +255,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 addDrawerMenuItems(result)
                 requestFeeds()
             }, { e ->
-                showError(e)
+                showError(this, e, ::requestHS)
             })
         compositeDisposable.add(disposable!!)
     }
