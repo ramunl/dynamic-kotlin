@@ -9,7 +9,7 @@ import ru.rian.dynamics.SchedulerProvider
 @Module
 class ActivityModule(private val schedulerProvider: SchedulerProvider) {
     @Provides
-    fun provideMainViewModel(dataManager: DataManager) : MainViewModel {
+    fun provideMainViewModel(dataManager: DataManager): MainViewModel {
         return MainViewModel(dataManager, schedulerProvider)
     }
 

@@ -41,7 +41,7 @@ object RiaDateUtils {
         filterTimeFormat = SimpleDateFormat(timeFormat, locale)
     }
 
-    fun FormatHeaderTimeForScheduleOrCompetition(dFormat: Date): String {
+    fun formatArticleListHeaderTime(date: Int?): String {
         val locale = Locale(LocaleHelper.getLanguage())
         val langStr = LocaleHelper.getLanguage()
         var timeFormat = "dd.MM.yyyy, EEEE"
@@ -49,6 +49,7 @@ object RiaDateUtils {
             timeFormat = "yyyy.MM.dd, EEEE"
         }
         val sdf = SimpleDateFormat(timeFormat, locale)
+        val dFormat = getDateFromTimeStamp(date)
         return sdf.format(dFormat)
     }
 
@@ -68,9 +69,9 @@ object RiaDateUtils {
         return aDate / 1000L
     }
 
-    fun getDateFromTimeStamp(aDate: Int): Date {
+    fun getDateFromTimeStamp(aDate: Int?): Date {
         val cal = Calendar.getInstance()
-        cal.timeInMillis = aDate * 1000L
+        cal.timeInMillis = aDate?.times(1000L) ?: 0
         //cal.add(Calendar.HOUR_OF_DAY, -1);//<-------- fix Russian GMT +4 to GMT +3
         return cal.time
     }
@@ -117,6 +118,20 @@ object RiaDateUtils {
     fun formatDateTime(createdAt: Int): String {
         val date = RiaDateUtils.getDateFromTimeStamp(createdAt)
         return formatDateTime(date)
+    }
+
+    internal fun areTheDatesAtTheSameDay(aPrev: Int?, aCurrent: Int?): Boolean {
+        var aPrevDate = getDateFromTimeStamp(aPrev)
+        var aCurrentDate = getDateFromTimeStamp(aCurrent)
+
+        val calInst = Calendar.getInstance()
+        calInst.time = aPrevDate
+        val prevDay = calInst.get(Calendar.DAY_OF_WEEK)
+        calInst.time = aCurrentDate
+        val currDay = calInst.get(Calendar.DAY_OF_WEEK)
+        //there two conditions we must check to understand is it the same day or not:
+        //it must be the same day and time difference must be < 24 hours
+        return aCurrentDate.time - aPrevDate.time < MILLI_SEC_IN_DAY && currDay == prevDay
     }
 }
 

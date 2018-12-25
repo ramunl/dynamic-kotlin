@@ -25,6 +25,7 @@ interface ApiInterface {
         @Query("appId") appId: String,
         @Query("deviceId") deviceId: String?,
         @Query("feed") feed: String,
+        @Query("offset") offset: String,
         @Query("limit") limit: String?
     ): Observable<ArticleResponse>
 

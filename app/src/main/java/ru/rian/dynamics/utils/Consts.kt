@@ -1,7 +1,9 @@
 package ru.rian.dynamics.utils
 
 
+internal val ARTICLE_LIST_LIMIT = 20
 
+internal val MILLI_SEC_IN_DAY = (24 * 60 * 60 * 1000).toLong() //millisecond per 24 hours
 
 const val getHandshake = "getHandshake"
 const val getArticles = "getArticles"
@@ -15,7 +17,7 @@ const val upsertSubscription = "upsertSubscription"
 const val getNotifications = "getNotifications"
 
 
-enum class FragmentId{
+enum class FragmentId {
     ARTICLE_FRAGMENT_ID
 }
 
@@ -23,7 +25,7 @@ const val FEED_TYPE_STORY: String = "story"
 const val FEED_TYPE_USER: String = "user-feed"
 const val FEED_TYPE_COMMON: String = "feed"
 
-const val BASE_URL: String ="http://mterm.rian.ru/api/v3/"
+const val BASE_URL: String = "http://mterm.rian.ru/api/v3/"
 const val HS_PATH: String = "handshake"
 const val TRENDING: String = "trending"
 const val PLAYER_ID: String = "PLAYER_ID"
@@ -52,4 +54,4 @@ const val FEEDS: String = "FEEDS"
 const val EVENTS: String = "EVENTS"
 const val FEED_SELECTED: String = "FEED_SELECTED"
 const val FEEDS_NEW: String = "FEEDS_NEW"
-fun asd()  = {}
+fun asd() = {}

@@ -8,12 +8,9 @@ import ru.rian.dynamics.retrofit.model.ArticleResponse
 import ru.rian.dynamics.retrofit.model.FeedResponse
 import ru.rian.dynamics.retrofit.model.HSResult
 import ru.rian.dynamics.retrofit.model.Source
-import ru.rian.dynamics.utils.HS_PATH
+import ru.rian.dynamics.utils.*
 import ru.rian.dynamics.utils.PreferenceHelper.get
 import ru.rian.dynamics.utils.PreferenceHelper.prefs
-import ru.rian.dynamics.utils.TOKEN_STRING_KEY
-import ru.rian.dynamics.utils.getArticles
-import ru.rian.dynamics.utils.getFeeds
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
@@ -31,25 +28,13 @@ class MainViewModel @Inject constructor(
     }
 
     fun provideHS(): Observable<HSResult?>? {
-        return reqHs()
-    }
-
-    fun provideFeeds(): Observable<FeedResponse?>? {
-        return reqFeeds()
-    }
-
-    fun provideArticles(feed: String): Observable<ArticleResponse?>? {
-        return reqArticles(feed)
-    }
-
-    private fun reqHs(): Observable<HSResult?>? {
         return dataManager.requestGet<HSResult?>(HS_PATH)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .map { result -> result }
     }
 
-    private fun reqFeeds(): Observable<FeedResponse?>? {
+    fun provideFeeds(): Observable<FeedResponse?>? {
         val source: Source? = prefs()[getFeeds]!!
         return dataManager.requestGet<FeedResponse?>(source!!.url!!)
             .subscribeOn(schedulerProvider.io())
@@ -57,9 +42,9 @@ class MainViewModel @Inject constructor(
             .map { result -> result }
     }
 
-    private fun reqArticles(feed: String): Observable<ArticleResponse?>? {
+    fun provideArticles(feed: String, offset: Int = 0): Observable<ArticleResponse?>? {
         val source: Source? = prefs()[getArticles]!!
-        return dataManager.requestGet<ArticleResponse?>(source!!.url!!, feed, "20")
+        return dataManager.requestGet<ArticleResponse?>(source!!.url!!, feed, offset.toString(), ARTICLE_LIST_LIMIT.toString())
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .map { result -> result }

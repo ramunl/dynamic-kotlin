@@ -1,9 +1,7 @@
 package ru.rian.dynamics.db
 
 import android.arch.persistence.room.*
-import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Observable
 import ru.rian.dynamics.retrofit.model.Feed
 
 /**
@@ -25,8 +23,8 @@ interface FeedDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(feeds: List<Feed>)
 
- //   @Insert
-  //  fun insert(feeds: List<Feed>)
+    //   @Insert
+    //  fun insert(feeds: List<Feed>)
 
     @Insert
     fun insert(feed: Feed)

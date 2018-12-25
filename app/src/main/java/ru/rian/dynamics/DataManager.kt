@@ -30,7 +30,8 @@ class DataManager @Inject constructor(var apiInterface: ApiInterface) {
                     FlavorConstants.QUERY_HS_APP_ID_DYNAMICS,
                     prefs()[PLAYER_ID]!!,
                     feed = params[0],
-                    limit = params[1]
+                    offset = params[1],
+                    limit = params[2]
                 ) as Observable<T>
             HSResult::class ->
                 apiInterface.requestHS(

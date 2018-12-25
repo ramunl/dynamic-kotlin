@@ -15,16 +15,36 @@ import ru.rian.dynamics.R
 import ru.rian.dynamics.retrofit.model.Article
 import ru.rian.dynamics.utils.FEED_TYPE_STORY
 import ru.rian.dynamics.utils.RiaDateUtils
+import ru.rian.dynamics.utils.RiaDateUtils.areTheDatesAtTheSameDay
 import java.util.logging.Logger
 
 /**
  * Created by Amanjeet Singh on 17/1/18.
  */
-class ArticlesAdapter(val context: Context, private val articleList: MutableList<Article>) :
+class ArticlesAdapter(
+    val context: Context,
+    private val mListener: ArticleFragment.OnListFragmentInteractionListener?,
+    private val articleList: MutableList<Article> = ArrayList()
+) :
     RecyclerView.Adapter<ArticlesAdapter.MyViewHolder>() {
 
+    private val mOnClickListener: View.OnClickListener
+
+    init {
+        mOnClickListener = View.OnClickListener { v ->
+            val item = v.tag as Article
+            // Notify the active callbacks interface (the activity, if the fragment is attached to
+            // one) that an item has been selected.
+            mListener?.onListFragmentInteraction(item)
+        }
+    }
+
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder?.bindItems(articleList[position])
+        holder?.bindItems(position, articleList)
+        with(holder.itemView) {
+            tag = articleList[position]
+            setOnClickListener(mOnClickListener)
+        }
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int, payloads: MutableList<Any>) {
@@ -34,7 +54,7 @@ class ArticlesAdapter(val context: Context, private val articleList: MutableList
             val bundle = payloads[0] as Bundle
             for (key in bundle.keySet()) {
                 if (key == "article") {
-                    holder?.bindItems(articleList[position])
+                    holder?.bindItems(position, articleList)
                 }
             }
 
@@ -60,7 +80,12 @@ class ArticlesAdapter(val context: Context, private val articleList: MutableList
 
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindItems(article: Article) {
+        fun bindItems(position: Int, articleList: MutableList<Article>) {
+            val article = articleList[position]
+            val articlePrev = if (position > 0) articleList[position - 1] else null
+            fun setStoryContainerVisibility(isVisible: Boolean) {
+                itemView.story_container.visibility = if (isVisible) VISIBLE else GONE
+            }
             itemView.flash_icon.visibility = if (article.priority!! < 3) VISIBLE else GONE
             itemView.descr_icon.visibility = if (!TextUtils.isEmpty(article.body)) VISIBLE else GONE
             itemView.article_title.text = article.title
@@ -69,20 +94,37 @@ class ArticlesAdapter(val context: Context, private val articleList: MutableList
                 itemView.story_container.visibility = VISIBLE
                 var feed = article.feeds!![0]
                 when (feed.type) {
-                    FEED_TYPE_STORY -> itemView.story_title.text = feed.title
+                    FEED_TYPE_STORY -> {
+                        itemView.story_title.text = feed.title
+                        setStoryContainerVisibility(true)
+                    }
+                    else -> setStoryContainerVisibility(false)
                 }
             } else {
-                itemView.story_container.visibility = GONE
+                setStoryContainerVisibility(false)
             }
+
+            if (!areTheDatesAtTheSameDay(articlePrev?.createdAt, article.createdAt)) {
+                itemView.day_header_pub_date.text = RiaDateUtils.formatArticleListHeaderTime(article.createdAt)
+                itemView.day_header_pub_date.visibility = VISIBLE
+                itemView.day_header_pub_date_bottom_img.visibility = VISIBLE
+
+            } else {
+                itemView.day_header_pub_date.visibility = GONE
+                itemView.day_header_pub_date_bottom_img.visibility = GONE
+            }
+
         }
     }
 
-    fun updateData(newList: List<Article>?) {
+    fun updateData(newList: List<Article>?, toClean: Boolean) {
         val diffResult = DiffUtil.calculateDiff(
             ContactDiffUtilCallBack(newList!!, articleList)
         )
         diffResult.dispatchUpdatesTo(this)
-        this.articleList.clear()
+        if (toClean) {
+            this.articleList.clear()
+        }
         this.articleList.addAll(newList!!)
     }
 }

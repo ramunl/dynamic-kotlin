@@ -23,11 +23,11 @@ class NetModule {
             }).build()
 
         return Retrofit.Builder()
-           .baseUrl(BASE_URL)
-           .client(client)
-           .addConverterFactory(GsonConverterFactory.create())
-           .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-           .build()
+            .baseUrl(BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
     }
 
     @Provides

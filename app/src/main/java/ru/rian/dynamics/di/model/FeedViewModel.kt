@@ -31,7 +31,7 @@ class FeedViewModel(private val dataSource: FeedDao) : ViewModel() {
         return dataSource.getAllFeeds().map { result -> result }
     }
 
-    fun getFeedsByType(type:String): Flowable<List<Feed>> {
+    fun getFeedsByType(type: String): Flowable<List<Feed>> {
         return dataSource.getAllFeeds(type).map { result -> result }
     }
 

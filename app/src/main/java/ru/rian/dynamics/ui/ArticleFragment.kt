@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -19,6 +18,7 @@ import ru.rian.dynamics.di.component.DaggerFragmentComponent
 import ru.rian.dynamics.di.model.ActivityModule
 import ru.rian.dynamics.di.model.MainViewModel
 import ru.rian.dynamics.retrofit.model.Article
+import ru.rian.dynamics.utils.ARTICLE_LIST_LIMIT
 import javax.inject.Inject
 
 /**
@@ -28,6 +28,7 @@ import javax.inject.Inject
  */
 class ArticleFragment : Fragment() {
 
+    private lateinit var recyclerView: RecyclerView
     private lateinit var compositeDisposable: CompositeDisposable
     private var feedId: String? = null
     private val columnCount = 1
@@ -51,6 +52,19 @@ class ArticleFragment : Fragment() {
         fragmentComponent.inject(this)
     }
 
+    private fun requestMoreArticles() {
+        var disposable = mainViewModel.provideArticles(feedId!!, articlesAdapter.itemCount)
+            ?.subscribe(
+                { result ->
+                    updateList(result!!.articles, false)
+                    recyclerView.scrollToPosition(ARTICLE_LIST_LIMIT + articlesAdapter.itemCount)
+                },
+                { e ->
+                    showError((context as SnackContainerProvider), e, ::requestArticles)
+                })
+        compositeDisposable.add(disposable!!)
+    }
+
     private fun requestArticles() {
         var disposable = mainViewModel.provideArticles(feedId!!)
             ?.subscribe(
@@ -63,35 +77,50 @@ class ArticleFragment : Fragment() {
         compositeDisposable.add(disposable!!)
     }
 
-    private fun updateList(articles: List<Article>?) {
-        articlesAdapter.updateData(articles)
+    private fun updateList(articles: List<Article>?, toClean: Boolean = true) {
+        articlesAdapter.updateData(articles, toClean)
     }
 
-    lateinit var articlesAdapter: ArticlesAdapter
+    private lateinit var articlesAdapter: ArticlesAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        requestArticles()
+
+    private fun RecyclerView.onScrollToEnd(linearLayoutManager: LinearLayoutManager, onScrollNearEnd: () -> Unit) =
+        addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (linearLayoutManager.childCount + linearLayoutManager.findFirstVisibleItemPosition()
+                    >= linearLayoutManager.itemCount - 5
+                ) {  //if near fifth item from end
+                    onScrollNearEnd()
+                }
+            }
+        })
+
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_article_list, container, false)
+        recyclerView = view.recyclerView
         if (view.recyclerView is RecyclerView) {
-            articlesAdapter = ArticlesAdapter(view.context, ArrayList())
+            articlesAdapter = ArticlesAdapter(view.context, listener)
             view.recyclerView.adapter = articlesAdapter
             (view.recyclerView.adapter as ArticlesAdapter)
             with(view.recyclerView) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                val layoutManager = LinearLayoutManager(context)
-                val dividerItemDecoration = DividerItemDecoration(context, layoutManager.orientation)
+
+                layoutManager = LinearLayoutManager(context)
+
+                val dividerItemDecoration =
+                    DividerItemDecoration(context, (layoutManager as LinearLayoutManager).orientation)
+
+                dividerItemDecoration.setDrawable(resources.getDrawable(R.drawable.divider))
+
                 recyclerView.addItemDecoration(dividerItemDecoration)
+
                 view.swipeRefreshLayout.setOnRefreshListener {
                     view.swipeRefreshLayout.isRefreshing = false
                 }
+                view.recyclerView.onScrollToEnd(layoutManager as LinearLayoutManager, ::requestMoreArticles)
             }
         }
+        requestArticles()
         return view
     }
 
@@ -99,8 +128,6 @@ class ArticleFragment : Fragment() {
         super.onAttach(context)
         if (context is OnListFragmentInteractionListener) {
             listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener")
         }
     }
 
