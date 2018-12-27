@@ -1,8 +1,6 @@
-package ru.rian.dynamics.ui
-
-import android.view.View
-
+package ru.rian.dynamics.ui;
 
 interface SnackContainerProvider {
-    fun getSnackContainer(): View
+    fun showError(e: Throwable, actionToCallOnError: () -> (Unit))
 }
+

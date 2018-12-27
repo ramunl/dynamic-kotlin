@@ -80,4 +80,7 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
     implementation 'android.arch.persistence.room:rxjava2:1.1.1'
     annotationProcessor 'android.arch.lifecycle:compiler:1.1.1'
+    implementation 'io.github.microutils:kotlin-logging:1.6.22'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-android
+    implementation group: 'org.slf4j', name: 'slf4j-android', version: '1.7.21'
 }

@@ -13,13 +13,15 @@ import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import com.onesignal.OneSignal
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import mu.KLogging
 import ru.rian.dynamics.BuildConfig
 import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
@@ -34,6 +36,8 @@ import ru.rian.dynamics.di.model.ActivityModule
 import ru.rian.dynamics.di.model.FeedViewModel
 import ru.rian.dynamics.di.model.Injection
 import ru.rian.dynamics.di.model.MainViewModel
+import ru.rian.dynamics.di.model.MainViewModel.LoadingObserver.addLoadingObserver
+import ru.rian.dynamics.di.model.MainViewModel.LoadingObserver.removeLoadingObserver
 import ru.rian.dynamics.retrofit.model.Article
 import ru.rian.dynamics.retrofit.model.Feed
 import ru.rian.dynamics.retrofit.model.HSResult
@@ -45,14 +49,22 @@ import ru.rian.dynamics.utils.PreferenceHelper.prefs
 import ru.rian.dynamics.utils.PreferenceHelper.putHStoPrefs
 import ru.rian.dynamics.utils.PreferenceHelper.set
 import ru.rian.dynamics.utils.TRENDING
-import java.util.logging.Logger
 import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     ArticleFragment.OnListFragmentInteractionListener, SnackContainerProvider {
-    override fun getSnackContainer(): View {
-        return activityRootLayout
+    override fun showError(e: Throwable, actionToCallOnError: () -> Unit) {
+        val ctx = InitApp.appContext()
+        e.printStackTrace()
+        Snackbar.make(
+            activityRootLayout,
+            if (BuildConfig.DEBUG) e.toString() else ctx.getString(R.string.connection_error_title),
+            Snackbar.LENGTH_INDEFINITE
+        )
+            .setAction(R.string.try_again) { actionToCallOnError.invoke() }
+            .setActionTextColor(ctx.resources.getColor(R.color.action_color))
+            .show()
     }
 
     override fun onListFragmentInteraction(item: Article?) {
@@ -64,30 +76,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var compositeDisposable: CompositeDisposable
     private lateinit var viewModelFeed: FeedViewModel
     private lateinit var viewModelFactory: ViewModelFactory
-    var showBadgeFeedBtnFlag = false
+    private var showBadgeFeedBtnFlag = false
 
-    companion object {
-        val Log = Logger.getLogger(MainActivity::class.java.name)
-    }
-
-
-    private fun AppCompatActivity.replaceFragment(fragment: Fragment, frameId: FragmentId) {
-        supportFragmentManager.inTransaction { replace(frameId.ordinal, fragment) }
-    }
+    companion object : KLogging()
 
     private inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
         beginTransaction().func().commit()
     }
 
-    /*fun addFragment(fragment: Fragment, frameId: Int) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment, "rageComicDetails")
-            .addToBackStack(null)
-            .commit()
-    }*/
-
-    private fun AppCompatActivity.addFragment(fragment: Fragment, frameId: FragmentId) {
+    private fun AppCompatActivity.replaceFragment(fragment: Fragment, frameId: FragmentId) {
         supportFragmentManager.inTransaction { replace(R.id.fragmentContainer, fragment, frameId.name) }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        removeLoadingObserver(::onLoadingStateChanged)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,6 +106,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .build()
         activityComponent.inject(this)
 
+        addLoadingObserver(::onLoadingStateChanged)
+
         val playerId: String? = prefs()[PLAYER_ID]
         if (TextUtils.isEmpty(playerId)) {
             OneSignal.idsAvailable { userId, _ ->
@@ -117,19 +122,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         viewModelFeed = ViewModelProviders.of(this, viewModelFactory).get(FeedViewModel::class.java)
 
-        compositeDisposable.add(
-            viewModelFeed.getFeedsByType(FEED_TYPE_COMMON)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        showBadgeFeedBtnFlag = it.size > 1
-                        addFragment(ArticleFragment.newInstance(it[0].sid), FragmentId.ARTICLE_FRAGMENT_ID)
-                        toolbar.title = it[0].title
-                        invalidateOptionsMenu()
-                    },
-                    { e -> showError(this, e, ::requestFeeds) })
-        )
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -176,6 +168,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             addDrawerMenuItem(menu, choose_lang_title, R.drawable.ic_menu_language, R.id.nav_lang)
         }
         navView.setNavigationItemSelectedListener(this)
+        setupFeedsLoaderListener()
     }
 
 
@@ -223,18 +216,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-
     private fun requestFeeds() {
         var disposable = mainViewModel.provideFeeds()
             ?.subscribe(
                 { result ->
-                    insertFeeds(result?.feeds!!)
+                    result?.feeds?.let {
+                        insertFeeds(it)
+                        showArticlesFragment(it[0])
+                    }
                     invalidateOptionsMenu()
                 },
                 { e ->
-                    showError(this, e, ::requestFeeds)
+                    showError(e, ::requestFeeds)
                 })
-        compositeDisposable.add(disposable!!)
+        disposable?.let { compositeDisposable.add(it) }
+    }
+
+    private fun showArticlesFragment(feed: Feed) {
+        replaceFragment(ArticleFragment.newInstance(feed.sid), FragmentId.ARTICLE_FRAGMENT_ID)
     }
 
     private fun insertFeeds(feeds: List<Feed>) {
@@ -243,7 +242,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ },
-                    { e -> showError(this, e, ::requestHS) })
+                    { e -> showError(e, ::requestHS) })
         )
     }
 
@@ -255,11 +254,33 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 addDrawerMenuItems(result)
                 requestFeeds()
             }, { e ->
-                showError(this, e, ::requestHS)
+                showError(e, ::requestHS)
             })
-        compositeDisposable.add(disposable!!)
+        disposable?.let { compositeDisposable.add(it) }
     }
 
+    private fun setupFeedsLoaderListener() {
+        compositeDisposable.add(
+            viewModelFeed.getFeedsByType(FEED_TYPE_COMMON)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        if (it.isNotEmpty()) {
+                            showBadgeFeedBtnFlag = it.size > 1
+                            toolbar.title = it[0].title
+                            invalidateOptionsMenu()
+                        }
+                    },
+                    { e -> showError(e, ::requestFeeds) })
+        )
+    }
+
+
+    private fun onLoadingStateChanged(isLoading: Boolean) {
+        logger.debug { "onLoadingStateChanged $isLoading" }
+        progressBarMain.visibility = if (isLoading) VISIBLE else GONE
+    }
 
     override fun onResume() {
         super.onResume()

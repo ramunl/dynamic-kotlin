@@ -8,14 +8,14 @@ import java.util.logging.Logger
 /**
  * Created by Amanjeet Singh on 17/1/18.
  */
-class ContactDiffUtilCallBack(
+class ArticleListDiffUtilCallBack(
     private val newList: List<Article>,
     private val oldList: List<Article>
 ) : DiffUtil.Callback() {
 
 
     companion object {
-        val log = Logger.getLogger("ContactDiffUtilCallBack")
+        val log = Logger.getLogger("ArticleListDiffUtilCallBack")
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

@@ -40,7 +40,7 @@ class ArticlesAdapter(
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder?.bindItems(position, articleList)
+        holder.bindItems(position, articleList)
         with(holder.itemView) {
             tag = articleList[position]
             setOnClickListener(mOnClickListener)
@@ -54,7 +54,7 @@ class ArticlesAdapter(
             val bundle = payloads[0] as Bundle
             for (key in bundle.keySet()) {
                 if (key == "article") {
-                    holder?.bindItems(position, articleList)
+                    holder.bindItems(position, articleList)
                 }
             }
 
@@ -117,14 +117,21 @@ class ArticlesAdapter(
         }
     }
 
-    fun updateData(newList: List<Article>?, toClean: Boolean) {
-        val diffResult = DiffUtil.calculateDiff(
-            ContactDiffUtilCallBack(newList!!, articleList)
-        )
-        diffResult.dispatchUpdatesTo(this)
-        if (toClean) {
-            this.articleList.clear()
+    fun addData(newList: List<Article>?) {
+        newList?.let {
+            this.articleList.addAll(newList)
+            notifyDataSetChanged()
         }
-        this.articleList.addAll(newList!!)
+    }
+
+    fun updateData(newList: List<Article>?) {
+        newList?.let {
+            val diffResult = DiffUtil.calculateDiff(
+                ArticleListDiffUtilCallBack(it, articleList)
+            )
+            diffResult.dispatchUpdatesTo(this)
+            this.articleList.clear()
+            this.articleList.addAll(newList)
+        }
     }
 }
