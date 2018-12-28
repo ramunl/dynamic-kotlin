@@ -9,10 +9,10 @@ import ru.rian.dynamics.R
 import ru.rian.dynamics.utils.LocaleHelper.getString
 
 fun addDrawerMenuItem(menu: Menu, title: Int, iconResId: Int, itemId: Int) {
-    addDrawerMenuItem(menu, getString(title), iconResId, itemId)
+    addDrawerMenuItem(menu, iconResId, itemId, getString(title))
 }
 
-fun addDrawerMenuItem(menu: Menu, title: String?, iconResId: Int, itemId: Int) {
+fun addDrawerMenuItem(menu: Menu, iconResId: Int, itemId: Int, title: String?) {
     val menuItem = menu.add(0, itemId, 0, null)
     var menuItemActionView = View.inflate(InitApp.appContext(), R.layout.drawer_menu_item_layout, null)
     menuItemActionView.drawerMenuItemIcon.setImageResource(iconResId)
@@ -20,9 +20,14 @@ fun addDrawerMenuItem(menu: Menu, title: String?, iconResId: Int, itemId: Int) {
     menuItem.actionView = menuItemActionView
 }
 
-fun addMainMenuItem(menu: Menu, iconResId: Int, itemId: Int, title: String? = "") {
+fun addMainMenuItem(menu: Menu, iconResId: Int, itemId: Int, actionViewResId: View? = null, title: String? = "") {
     val menuItem = menu.add(0, itemId, 0, title)
-    menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+    if (actionViewResId != null) {
+        menuItem.actionView = actionViewResId
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW or MenuItem.SHOW_AS_ACTION_ALWAYS)
+    } else {
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+    }
     menuItem.icon = InitApp.appContext().resources.getDrawable(iconResId)
 }
 

@@ -8,9 +8,8 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.widget.SearchView
+import android.view.*
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_article_list.*
 import kotlinx.android.synthetic.main.fragment_article_list.view.*
@@ -44,7 +43,7 @@ class ArticleFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setHasOptionsMenu(true)
         arguments?.let {
             feedId = it.getString(ARG_FEED_ID)
         }
@@ -55,6 +54,23 @@ class ArticleFragment : Fragment() {
             .activityModule(ActivityModule(SchedulerProvider()))
             .build()
         fragmentComponent.inject(this)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        var searchView = menu.findItem(R.id.search_news).actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                if (newText.length >= 3) {
+                    return true
+                }
+                return false
+            }
+        })
     }
 
     private fun requestMoreArticles() {

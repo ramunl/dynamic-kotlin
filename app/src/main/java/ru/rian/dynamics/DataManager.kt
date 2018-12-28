@@ -20,7 +20,10 @@ class DataManager @Inject constructor(var apiInterface: ApiInterface) {
 
     inline fun <reified T> requestGet(
         path: String,
-        vararg params: String
+        feed: String,
+        limit: String?,
+        offset: String? = null,
+        query: String? = null
     ): Observable<T> {
         val pathRes = if (path.contains(BASE_URL)) path.substring(BASE_URL.length) else path
         return when (T::class) {
@@ -29,9 +32,10 @@ class DataManager @Inject constructor(var apiInterface: ApiInterface) {
                     Uri.encode(pathRes),
                     FlavorConstants.QUERY_HS_APP_ID_DYNAMICS,
                     prefs()[PLAYER_ID]!!,
-                    feed = params[0],
-                    offset = params[1],
-                    limit = params[2]
+                    feed,
+                    offset,
+                    limit,
+                    query
                 ) as Observable<T>
             HSResult::class ->
                 apiInterface.requestHS(

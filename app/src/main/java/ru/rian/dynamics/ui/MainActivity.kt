@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.SearchView
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
@@ -146,9 +147,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var menu = navView.menu
         addDrawerMenuItem(
             menu,
-            if (isToken) getString(terminal_title) else result?.application,
             R.drawable.ic_menu_ddn,
-            R.id.nav_news
+            R.id.nav_news,
+            if (isToken) getString(terminal_title) else result?.application
         )
         if (isToken) {
             addDrawerMenuItem(menu, stories_tab_title, R.drawable.ic_menu_story, R.id.nav_story)
@@ -181,14 +182,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         addMainMenuItem(
             menu,
             if (showBadgeFeedBtnFlag) ic_terminal_feeds_badge else ic_terminal_feeds,
             menu_action_toolbar_select_feed
         )
         menuInflater.inflate(R.menu.main, menu)
-        return true
+
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
