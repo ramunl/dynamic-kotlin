@@ -126,12 +126,23 @@ class ArticlesAdapter(
 
     fun updateData(newList: List<Article>?) {
         newList?.let {
-            val diffResult = DiffUtil.calculateDiff(
-                ArticleListDiffUtilCallBack(it, articleList)
-            )
-            diffResult.dispatchUpdatesTo(this)
-            this.articleList.clear()
-            this.articleList.addAll(newList)
+            var toUpdate = true
+            if (articleList.size > 0) {
+                var newListFirstArticle = newList[0]
+                var firstArticle = articleList[0]
+                if (newListFirstArticle == firstArticle) {
+                    toUpdate = false
+                }
+            }
+            if (toUpdate) {
+                val joined = articleList.union(newList)
+                val diffResult = DiffUtil.calculateDiff(
+                    ArticleListDiffUtilCallBack(newList, articleList)
+                )
+                diffResult.dispatchUpdatesTo(this)
+                this.articleList.clear()
+                this.articleList.addAll(joined)
+            }
         }
     }
 }

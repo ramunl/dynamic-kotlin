@@ -20,8 +20,8 @@ class DataManager @Inject constructor(var apiInterface: ApiInterface) {
 
     inline fun <reified T> requestGet(
         path: String,
-        feed: String,
-        limit: String?,
+        feed: String? = null,
+        limit: String? = null,
         offset: String? = null,
         query: String? = null
     ): Observable<T> {
@@ -33,8 +33,8 @@ class DataManager @Inject constructor(var apiInterface: ApiInterface) {
                     FlavorConstants.QUERY_HS_APP_ID_DYNAMICS,
                     prefs()[PLAYER_ID]!!,
                     feed,
-                    offset,
                     limit,
+                    offset,
                     query
                 ) as Observable<T>
             HSResult::class ->

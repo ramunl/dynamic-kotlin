@@ -66,8 +66,14 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun provideArticles(feed: String, offset: Int = 0, showProgress:Boolean = true): Observable<ArticleResponse?>? {
-        if(showProgress) {
+    fun provideArticles(
+        feed: String,
+        offset: Int = 0,
+        query: String? = null,
+        showProgress: Boolean = true
+
+    ): Observable<ArticleResponse?>? {
+        if (showProgress) {
             loading = true
         }
         val source: Source? = prefs()[getArticles]
@@ -75,8 +81,9 @@ class MainViewModel @Inject constructor(
             dataManager.requestGet<ArticleResponse?>(
                 it,
                 feed,
+                ARTICLE_LIST_LIMIT.toString(),
                 offset.toString(),
-                ARTICLE_LIST_LIMIT.toString()
+                query
             )
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
