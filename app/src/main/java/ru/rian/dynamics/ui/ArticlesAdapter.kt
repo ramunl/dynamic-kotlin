@@ -33,7 +33,7 @@ class ArticlesAdapter(
     private val mListener: ArticleFragment.OnListFragmentInteractionListener?,
     private val articleList: MutableList<Article> = ArrayList()
 ) :
-    RecyclerView.Adapter<ArticlesAdapter.MyViewHolder>() {
+    RecyclerView.Adapter<ArticlesAdapter.ArticleViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
 
@@ -46,7 +46,7 @@ class ArticlesAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         holder.bindItems(position, articleList)
         with(holder.itemView) {
             tag = articleList[position]
@@ -54,7 +54,7 @@ class ArticlesAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(holder: ArticleViewHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads)
         } else {
@@ -68,12 +68,12 @@ class ArticlesAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, position: Int): MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, position: Int): ArticleViewHolder {
         val view = LayoutInflater.from(context).inflate(
             R.layout.list_item_article,
             parent, false
         )
-        return MyViewHolder(view)
+        return ArticleViewHolder(view)
     }
 
 
@@ -86,7 +86,7 @@ class ArticlesAdapter(
     }
 
 
-    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems(position: Int, articleList: MutableList<Article>) {
             val article = articleList[position]
             val articlePrev = if (position > 0) articleList[position - 1] else null
