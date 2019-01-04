@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.SearchView
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
@@ -55,7 +54,7 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     ArticleFragment.OnListFragmentInteractionListener, SnackContainerProvider {
-    override fun showError(e: Throwable, actionToCallOnError: () -> Unit) {
+    override fun showError(e: Throwable, methodToInvoke: SnackContainerProvider.MethodToInvoke) {
         val ctx = InitApp.appContext()
         e.printStackTrace()
         Snackbar.make(
@@ -63,7 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (BuildConfig.DEBUG) e.toString() else ctx.getString(R.string.connection_error_title),
             Snackbar.LENGTH_INDEFINITE
         )
-            .setAction(R.string.try_again) { actionToCallOnError.invoke() }
+            .setAction(R.string.try_again) { methodToInvoke.invokeMethod() }
             .setActionTextColor(ctx.resources.getColor(R.color.action_color))
             .show()
     }
@@ -228,7 +227,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     invalidateOptionsMenu()
                 },
                 { e ->
-                    showError(e, ::requestFeeds)
+                    showError(e, SnackContainerProvider.MethodToInvoke(::requestFeeds))
                 })
         disposable?.let { compositeDisposable.add(it) }
     }
@@ -243,7 +242,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ },
-                    { e -> showError(e, ::requestHS) })
+                    { e -> showError(e, SnackContainerProvider.MethodToInvoke(::requestHS)) })
         )
     }
 
@@ -255,7 +254,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 addDrawerMenuItems(result)
                 requestFeeds()
             }, { e ->
-                showError(e, ::requestHS)
+                showError(e, SnackContainerProvider.MethodToInvoke(::requestHS))
             })
         disposable?.let { compositeDisposable.add(it) }
     }
@@ -273,7 +272,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             invalidateOptionsMenu()
                         }
                     },
-                    { e -> showError(e, ::requestFeeds) })
+                    { e -> showError(e, SnackContainerProvider.MethodToInvoke(::requestFeeds)) })
         )
     }
 

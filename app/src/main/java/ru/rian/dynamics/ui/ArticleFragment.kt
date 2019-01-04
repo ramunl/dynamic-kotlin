@@ -2,7 +2,6 @@ package ru.rian.dynamics.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
@@ -11,7 +10,6 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.*
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_article_list.*
 import kotlinx.android.synthetic.main.fragment_article_list.view.*
 import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
@@ -28,6 +26,7 @@ import javax.inject.Inject
  * [ArticleFragment.OnListFragmentInteractionListener] interface.
  */
 class ArticleFragment : Fragment() {
+    private lateinit var searchView: SearchView
 
     private lateinit var swipeRefreshArticleList: SwipeRefreshLayout
 
@@ -57,10 +56,11 @@ class ArticleFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        var searchView = menu.findItem(R.id.search_news).actionView as SearchView
+        searchView = menu.findItem(R.id.search_news).actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-
+                articlesAdapter.removeAll()
+                requestArticles(query)
                 return false
             }
 
@@ -71,16 +71,29 @@ class ArticleFragment : Fragment() {
                 return false
             }
         })
+
+        searchView.setOnCloseListener {
+            onSearchClose()
+        }
     }
 
-    private fun requestMoreArticles() {
-        var disposable = mainViewModel.provideArticles(feedId!!, articlesAdapter.itemCount)
+    private fun onSearchClose(): Boolean {
+        articlesAdapter.removeAll()
+        requestArticles()
+        return false
+    }
+
+    private fun requestMoreArticles(query: String? = null) {
+        var disposable = mainViewModel.provideArticles(feedId!!, query = query, offset = articlesAdapter.itemCount)
             ?.subscribe(
                 { result ->
                     updateList(result!!.articles, false)
                 },
                 { e ->
-                    snackContainerProvider().showError(e, ::requestArticles)
+                    snackContainerProvider().showError(
+                        e,
+                        SnackContainerProvider.MethodToInvoke(::requestMoreArticles, query)
+                    )
                 })
         disposable?.let { compositeDisposable.add(it) }
     }
@@ -89,19 +102,29 @@ class ArticleFragment : Fragment() {
         return context as SnackContainerProvider
     }
 
-    private fun requestArticles() {
-        var disposable = mainViewModel.provideArticles(feedId!!, showProgress = !swipeRefreshArticleList.isRefreshing )
-            ?.subscribe(
-                { result ->
-                    updateList(result!!.articles)
-                    swipeRefreshArticleList.isRefreshing = false
-                },
-                { e ->
-                    swipeRefreshArticleList.isRefreshing = false
-                    snackContainerProvider().showError(e, ::requestArticles)
-                })
+    private fun requestArticles(query: String? = null) {
+        var disposable =
+            mainViewModel.provideArticles(feedId!!, query = query, showProgress = !isRefreshing())
+                ?.subscribe(
+                    { result ->
+                        updateList(result?.articles)
+                        setRefreshing(false)
+                    },
+                    { e ->
+                        setRefreshing(false)
+                        snackContainerProvider().showError(
+                            e,
+                            SnackContainerProvider.MethodToInvoke(::requestArticles, query)
+                        )
+                    })
         disposable?.let { compositeDisposable.add(it) }
     }
+
+    private fun setRefreshing(isRefreshing: Boolean) {
+        swipeRefreshArticleList.isRefreshing = isRefreshing
+    }
+
+    private fun isRefreshing() = swipeRefreshArticleList.isRefreshing
 
     private fun updateList(articles: List<Article>?, toClean: Boolean = true) {
         if (toClean)
@@ -113,13 +136,16 @@ class ArticleFragment : Fragment() {
     private lateinit var articlesAdapter: ArticlesAdapter
 
 
-    private fun RecyclerView.onScrollToEnd(linearLayoutManager: LinearLayoutManager, onScrollNearEnd: () -> Unit) =
+    private fun RecyclerView.onScrollToEnd(
+        linearLayoutManager: LinearLayoutManager,
+        onScrollNearEnd: (String?) -> Unit
+    ) =
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (linearLayoutManager.childCount + linearLayoutManager.findFirstVisibleItemPosition()
                     >= linearLayoutManager.itemCount - 1
                 ) {  //if near fifth item from end
-                    onScrollNearEnd()
+                    onScrollNearEnd(searchView.query.toString())
                 }
             }
         })
