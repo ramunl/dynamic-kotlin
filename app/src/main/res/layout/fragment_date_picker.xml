@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity$RiaDatePickerFragment">
 
-    <com.devspark.robototextview.widget.RobotoTextView
+    <TextView
         android:id="@+id/reset_to_archive_btn"
         android:layout_width="@dimen/filter_dialog_button_width"
         android:layout_height="@dimen/filter_dialog_button_height"
@@ -29,7 +29,7 @@
         android:layout_height="1dp"
         android:background="@android:color/darker_gray" />
 
-    <com.devspark.robototextview.widget.RobotoTextView
+    <TextView
         android:id="@+id/ready_btn"
         android:layout_width="@dimen/filter_dialog_button_width"
         android:layout_height="@dimen/filter_dialog_button_height"

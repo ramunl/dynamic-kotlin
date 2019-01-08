@@ -8,6 +8,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
+import android.text.TextUtils
 import android.view.*
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_article_list.view.*
@@ -18,10 +19,12 @@ import ru.rian.dynamics.di.component.DaggerFragmentComponent
 import ru.rian.dynamics.di.model.ActivityModule
 import ru.rian.dynamics.di.model.MainViewModel
 import ru.rian.dynamics.retrofit.model.Article
+import ru.rian.dynamics.retrofit.model.Source
+import java.util.*
 import javax.inject.Inject
 
 /**
- * A fragment representing a list of Items.
+ * A fragment representing a list of article items.
  * Activities containing this fragment MUST implement the
  * [ArticleFragment.OnListFragmentInteractionListener] interface.
  */
@@ -34,7 +37,10 @@ class ArticleFragment : Fragment() {
 
     private lateinit var compositeDisposable: CompositeDisposable
 
-    private var feedId: String? = null
+    var query: String? = null
+
+    private lateinit var feedSource: Source
+    private lateinit var feedId: String
     @Inject
     lateinit var mainViewModel: MainViewModel
 
@@ -42,9 +48,11 @@ class ArticleFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setHasOptionsMenu(true)
         arguments?.let {
-            feedId = it.getString(ARG_FEED_ID)
+            feedId = it.getString(ARG_FEED_ID)!!
+            feedSource = it.getSerializable(ARG_FEED_SOURCE) as Source
         }
         compositeDisposable = CompositeDisposable()
         val fragmentComponent = DaggerFragmentComponent
@@ -55,8 +63,17 @@ class ArticleFragment : Fragment() {
         fragmentComponent.inject(this)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString("query", searchView.query.toString())
+        outState.putParcelableArrayList("articleList", articlesAdapter.articleList)
+
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         searchView = menu.findItem(R.id.search_news).actionView as SearchView
+        if (!TextUtils.isEmpty(query)) {
+            searchView.setQuery(query, false)
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 articlesAdapter.removeAll()
@@ -65,10 +82,8 @@ class ArticleFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                if (newText.length >= 3) {
-                    return true
-                }
-                return false
+                this@ArticleFragment.query = newText
+                return true
             }
         })
 
@@ -84,7 +99,7 @@ class ArticleFragment : Fragment() {
     }
 
     private fun requestMoreArticles(query: String? = null) {
-        var disposable = mainViewModel.provideArticles(feedId!!, query = query, offset = articlesAdapter.itemCount)
+        var disposable = mainViewModel.provideArticles(feedSource, feedId!!, query = query, offset = articlesAdapter.itemCount)
             ?.subscribe(
                 { result ->
                     updateList(result!!.articles, false)
@@ -92,7 +107,7 @@ class ArticleFragment : Fragment() {
                 { e ->
                     snackContainerProvider().showError(
                         e,
-                        SnackContainerProvider.MethodToInvoke(::requestMoreArticles, query)
+                        SnackContainerProvider.ActionToInvoke(::requestMoreArticles, query)
                     )
                 })
         disposable?.let { compositeDisposable.add(it) }
@@ -104,7 +119,7 @@ class ArticleFragment : Fragment() {
 
     private fun requestArticles(query: String? = null) {
         var disposable =
-            mainViewModel.provideArticles(feedId!!, query = query, showProgress = !isRefreshing())
+            mainViewModel.provideArticles(feedSource, feedId!!, query = query, showProgress = !isRefreshing())
                 ?.subscribe(
                     { result ->
                         updateList(result?.articles)
@@ -114,7 +129,7 @@ class ArticleFragment : Fragment() {
                         setRefreshing(false)
                         snackContainerProvider().showError(
                             e,
-                            SnackContainerProvider.MethodToInvoke(::requestArticles, query)
+                            SnackContainerProvider.ActionToInvoke(::requestArticles, query)
                         )
                     })
         disposable?.let { compositeDisposable.add(it) }
@@ -152,6 +167,7 @@ class ArticleFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         val view = inflater.inflate(R.layout.fragment_article_list, container, false)
 
         recyclerView = view.recyclerView
@@ -183,7 +199,16 @@ class ArticleFragment : Fragment() {
                 view.recyclerView.onScrollToEnd(layoutManager as LinearLayoutManager, ::requestMoreArticles)
             }
         }
-        requestArticles()
+        var articleListSaved: ArrayList<Article>? = null
+        if (savedInstanceState != null) {
+            query = savedInstanceState.getString("query")
+            articleListSaved = savedInstanceState.getParcelableArrayList<Article>("articleList")
+        }
+        if (articleListSaved != null && articleListSaved.size > 0) {
+            articlesAdapter.articleList = articleListSaved
+        } else {
+            requestArticles()
+        }
         return view
     }
 
@@ -216,16 +241,14 @@ class ArticleFragment : Fragment() {
     }
 
     companion object {
-
-        // TODO: Customize parameter argument names
         const val ARG_FEED_ID = "feed_id"
-
-        // TODO: Customize parameter initialization
+        const val ARG_FEED_SOURCE = "feed_url"
         @JvmStatic
-        fun newInstance(feedId: String) =
+        fun newInstance(feedId: String, feedSource: Source) =
             ArticleFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_FEED_ID, feedId)
+                    putSerializable(ARG_FEED_SOURCE, feedSource)
                 }
             }
     }

@@ -1,20 +1,23 @@
 package ru.rian.dynamics.utils
 
+import org.slf4j.Marker
+import org.slf4j.MarkerFactory
 
+
+val ACTIVITY_MARKER: Marker = MarkerFactory.getMarker("Activity")
 internal val ARTICLE_LIST_LIMIT = 20
-
 internal val MILLI_SEC_IN_DAY = (24 * 60 * 60 * 1000).toLong() //millisecond per 24 hours
-
+/*
 const val getHandshake = "getHandshake"
 const val getArticles = "getArticles"
 const val login = "login"
 const val logout = "logout"
-const val getFeeds = "getFeeds"
+const val getFeeds = "selectFeeds"
 const val createFeed = "createFeed"
 const val deleteFeed = "deleteFeed"
 const val synchronizeFeeds = "synchronizeFeeds"
 const val upsertSubscription = "upsertSubscription"
-const val getNotifications = "getNotifications"
+const val getNotifications = "getNotifications"*/
 
 
 enum class FragmentId {

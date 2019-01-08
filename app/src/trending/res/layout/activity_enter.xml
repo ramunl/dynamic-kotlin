@@ -41,7 +41,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/top_bar_button_text_size" />
 
-    <com.devspark.robototextview.widget.RobotoTextView
+    <TextView
         android:id="@+id/sign_up_button"
         android:layout_width="140dp"
         android:layout_height="@dimen/enter_button_height"

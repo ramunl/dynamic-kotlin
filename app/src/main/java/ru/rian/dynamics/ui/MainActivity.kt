@@ -21,7 +21,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
-import mu.KLogging
 import ru.rian.dynamics.BuildConfig
 import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
@@ -38,28 +37,33 @@ import ru.rian.dynamics.di.model.Injection
 import ru.rian.dynamics.di.model.MainViewModel
 import ru.rian.dynamics.di.model.MainViewModel.LoadingObserver.addLoadingObserver
 import ru.rian.dynamics.di.model.MainViewModel.LoadingObserver.removeLoadingObserver
-import ru.rian.dynamics.retrofit.model.Article
-import ru.rian.dynamics.retrofit.model.Feed
-import ru.rian.dynamics.retrofit.model.HSResult
-import ru.rian.dynamics.utils.FEED_TYPE_COMMON
-import ru.rian.dynamics.utils.FragmentId
-import ru.rian.dynamics.utils.PLAYER_ID
+import ru.rian.dynamics.retrofit.model.*
+import ru.rian.dynamics.utils.*
 import ru.rian.dynamics.utils.PreferenceHelper.get
 import ru.rian.dynamics.utils.PreferenceHelper.prefs
-import ru.rian.dynamics.utils.PreferenceHelper.putHStoPrefs
 import ru.rian.dynamics.utils.PreferenceHelper.set
-import ru.rian.dynamics.utils.TRENDING
 import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     ArticleFragment.OnListFragmentInteractionListener, SnackContainerProvider {
-    override fun showError(e: Throwable, methodToInvoke: SnackContainerProvider.MethodToInvoke) {
+
+    @Inject
+    lateinit var mainViewModel: MainViewModel
+    private lateinit var compositeDisposable: CompositeDisposable
+    private lateinit var viewModelFeed: FeedViewModel
+    private lateinit var viewModelFactory: ViewModelFactory
+    private var showBadgeFeedBtnFlag = false
+    private var hsResult: HSResult? = null
+
+    companion object : KLoggerWrap(MainActivity::class)
+
+    override fun showError(err: Throwable, methodToInvoke: SnackContainerProvider.ActionToInvoke) {
         val ctx = InitApp.appContext()
-        e.printStackTrace()
+        log_e(err)
         Snackbar.make(
             activityRootLayout,
-            if (BuildConfig.DEBUG) e.toString() else ctx.getString(R.string.connection_error_title),
+            if (BuildConfig.DEBUG) err.toString() else ctx.getString(R.string.connection_error_title),
             Snackbar.LENGTH_INDEFINITE
         )
             .setAction(R.string.try_again) { methodToInvoke.invokeMethod() }
@@ -70,15 +74,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onListFragmentInteraction(item: Article?) {
 
     }
-
-    @Inject
-    lateinit var mainViewModel: MainViewModel
-    private lateinit var compositeDisposable: CompositeDisposable
-    private lateinit var viewModelFeed: FeedViewModel
-    private lateinit var viewModelFactory: ViewModelFactory
-    private var showBadgeFeedBtnFlag = false
-
-    companion object : KLogging()
 
     private inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
         beginTransaction().func().commit()
@@ -91,6 +86,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onDestroy() {
         super.onDestroy()
         removeLoadingObserver(::onLoadingStateChanged)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putSerializable("hsResult", hsResult)
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,20 +109,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         addLoadingObserver(::onLoadingStateChanged)
 
-        val playerId: String? = prefs()[PLAYER_ID]
-        if (TextUtils.isEmpty(playerId)) {
-            OneSignal.idsAvailable { userId, _ ->
-                prefs()[PLAYER_ID] = userId
-                requestHS()
-            }
-        } else {
-            requestHS()
-        }
 
         viewModelFactory = Injection.provideViewModelFactory(this)
 
         viewModelFeed = ViewModelProviders.of(this, viewModelFactory).get(FeedViewModel::class.java)
-
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -134,9 +125,57 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-
-
         window.setBackgroundDrawableResource(R.color.transparent)
+
+        hsResult = savedInstanceState?.getSerializable("hsResult") as HSResult?
+
+        setupFeedsLoaderListener()
+
+        if (hsResult == null) {
+            requestHS()
+        }
+    }
+
+    private fun requestHS() {
+        log_d("requestHS")
+        val playerId: String? = prefs()[PLAYER_ID]
+        if (TextUtils.isEmpty(playerId)) {
+            OneSignal.idsAvailable { userId, _ ->
+                prefs()[PLAYER_ID] = userId
+                doRequestHS()
+            }
+        } else {
+            doRequestHS()
+        }
+    }
+
+    private fun requestFeeds() {
+        log_d("requestFeeds")
+        val apiRequestArray = hsResult!!.apiRequestArray
+        var disposable = mainViewModel.provideFeeds(apiRequestArray?.getFeeds!!).subscribe(
+            { result ->
+                result?.feeds?.let {
+                    insertFeeds(it)
+                    showFragment(apiRequestArray, it)
+                }
+            }, { e -> showError(e, SnackContainerProvider.ActionToInvoke(::requestFeeds)) })
+        disposable?.let { compositeDisposable.add(it) }
+    }
+
+    private fun showFragment(apiRequestArray: ApiRequests, feeds: List<Feed>) {
+        showArticlesFragment(feeds[0], apiRequestArray?.getArticles!!)
+    }
+
+    private fun doRequestHS() {
+        val disposable = mainViewModel.provideHS()
+            ?.subscribe({ result ->
+                hsResult = result
+                addDrawerMenuItems(result)
+                requestFeeds()
+            }, { e ->
+                showError(e, SnackContainerProvider.ActionToInvoke(::doRequestHS))
+            })
+        disposable?.let { compositeDisposable.add(it) }
     }
 
     private fun addDrawerMenuItems(result: HSResult?) {
@@ -168,7 +207,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             addDrawerMenuItem(menu, choose_lang_title, R.drawable.ic_menu_language, R.id.nav_lang)
         }
         navView.setNavigationItemSelectedListener(this)
-        setupFeedsLoaderListener()
     }
 
 
@@ -216,47 +254,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    private fun requestFeeds() {
-        var disposable = mainViewModel.provideFeeds()
-            ?.subscribe(
-                { result ->
-                    result?.feeds?.let {
-                        insertFeeds(it)
-                        showArticlesFragment(it[0])
-                    }
-                    invalidateOptionsMenu()
-                },
-                { e ->
-                    showError(e, SnackContainerProvider.MethodToInvoke(::requestFeeds))
-                })
-        disposable?.let { compositeDisposable.add(it) }
-    }
-
-    private fun showArticlesFragment(feed: Feed) {
-        replaceFragment(ArticleFragment.newInstance(feed.sid), FragmentId.ARTICLE_FRAGMENT_ID)
+    private fun showArticlesFragment(feed: Feed, source: Source) {
+        replaceFragment(
+            ArticleFragment.newInstance(feed.sid, source),
+            FragmentId.ARTICLE_FRAGMENT_ID
+        )
     }
 
     private fun insertFeeds(feeds: List<Feed>) {
+        log_d("insertFeeds size = ${feeds.size}")
         compositeDisposable.add(
             viewModelFeed.insert(feeds)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ },
-                    { e -> showError(e, SnackContainerProvider.MethodToInvoke(::requestHS)) })
+                    { e -> showError(e, SnackContainerProvider.ActionToInvoke(::doRequestHS)) })
         )
-    }
-
-
-    private fun requestHS() {
-        var disposable = mainViewModel.provideHS()
-            ?.subscribe({ result ->
-                putHStoPrefs(result)
-                addDrawerMenuItems(result)
-                requestFeeds()
-            }, { e ->
-                showError(e, SnackContainerProvider.MethodToInvoke(::requestHS))
-            })
-        disposable?.let { compositeDisposable.add(it) }
     }
 
     private fun setupFeedsLoaderListener() {
@@ -272,13 +285,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             invalidateOptionsMenu()
                         }
                     },
-                    { e -> showError(e, SnackContainerProvider.MethodToInvoke(::requestFeeds)) })
+                    { e -> showError(e, SnackContainerProvider.ActionToInvoke(::requestFeeds)) })
         )
     }
 
 
     private fun onLoadingStateChanged(isLoading: Boolean) {
-        logger.debug { "onLoadingStateChanged $isLoading" }
+        log_d("onLoadingStateChanged $isLoading")
         progressBarMain.visibility = if (isLoading) VISIBLE else GONE
     }
 

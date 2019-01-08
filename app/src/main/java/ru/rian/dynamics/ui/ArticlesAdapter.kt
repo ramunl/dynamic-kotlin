@@ -31,7 +31,7 @@ import java.util.logging.Logger
 class ArticlesAdapter(
     val context: Context,
     private val mListener: ArticleFragment.OnListFragmentInteractionListener?,
-    private val articleList: MutableList<Article> = ArrayList()
+    var articleList: ArrayList<Article> = ArrayList()
 ) :
     RecyclerView.Adapter<ArticlesAdapter.ArticleViewHolder>() {
 

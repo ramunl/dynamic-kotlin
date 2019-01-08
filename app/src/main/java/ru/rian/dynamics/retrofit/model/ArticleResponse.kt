@@ -62,4 +62,26 @@ data class ArticleFeed(
     @SerializedName("sid") var sid: String = "",
     @SerializedName("title") var title: String? = null,
     @SerializedName("type") var type: String? = null
-)
+) : Parcelable {
+    constructor(source: Parcel) : this(
+        source.readString(),
+        source.readString(),
+        source.readString()
+    )
+
+    override fun describeContents() = 0
+
+    override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
+        writeString(sid)
+        writeString(title)
+        writeString(type)
+    }
+
+    companion object {
+        @JvmField
+        val CREATOR: Parcelable.Creator<ArticleFeed> = object : Parcelable.Creator<ArticleFeed> {
+            override fun createFromParcel(source: Parcel): ArticleFeed = ArticleFeed(source)
+            override fun newArray(size: Int): Array<ArticleFeed?> = arrayOfNulls(size)
+        }
+    }
+}

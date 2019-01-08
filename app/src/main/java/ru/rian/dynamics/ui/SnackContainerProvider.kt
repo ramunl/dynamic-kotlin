@@ -1,9 +1,10 @@
 package ru.rian.dynamics.ui
 
 interface SnackContainerProvider {
-    fun showError(e: Throwable, methodToInvoke: MethodToInvoke)
 
-    class MethodToInvoke {
+    fun showError(e: Throwable, methodToInvoke: ActionToInvoke)
+
+    class ActionToInvoke {
 
         private var param: String? = null
         private var actionEmptyParam: (() -> Unit)? = null

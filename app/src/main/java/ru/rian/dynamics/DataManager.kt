@@ -1,6 +1,7 @@
 package ru.rian.dynamics
 
 import android.net.Uri
+import common.FlavorConstants
 import io.reactivex.Observable
 import ru.rian.dynamics.retrofit.ApiInterface
 import ru.rian.dynamics.retrofit.model.ArticleResponse

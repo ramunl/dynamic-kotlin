@@ -194,12 +194,12 @@
 
         <ImageView style="@style/SettingsListItemDivider" android:visibility="gone"/>
 
-        <!-- <com.devspark.robototextview.widget.RobotoTextView
+        <!-- <TextView
              android:id="@+id/exit_btn"
              style="@style/SettingsListItem"
              android:text="@string/action_logout"
              android:textColor="#d51f2c"
-             app:robotoTextWeight="normal" />
+             android:textStyle="normal" />
 
          <ImageView style="@style/SettingsListItemDivider" />-->
 

@@ -1,7 +1,7 @@
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -33,16 +33,17 @@
                     android:layout_height="wrap_content"
                     android:text="Sputnik: "
                     android:textSize="16sp"
-                    android:fontFamily="roboto"
+                    app:fontFamily="roboto"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:capitalize="none"
                     android:text="@string/app_name"
                     android:textColor="@color/yellow_color_normal"
                     android:textSize="16sp"
-                    android:fontFamily="roboto"
+                    app:fontFamily="roboto"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -54,7 +55,7 @@
                 android:layout_marginTop="10dp"
                 android:text="@string/settings_about_title"
                 android:textSize="16sp"
-                android:fontFamily="roboto"
+                app:fontFamily="roboto"
                 android:textStyle="bold" />
 
             <TextView
@@ -63,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/settings_about_title"
                 android:textSize="12sp"
-                android:fontFamily="roboto"
+                app:fontFamily="roboto"
                 android:textStyle="bold" />
 
             <TextView
@@ -72,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/settings_about_title"
                 android:textSize="16sp"
-                android:fontFamily="roboto"
+                app:fontFamily="roboto"
                 android:textStyle="bold" />
 
             <TextView
@@ -82,7 +83,7 @@
                 android:layout_marginTop="10dp"
                 android:autoLink="web"
                 android:textSize="16sp"
-                android:fontFamily="roboto"
+                app:fontFamily="roboto"
                 android:textStyle="normal" />
 
             <android.support.v7.widget.AppCompatTextView
@@ -94,8 +95,9 @@
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
                 android:clickable="true"
+                android:fontFamily="@font/roboto_regular"
                 android:text="@string/user_agreement"
-                android:fontFamily="roboto"
+                app:fontFamily="@font/roboto_regular"
                 android:textSize="16sp"
                 android:focusable="true" />
 
@@ -107,7 +109,9 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="6dp"
                 android:paddingBottom="6dp"
+                android:fontFamily="@font/roboto_regular"
                 android:text="@string/using_rules"
+                app:fontFamily="@font/roboto_regular"
                 android:textSize="16sp"
                 android:focusable="true" />
         </LinearLayout>

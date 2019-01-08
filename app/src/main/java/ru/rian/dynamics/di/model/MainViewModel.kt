@@ -9,9 +9,11 @@ import ru.rian.dynamics.retrofit.model.ArticleResponse
 import ru.rian.dynamics.retrofit.model.FeedResponse
 import ru.rian.dynamics.retrofit.model.HSResult
 import ru.rian.dynamics.retrofit.model.Source
-import ru.rian.dynamics.utils.*
+import ru.rian.dynamics.utils.ARTICLE_LIST_LIMIT
+import ru.rian.dynamics.utils.HS_PATH
 import ru.rian.dynamics.utils.PreferenceHelper.get
 import ru.rian.dynamics.utils.PreferenceHelper.prefs
+import ru.rian.dynamics.utils.TOKEN_STRING_KEY
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -19,7 +21,9 @@ class MainViewModel @Inject constructor(
     private var dataManager: DataManager,
     private var schedulerProvider: SchedulerProvider
 ) {
+
     object LoadingObserver {
+
         private var loadingStateObservers: MutableList<((Boolean) -> Unit)?> = ArrayList<((Boolean) -> Unit)?>()
 
         var loading: Boolean by Delegates.observable(false) { _, oldValue, newValue ->
@@ -54,11 +58,10 @@ class MainViewModel @Inject constructor(
             .map { result -> result }
     }
 
-    fun provideFeeds(): Observable<FeedResponse?>? {
+    fun provideFeeds(source: Source): Observable<FeedResponse?> {
         loading = true
-        val source: Source? = prefs()[getFeeds]
-        return source?.url?.let {
-            dataManager.requestGet<FeedResponse?>(it)
+        return source.url.let {
+            dataManager.requestGet<FeedResponse?>(it!!)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .doFinally { loading = false }
@@ -67,19 +70,18 @@ class MainViewModel @Inject constructor(
     }
 
     fun provideArticles(
+        source: Source,
         feed: String,
         offset: Int = 0,
         query: String? = null,
         showProgress: Boolean = true
-
     ): Observable<ArticleResponse?>? {
         if (showProgress) {
             loading = true
         }
-        val source: Source? = prefs()[getArticles]
-        return source?.url?.let {
+        return source.url.let {
             dataManager.requestGet<ArticleResponse?>(
-                it,
+                it!!,
                 feed,
                 ARTICLE_LIST_LIMIT.toString(),
                 offset.toString(),

@@ -1,7 +1,6 @@
 <resources>
     <color name="dark_purple">#473354</color>
     <color name="action_color">#b784d9</color>
-
     <color name="light_purple">#77473354</color>
     <color name="white">#FFFFFF</color>
     <color name="button_text_color_normal">#000000</color>
@@ -30,19 +29,10 @@
     <color name="tab_text_color">#928699</color>
     <color name="tab_selected_text_color">#ffffff</color>
 
-    <color name="drawer_bg_delimiter">#ffd8d8d8</color>
     <color name="drawer_item_normal_text_color">#ff473354</color>
     <color name="drawer_item_additional_text_color">#ff473354</color>
 
-    <color name="navbar_statusbar_bg_color">#33223D</color>
-    <color name="black_87">#de000000</color>
-    <color name="loading_bg_w_theme">#ffd8d8d8</color>
     <color name="loading_progress">#ff999999</color>
     <color name="fab_color">#ff56396a</color>
-    <color name="gray">#cccccc</color>
-    <color name="add_user_feed_header_color">#ff929292</color>
-
-    <color name="text_edit_auth_terminal_hint_color">#ff929292</color>
-    <color name="nav_header_login_text_view_color">#ffa4a4a4</color>
 
 </resources>
