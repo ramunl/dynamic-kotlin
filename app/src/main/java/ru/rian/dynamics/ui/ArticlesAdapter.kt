@@ -19,6 +19,7 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.list_item_article.view.*
 import ru.rian.dynamics.R
 import ru.rian.dynamics.retrofit.model.Article
+import ru.rian.dynamics.ui.fragments.ArticleFragment
 import ru.rian.dynamics.utils.FEED_TYPE_STORY
 import ru.rian.dynamics.utils.RiaDateUtils
 import ru.rian.dynamics.utils.RiaDateUtils.areTheDatesAtTheSameDay
@@ -60,11 +61,10 @@ class ArticlesAdapter(
         } else {
             val bundle = payloads[0] as Bundle
             for (key in bundle.keySet()) {
-                if (key == "article") {
+                if (key == ARTICLE_KEY) {
                     holder.bindItems(position, dataList)
                 }
             }
-
         }
     }
 

@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.GravityCompat
-import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.Menu
@@ -37,7 +36,12 @@ import ru.rian.dynamics.di.model.Injection
 import ru.rian.dynamics.di.model.MainViewModel
 import ru.rian.dynamics.di.model.MainViewModel.LoadingObserver.addLoadingObserver
 import ru.rian.dynamics.di.model.MainViewModel.LoadingObserver.removeLoadingObserver
-import ru.rian.dynamics.retrofit.model.*
+import ru.rian.dynamics.retrofit.model.Article
+import ru.rian.dynamics.retrofit.model.Feed
+import ru.rian.dynamics.retrofit.model.HSResult
+import ru.rian.dynamics.retrofit.model.Source
+import ru.rian.dynamics.ui.fragments.ArticleFragment
+import ru.rian.dynamics.ui.fragments.UserFeedsFragment
 import ru.rian.dynamics.utils.*
 import ru.rian.dynamics.utils.PreferenceHelper.get
 import ru.rian.dynamics.utils.PreferenceHelper.prefs
@@ -114,17 +118,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         viewModelFeed = ViewModelProviders.of(this, viewModelFactory).get(FeedViewModel::class.java)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
-
-        val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        )
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
-
         window.setBackgroundDrawableResource(R.color.transparent)
 
         hsResult = savedInstanceState?.getSerializable("hsResult") as HSResult?
@@ -155,17 +148,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var disposable = mainViewModel.provideFeeds(apiRequestArray?.getFeeds!!).subscribe(
             { result ->
                 result?.feeds?.let {
-                    kDebug("result ${result.toString()}")
+                    kDebug("result $result")
                     insertFeeds(it)
-                    showFragment(apiRequestArray, it)
+                    showArticlesFragment(it[0], apiRequestArray.getArticles!!)
                 }
             }, { e -> showError(e, SnackContainerProvider.ActionToInvoke(::requestFeeds)) })
         disposable?.let { compositeDisposable.add(it) }
     }
 
-    private fun showFragment(apiRequestArray: ApiRequests, feeds: List<Feed>) {
-        showArticlesFragment(feeds[0], apiRequestArray?.getArticles!!)
-    }
 
     private fun doRequestHS() {
         val disposable = mainViewModel.provideHS()
@@ -244,6 +234,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
+            R.id.nav_tapes -> showUserFeedsFragment()
+            R.id.nav_news -> showArticlesFragment()
             /* R.id.nav_share -> {
 
              }
@@ -256,7 +248,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    private fun showUserFeedsFragment() {
+        replaceFragment(
+            UserFeedsFragment.newInstance(),
+            FragmentId.USER_FEEDS_FRAGMENT_ID
+        )
+    }
+
+    private fun showArticlesFragment() {
+        if(feedSelected == null) {
+            requestHS()
+        } else {
+            val apiRequestArray = hsResult!!.apiRequestArray
+            showArticlesFragment(feedSelected!!, apiRequestArray!!.getArticles!!)
+        }
+    }
+
+    var feedSelected: Feed? = null
+
     private fun showArticlesFragment(feed: Feed, source: Source) {
+        feedSelected = feed
         replaceFragment(
             ArticleFragment.newInstance(feed.sid, source),
             FragmentId.ARTICLE_FRAGMENT_ID

@@ -27,9 +27,9 @@ import ru.rian.dynamics.retrofit.model.Feed
  */
 class FeedViewModel(private val dataSource: FeedDao) : ViewModel() {
 
-    fun getFeeds(): Flowable<List<Feed>> {
+    /*fun getFeeds(): Flowable<List<Feed>> {
         return dataSource.getAllFeeds().map { result -> result }
-    }
+    }*/
 
     fun getFeedsByType(type: String): Flowable<List<Feed>> {
         return dataSource.getAllFeeds(type).map { result -> result }

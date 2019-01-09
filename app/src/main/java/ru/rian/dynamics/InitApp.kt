@@ -6,7 +6,6 @@ import android.content.Intent
 import android.support.v7.app.AppCompatDelegate
 import com.onesignal.OneSignal
 import org.json.JSONException
-import org.slf4j.impl.HandroidLoggerAdapter
 import ru.rian.dynamics.di.component.AppComponent
 import ru.rian.dynamics.di.component.DaggerAppComponent
 import ru.rian.dynamics.di.model.AppModule

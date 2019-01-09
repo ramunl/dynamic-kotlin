@@ -5,14 +5,12 @@ import android.support.v7.util.DiffUtil
 import ru.rian.dynamics.retrofit.model.Article
 import java.util.logging.Logger
 
-/**
- * Created by Amanjeet Singh on 17/1/18.
- */
+const val ARTICLE_KEY = "article"
+
 class ArticleListDiffUtilCallBack(
     private val newList: List<Article>,
     private val oldList: List<Article>
 ) : DiffUtil.Callback() {
-
 
     companion object {
         val log = Logger.getLogger("ArticleListDiffUtilCallBack")
@@ -43,7 +41,7 @@ class ArticleListDiffUtilCallBack(
         val oldArticle = oldList[oldItemPosition]
         val bundle = Bundle()
         if (newArticle.id != oldArticle.id) {
-            bundle.putParcelable("article", newArticle)
+            bundle.putParcelable(ARTICLE_KEY, newArticle)
         }
         return bundle
     }

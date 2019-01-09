@@ -1,4 +1,4 @@
-package ru.rian.dynamics.ui
+package ru.rian.dynamics.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -20,6 +20,8 @@ import ru.rian.dynamics.di.model.ActivityModule
 import ru.rian.dynamics.di.model.MainViewModel
 import ru.rian.dynamics.retrofit.model.Article
 import ru.rian.dynamics.retrofit.model.Source
+import ru.rian.dynamics.ui.ArticlesAdapter
+import ru.rian.dynamics.ui.SnackContainerProvider
 import java.util.*
 import javax.inject.Inject
 

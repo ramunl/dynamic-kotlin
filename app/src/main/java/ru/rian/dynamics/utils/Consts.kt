@@ -21,7 +21,8 @@ const val getNotifications = "getNotifications"*/
 
 
 enum class FragmentId {
-    ARTICLE_FRAGMENT_ID
+    ARTICLE_FRAGMENT_ID,
+    USER_FEEDS_FRAGMENT_ID
 }
 
 const val FEED_TYPE_STORY: String = "story"

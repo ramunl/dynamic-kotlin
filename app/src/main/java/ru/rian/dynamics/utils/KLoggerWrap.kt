@@ -1,6 +1,5 @@
 package ru.rian.dynamics.utils
 
-import android.util.Log
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.Marker
