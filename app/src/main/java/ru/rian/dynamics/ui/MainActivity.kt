@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun showError(err: Throwable, methodToInvoke: SnackContainerProvider.ActionToInvoke) {
         val ctx = InitApp.appContext()
-        log_e(err)
+        kError(err)
         Snackbar.make(
             activityRootLayout,
             if (BuildConfig.DEBUG) err.toString() else ctx.getString(R.string.connection_error_title),
@@ -137,7 +137,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun requestHS() {
-        log_d("requestHS")
+        kDebug("requestHS")
         val playerId: String? = prefs()[PLAYER_ID]
         if (TextUtils.isEmpty(playerId)) {
             OneSignal.idsAvailable { userId, _ ->
@@ -150,7 +150,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun requestFeeds() {
-        log_d("requestFeeds")
+        kDebug("requestFeeds")
         val apiRequestArray = hsResult!!.apiRequestArray
         var disposable = mainViewModel.provideFeeds(apiRequestArray?.getFeeds!!).subscribe(
             { result ->
@@ -262,7 +262,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun insertFeeds(feeds: List<Feed>) {
-        log_d("insertFeeds size = ${feeds.size}")
+        kDebug("insertFeeds size = ${feeds.size}")
         compositeDisposable.add(
             viewModelFeed.insert(feeds)
                 .subscribeOn(Schedulers.io())
@@ -291,7 +291,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
     private fun onLoadingStateChanged(isLoading: Boolean) {
-        log_d("onLoadingStateChanged $isLoading")
+        kDebug("onLoadingStateChanged $isLoading")
         progressBarMain.visibility = if (isLoading) VISIBLE else GONE
     }
 

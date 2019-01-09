@@ -1,37 +1,31 @@
 package ru.rian.dynamics.utils
 
-import mu.KLogging
+import android.util.Log
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.slf4j.Marker
 import org.slf4j.MarkerFactory
+import kotlin.reflect.KClass
 
-open class KLoggerWrap(any: Any) {
+open class KLoggerWrap(clazz: KClass<*>) {
 
-    private val kLogging: KLogging = KLogging()
-    private val callerClass: Any = any
+    private val logger: Logger = LoggerFactory.getLogger(clazz.java.simpleName)
+    private val marker: Marker = MarkerFactory.getMarker(clazz.java.simpleName)
 
-    private fun marker(): Marker {
-        return MarkerFactory.getMarker(callerClass.javaClass.simpleName)
+    init {
+
     }
 
-    fun log_e(err: Throwable) {
-        kLogging.logger.error {
-            marker()
-            err
-        }
+    fun kError(err: Throwable) {
+        logger.error( err.message)
     }
 
-    fun log_w(message: String) {
-        kLogging.logger.warn {
-            marker()
-            message
-        }
+    fun kWarn(message: String) {
+        logger.warn(message)
     }
 
-    fun log_d(message: String) {
-        kLogging.logger.debug {
-            marker()
-            message
-        }
+    fun kDebug(message: String) {
+        logger.debug( message)
     }
 }
 

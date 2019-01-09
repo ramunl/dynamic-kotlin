@@ -6,6 +6,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatDelegate
 import com.onesignal.OneSignal
 import org.json.JSONException
+import org.slf4j.impl.HandroidLoggerAdapter
 import ru.rian.dynamics.di.component.AppComponent
 import ru.rian.dynamics.di.component.DaggerAppComponent
 import ru.rian.dynamics.di.model.AppModule
@@ -35,6 +36,9 @@ class InitApp : Application() {
     @Override
     override fun onCreate() {
         super.onCreate()
+        HandroidLoggerAdapter.DEBUG = BuildConfig.DEBUG
+       // HandroidLoggerAdapter.APP_NAME = getString(R.string.app_name)
+
         OneSignal.startInit(this).autoPromptLocation(false)
             .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
             .setNotificationOpenedHandler { result ->
