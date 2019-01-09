@@ -30,7 +30,7 @@ android {
     productFlavors {
         dynamics {
             dimension "appName"
-            applicationId = "ru.rian.dynamics"
+            applicationId = "ru.rian.dynamics1"
             versionCode 78
             versionName "4.93"
             manifestPlaceholders = [manifestApplicationId          : "${applicationId}",
@@ -98,5 +98,5 @@ dependencies {
     implementation 'android.arch.persistence.room:rxjava2:1.1.1'
     annotationProcessor 'android.arch.lifecycle:compiler:1.1.1'
     implementation 'org.jetbrains.kotlin:kotlin-reflect:1.3.10'
-    implementation 'sk.baka.slf4j:slf4j-handroid:+'
+    implementation 'sk.baka.slf4j:slf4j-handroid:1.7.26'
 }

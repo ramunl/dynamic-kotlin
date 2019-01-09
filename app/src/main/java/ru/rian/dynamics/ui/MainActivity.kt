@@ -129,11 +129,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         hsResult = savedInstanceState?.getSerializable("hsResult") as HSResult?
 
+        if (hsResult != null) {
+            addDrawerMenuItems(hsResult)
+        }
         setupFeedsLoaderListener()
 
-        if (hsResult == null) {
-            requestHS()
-        }
     }
 
     private fun requestHS() {
@@ -155,6 +155,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var disposable = mainViewModel.provideFeeds(apiRequestArray?.getFeeds!!).subscribe(
             { result ->
                 result?.feeds?.let {
+                    kDebug("result ${result.toString()}")
                     insertFeeds(it)
                     showFragment(apiRequestArray, it)
                 }
@@ -169,6 +170,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun doRequestHS() {
         val disposable = mainViewModel.provideHS()
             ?.subscribe({ result ->
+                kDebug("result ${result.toString()}")
                 hsResult = result
                 addDrawerMenuItems(result)
                 requestFeeds()
@@ -295,13 +297,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         progressBarMain.visibility = if (isLoading) VISIBLE else GONE
     }
 
+    override fun onStart() {
+        super.onStart()
+        kDebug("onStart")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        kDebug("onStop")
+    }
+
     override fun onResume() {
         super.onResume()
+        kDebug("onResume")
+        if (hsResult == null) {
+            requestHS()
+        }
     }
 
 
     override fun onPause() {
         super.onPause()
+        kDebug("onPause")
         if (compositeDisposable.size() > 0) {
             compositeDisposable.clear()
         }

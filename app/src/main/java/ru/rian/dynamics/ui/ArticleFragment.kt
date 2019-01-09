@@ -20,6 +20,7 @@ import ru.rian.dynamics.di.model.ActivityModule
 import ru.rian.dynamics.di.model.MainViewModel
 import ru.rian.dynamics.retrofit.model.Article
 import ru.rian.dynamics.retrofit.model.Source
+import ru.rian.dynamics.utils.hideKeyboard
 import java.util.*
 import javax.inject.Inject
 
@@ -73,6 +74,7 @@ class ArticleFragment : Fragment() {
         searchView = menu.findItem(R.id.search_news).actionView as SearchView
         if (!TextUtils.isEmpty(query)) {
             searchView.setQuery(query, false)
+            searchView.isIconified = false
         }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
