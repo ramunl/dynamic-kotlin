@@ -20,7 +20,6 @@ import ru.rian.dynamics.di.model.ActivityModule
 import ru.rian.dynamics.di.model.MainViewModel
 import ru.rian.dynamics.retrofit.model.Article
 import ru.rian.dynamics.retrofit.model.Source
-import ru.rian.dynamics.utils.hideKeyboard
 import java.util.*
 import javax.inject.Inject
 
@@ -66,7 +65,7 @@ class ArticleFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString("query", searchView.query.toString())
-        outState.putParcelableArrayList("articleList", articlesAdapter.articleList)
+        outState.putParcelableArrayList("dataList", articlesAdapter.dataList)
 
     }
 
@@ -204,10 +203,10 @@ class ArticleFragment : Fragment() {
         var articleListSaved: ArrayList<Article>? = null
         if (savedInstanceState != null) {
             query = savedInstanceState.getString("query")
-            articleListSaved = savedInstanceState.getParcelableArrayList<Article>("articleList")
+            articleListSaved = savedInstanceState.getParcelableArrayList<Article>("dataList")
         }
         if (articleListSaved != null && articleListSaved.size > 0) {
-            articlesAdapter.articleList = articleListSaved
+            articlesAdapter.dataList = articleListSaved
         } else {
             requestArticles()
         }

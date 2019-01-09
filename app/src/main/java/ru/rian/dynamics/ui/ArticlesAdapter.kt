@@ -31,7 +31,7 @@ import java.util.logging.Logger
 class ArticlesAdapter(
     val context: Context,
     private val mListener: ArticleFragment.OnListFragmentInteractionListener?,
-    var articleList: ArrayList<Article> = ArrayList()
+    var dataList: ArrayList<Article> = ArrayList()
 ) :
     RecyclerView.Adapter<ArticlesAdapter.ArticleViewHolder>() {
 
@@ -47,9 +47,9 @@ class ArticlesAdapter(
     }
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
-        holder.bindItems(position, articleList)
+        holder.bindItems(position, dataList)
         with(holder.itemView) {
-            tag = articleList[position]
+            tag = dataList[position]
             setOnClickListener(mOnClickListener)
         }
     }
@@ -61,7 +61,7 @@ class ArticlesAdapter(
             val bundle = payloads[0] as Bundle
             for (key in bundle.keySet()) {
                 if (key == "article") {
-                    holder.bindItems(position, articleList)
+                    holder.bindItems(position, dataList)
                 }
             }
 
@@ -82,7 +82,7 @@ class ArticlesAdapter(
     }
 
     override fun getItemCount(): Int {
-        return articleList.size
+        return dataList.size
     }
 
 
@@ -192,7 +192,7 @@ class ArticlesAdapter(
 
     fun addData(newList: List<Article>?) {
         newList?.let {
-            this.articleList.addAll(newList)
+            this.dataList.addAll(newList)
             notifyDataSetChanged()
         }
     }
@@ -200,24 +200,24 @@ class ArticlesAdapter(
     fun updateData(newList: List<Article>?) {
         newList?.let {
             var toUpdate = true
-            if (articleList.size > 0) {
+            if (dataList.size > 0) {
                 var newListFirstArticle = newList[0]
-                var firstArticle = articleList[0]
+                var firstArticle = dataList[0]
                 if (newListFirstArticle == firstArticle) {
                     toUpdate = false
                 }
             }
             if (toUpdate) {
-                if (!articleList.isEmpty()) {
-                    val joined = articleList.union(newList)
+                if (!dataList.isEmpty()) {
+                    val joined = dataList.union(newList)
                     val diffResult = DiffUtil.calculateDiff(
-                        ArticleListDiffUtilCallBack(newList, articleList)
+                        ArticleListDiffUtilCallBack(newList, dataList)
                     )
                     diffResult.dispatchUpdatesTo(this)
-                    this.articleList.clear()
-                    this.articleList.addAll(joined)
+                    this.dataList.clear()
+                    this.dataList.addAll(joined)
                 } else {
-                    this.articleList.addAll(newList)
+                    this.dataList.addAll(newList)
                     notifyDataSetChanged()
                 }
             }
@@ -225,7 +225,7 @@ class ArticlesAdapter(
     }
 
     fun removeAll() {
-        this.articleList.clear()
+        this.dataList.clear()
         notifyDataSetChanged()
     }
 }
