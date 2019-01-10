@@ -28,21 +28,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fragment_user_feeds_create_new_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="@dimen/fragment_fab_margin"
-        android:layout_marginEnd="@dimen/fragment_fab_margin"
-        android:layout_marginLeft="@dimen/fragment_fab_margin"
-        android:layout_marginRight="@dimen/fragment_fab_margin"
-        android:scaleType="fitXY"
-        app:backgroundTint="@color/fab_color"
-        app:elevation="8dp"
-        android:layout_alignParentRight="true" />
-
 
 </RelativeLayout>

@@ -1,11 +1,13 @@
 package ru.rian.dynamics.ui
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
@@ -231,12 +233,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.nav_tapes -> showUserFeedsFragment()
             R.id.nav_news -> showArticlesFragment()
-            /* R.id.nav_share -> {
-
-             }
-             R.id.nav_send -> {
-
-             }*/
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
@@ -244,14 +240,55 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun showUserFeedsFragment() {
-        replaceFragment(
-            UserFeedsFragment.newInstance(),
-            FragmentId.USER_FEEDS_FRAGMENT_ID
-        )
+        val fragmentId = FragmentId.USER_FEEDS_FRAGMENT_ID
+        setupFloatButton(fragmentId)
+        replaceFragment(UserFeedsFragment.newInstance(), fragmentId)
+    }
+
+    private fun getNotificationRes(feed: Feed?): Int {
+        var res = R.drawable.ic_notifications_none_gray
+        if (feed?.notification != null) {
+            if (TYPE_FEED_SUBSCRIPTION_BREAKING == feed.notification) {
+                res = R.drawable.ic_notifications_flash_gray
+            } else if (TYPE_FEED_SUBSCRIPTION_ALL == feed.notification) {
+                res = R.drawable.ic_notifications_all_gray
+            }
+        }
+        return res
+    }
+
+    private fun setFloatCreateUserFeedButton() {
+        var res = R.drawable.plus_fab
+        buttonFloat.setImageDrawable(ContextCompat.getDrawable(this, res))
+    }
+
+    private fun setFloatFlashFloatButton() {
+        var res = getNotificationRes(feedSelected)
+        buttonFloat.setImageDrawable(ContextCompat.getDrawable(this, res))
+        /*buttonFloat.setOnClickListener { v ->
+            //    BottomSheetChangePushFeedsDialogFragment.onClickProcess(getFragmentFeedSelected(), null);
+            val bottomSheetDialogFragment = BottomSheetChangePushFeedsDialogFragment()
+            val bundle = Bundle()
+            bundle.putParcelable("feed", getFragmentFeedSelected())
+            bottomSheetDialogFragment.setArguments(bundle)
+            bottomSheetDialogFragment.show(
+                (v.context as AppCompatActivity).supportFragmentManager,
+                bottomSheetDialogFragment.getTag()
+            )
+        }*/
+    }
+
+    private fun setupFloatButton(fragmentId: FragmentId) {
+        val color = ContextCompat.getColor(this, R.color.fab_color)
+        buttonFloat.backgroundTintList = ColorStateList.valueOf(color)
+        when (fragmentId) {
+            FragmentId.ARTICLE_FRAGMENT_ID -> setFloatFlashFloatButton()
+            FragmentId.USER_FEEDS_FRAGMENT_ID -> setFloatCreateUserFeedButton()
+        }
     }
 
     private fun showArticlesFragment() {
-        if(feedSelected == null) {
+        if (feedSelected == null) {
             requestHS()
         } else {
             val apiRequestArray = hsResult!!.apiRequestArray
@@ -263,10 +300,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun showArticlesFragment(feed: Feed, source: Source) {
         feedSelected = feed
-        replaceFragment(
-            ArticleFragment.newInstance(feed.sid, source),
-            FragmentId.ARTICLE_FRAGMENT_ID
-        )
+        val fragmentId = FragmentId.ARTICLE_FRAGMENT_ID
+        setupFloatButton(fragmentId)
+        replaceFragment(ArticleFragment.newInstance(feed.sid, source), fragmentId)
     }
 
     private fun insertFeeds(feeds: List<Feed>) {

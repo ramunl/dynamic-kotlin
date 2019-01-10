@@ -30,7 +30,7 @@ android {
     productFlavors {
         dynamics {
             dimension "appName"
-            applicationId = "ru.rian.dynamics1"
+            applicationId = "ru.rian.dynamics2"
             versionCode 78
             versionName "4.93"
             manifestPlaceholders = [manifestApplicationId          : "${applicationId}",

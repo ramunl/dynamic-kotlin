@@ -20,6 +20,9 @@ const val upsertSubscription = "upsertSubscription"
 const val getNotifications = "getNotifications"*/
 
 
+const val TYPE_FEED_SUBSCRIPTION_ALL = "allnews"
+const val TYPE_FEED_SUBSCRIPTION_BREAKING = "breakingnews"
+
 enum class FragmentId {
     ARTICLE_FRAGMENT_ID,
     USER_FEEDS_FRAGMENT_ID
