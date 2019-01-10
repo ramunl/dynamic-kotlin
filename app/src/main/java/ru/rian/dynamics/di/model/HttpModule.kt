@@ -13,7 +13,7 @@ import ru.rian.dynamics.utils.BASE_URL
 import javax.inject.Singleton
 
 @Module
-class NetModule {
+class HttpModule {
     @Provides
     @Singleton
     fun providesRetrofit(): Retrofit {

@@ -3,6 +3,7 @@ package ru.rian.dynamics.ui.fragments
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -60,7 +61,7 @@ class ArticleFragment : Fragment() {
         val fragmentComponent = DaggerFragmentComponent
             .builder()
             .appComponent(InitApp.get(context!!).component())
-            .activityModule(ActivityModule(SchedulerProvider()))
+            .activityModule(ActivityModule(context as FragmentActivity, SchedulerProvider()))
             .build()
         fragmentComponent.inject(this)
     }
@@ -102,17 +103,18 @@ class ArticleFragment : Fragment() {
     }
 
     private fun requestMoreArticles(query: String? = null) {
-        var disposable = mainViewModel.provideArticles(feedSource, feedId!!, query = query, offset = articlesAdapter.itemCount)
-            ?.subscribe(
-                { result ->
-                    updateList(result!!.articles, false)
-                },
-                { e ->
-                    snackContainerProvider().showError(
-                        e,
-                        SnackContainerProvider.ActionToInvoke(::requestMoreArticles, query)
-                    )
-                })
+        var disposable =
+            mainViewModel.provideArticles(feedSource, feedId!!, query = query, offset = articlesAdapter.itemCount)
+                ?.subscribe(
+                    { result ->
+                        updateList(result!!.articles, false)
+                    },
+                    { e ->
+                        snackContainerProvider().showError(
+                            e,
+                            SnackContainerProvider.ActionToInvoke(::requestMoreArticles, query)
+                        )
+                    })
         disposable?.let { compositeDisposable.add(it) }
     }
 
@@ -121,8 +123,7 @@ class ArticleFragment : Fragment() {
     }
 
     private fun requestArticles(query: String? = null) {
-        var disposable =
-            mainViewModel.provideArticles(feedSource, feedId!!, query = query, showProgress = !isRefreshing())
+        var disposable=  mainViewModel.provideArticles(feedSource, feedId, query = query, showProgress = !isRefreshing())
                 ?.subscribe(
                     { result ->
                         updateList(result?.articles)

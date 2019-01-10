@@ -2,47 +2,27 @@ package ru.rian.dynamics.di.model
 
 import android.text.TextUtils
 import io.reactivex.Observable
-import ru.rian.dynamics.DataManager
+import ru.rian.dynamics.HttpReqManager
 import ru.rian.dynamics.SchedulerProvider
-import ru.rian.dynamics.di.model.MainViewModel.LoadingObserver.loading
 import ru.rian.dynamics.retrofit.model.ArticleResponse
 import ru.rian.dynamics.retrofit.model.FeedResponse
 import ru.rian.dynamics.retrofit.model.HSResult
 import ru.rian.dynamics.retrofit.model.Source
+import ru.rian.dynamics.ui.LoadingObserver.loading
 import ru.rian.dynamics.utils.ARTICLE_LIST_LIMIT
 import ru.rian.dynamics.utils.HS_PATH
 import ru.rian.dynamics.utils.PreferenceHelper.get
 import ru.rian.dynamics.utils.PreferenceHelper.prefs
 import ru.rian.dynamics.utils.TOKEN_STRING_KEY
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 class MainViewModel @Inject constructor(
-    private var dataManager: DataManager,
+    private var httpReqManager: HttpReqManager,
     private var schedulerProvider: SchedulerProvider
 ) {
 
-    object LoadingObserver {
-
-        private var loadingStateObservers: MutableList<((Boolean) -> Unit)?> = ArrayList<((Boolean) -> Unit)?>()
-
-        var loading: Boolean by Delegates.observable(false) { _, oldValue, newValue ->
-            for (observer in loadingStateObservers) {
-                observer?.invoke(newValue)
-            }
-        }
-
-        fun removeLoadingObserver(observer: ((Boolean) -> Unit)?) {
-            loadingStateObservers.remove(observer)
-        }
-
-        fun addLoadingObserver(observer: ((Boolean) -> Unit)?) {
-            loadingStateObservers.add(observer)
-        }
-    }
 
     private val prefs = prefs()
-
 
     fun isTokenPresented(): Boolean {
         val isToken: String? = prefs[TOKEN_STRING_KEY]
@@ -51,7 +31,7 @@ class MainViewModel @Inject constructor(
 
     fun provideHS(): Observable<HSResult?>? {
         loading = true
-        return dataManager.requestGet<HSResult?>(HS_PATH)
+        return httpReqManager.requestGet<HSResult?>(HS_PATH)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .doFinally { loading = false }
@@ -61,7 +41,7 @@ class MainViewModel @Inject constructor(
     fun provideFeeds(source: Source): Observable<FeedResponse?> {
         loading = true
         return source.url.let {
-            dataManager.requestGet<FeedResponse?>(it!!)
+            httpReqManager.requestGet<FeedResponse?>(it!!)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .doFinally { loading = false }
@@ -80,7 +60,7 @@ class MainViewModel @Inject constructor(
             loading = true
         }
         return source.url.let {
-            dataManager.requestGet<ArticleResponse?>(
+            httpReqManager.requestGet<ArticleResponse?>(
                 it!!,
                 feed,
                 ARTICLE_LIST_LIMIT.toString(),

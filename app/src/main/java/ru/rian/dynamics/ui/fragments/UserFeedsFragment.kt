@@ -3,6 +3,7 @@ package ru.rian.dynamics.ui.fragments
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -16,12 +17,13 @@ import kotlinx.android.synthetic.main.fragment_article_list.view.*
 import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
 import ru.rian.dynamics.SchedulerProvider
+import ru.rian.dynamics.di.component.DaggerUserFeedsFragmentComponent
 import ru.rian.dynamics.di.model.ActivityModule
 import ru.rian.dynamics.di.model.FeedViewModel
 import ru.rian.dynamics.retrofit.model.Feed
 import ru.rian.dynamics.ui.FeedsAdapter
 import ru.rian.dynamics.ui.SnackContainerProvider
-import ru.rian.dynamics.utils.FEED_TYPE_COMMON
+import ru.rian.dynamics.utils.FEED_TYPE_USER
 import ru.rian.dynamics.utils.KLoggerWrap
 import javax.inject.Inject
 
@@ -29,7 +31,7 @@ class UserFeedsFragment: Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = ArticleFragment()
+        fun newInstance() = UserFeedsFragment()
         var logger = KLoggerWrap(UserFeedsFragment::class)
     }
 
@@ -38,14 +40,14 @@ class UserFeedsFragment: Fragment() {
         fun onListFragmentInteraction(item: Feed?)
     }
 
+    @Inject
+    lateinit var viewModelFeed: FeedViewModel
+
     private lateinit var listAdapter: FeedsAdapter
 
     private lateinit var recyclerView: RecyclerView
 
     private lateinit var compositeDisposable: CompositeDisposable
-
-    @Inject
-    private lateinit var viewModelFeed: FeedViewModel
 
     private var listener: OnListFragmentInteractionListener? = null
 
@@ -56,7 +58,7 @@ class UserFeedsFragment: Fragment() {
         val fragmentComponent = DaggerUserFeedsFragmentComponent
             .builder()
             .appComponent(InitApp.get(context!!).component())
-            .activityModule(ActivityModule(SchedulerProvider()))
+            .activityModule(ActivityModule(context as FragmentActivity, SchedulerProvider()))
             .build()
         fragmentComponent.inject(this)
     }
@@ -109,7 +111,7 @@ class UserFeedsFragment: Fragment() {
 
     private fun setupFeedsLoaderListener() {
         compositeDisposable.add(
-            viewModelFeed.getFeedsByType(FEED_TYPE_COMMON)
+            viewModelFeed.getFeedsByType(FEED_TYPE_USER)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

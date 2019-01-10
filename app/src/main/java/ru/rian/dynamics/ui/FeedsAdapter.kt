@@ -34,14 +34,15 @@ class FeedsAdapter(
     }
 
     override fun onBindViewHolder(holder: FeedViewHolder, position: Int) {
+
+    }
+
+    override fun onBindViewHolder(holder: FeedViewHolder, position: Int, payloads: MutableList<Any>) {
         holder.bindItems(position, dataList)
         with(holder.itemView) {
             tag = dataList[position]
             setOnClickListener(mOnClickListener)
         }
-    }
-
-    override fun onBindViewHolder(holder: FeedViewHolder, position: Int, payloads: MutableList<Any>) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): FeedViewHolder {

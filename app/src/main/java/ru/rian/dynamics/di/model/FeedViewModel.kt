@@ -21,11 +21,10 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import ru.rian.dynamics.db.FeedDao
 import ru.rian.dynamics.retrofit.model.Feed
+import javax.inject.Inject
 
-/**
- * View Model for the [UserActivity]
- */
-class FeedViewModel(private val dataSource: FeedDao) : ViewModel() {
+
+class FeedViewModel @Inject constructor(private val dataSource: FeedDao) : ViewModel() {
 
     /*fun getFeeds(): Flowable<List<Feed>> {
         return dataSource.getAllFeeds().map { result -> result }

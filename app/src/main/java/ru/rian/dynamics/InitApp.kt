@@ -6,10 +6,11 @@ import android.content.Intent
 import android.support.v7.app.AppCompatDelegate
 import com.onesignal.OneSignal
 import org.json.JSONException
+import org.slf4j.impl.HandroidLoggerAdapter
 import ru.rian.dynamics.di.component.AppComponent
 import ru.rian.dynamics.di.component.DaggerAppComponent
 import ru.rian.dynamics.di.model.AppModule
-import ru.rian.dynamics.di.model.NetModule
+import ru.rian.dynamics.di.model.HttpModule
 import ru.rian.dynamics.ui.MainActivity
 
 
@@ -66,7 +67,7 @@ class InitApp : Application() {
     fun component(): AppComponent {
         return DaggerAppComponent.builder()
             .appModule(AppModule(this))
-            .netModule(NetModule())
+            .httpModule(HttpModule())
             .build()
     }
 }

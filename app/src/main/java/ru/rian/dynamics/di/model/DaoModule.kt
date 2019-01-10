@@ -16,24 +16,25 @@
 
 package ru.rian.dynamics.di.model
 
-import android.content.Context
+import dagger.Module
+import dagger.Provides
 import ru.rian.dynamics.db.DynamicsDataBase
 import ru.rian.dynamics.db.FeedDao
 import ru.rian.dynamics.db.ViewModelFactory
 
 
-/**
- * Enables injection of data sources.
- */
-object Injection {
+@Module
+class DaoModule {
 
-    fun provideFeedDataSource(context: Context): FeedDao {
-        val database = DynamicsDataBase.getInstance(context)
+    @Provides
+    fun provideFeedDataSource(): FeedDao {
+        val database = DynamicsDataBase.getInstance()
         return database.feedDao()
     }
 
-    fun provideViewModelFactory(context: Context): ViewModelFactory {
-        val dataSource = provideFeedDataSource(context)
+
+    fun provideViewModelFactory(): ViewModelFactory {
+        val dataSource = provideFeedDataSource()
         return ViewModelFactory(dataSource)
     }
 }

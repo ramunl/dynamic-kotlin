@@ -1,6 +1,5 @@
 package ru.rian.dynamics.ui
 
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
@@ -28,18 +27,16 @@ import ru.rian.dynamics.R.drawable.ic_terminal_feeds_badge
 import ru.rian.dynamics.R.id.menu_action_toolbar_select_feed
 import ru.rian.dynamics.R.string.*
 import ru.rian.dynamics.SchedulerProvider
-import ru.rian.dynamics.db.ViewModelFactory
 import ru.rian.dynamics.di.component.DaggerActivityComponent
 import ru.rian.dynamics.di.model.ActivityModule
 import ru.rian.dynamics.di.model.FeedViewModel
-import ru.rian.dynamics.di.model.Injection
 import ru.rian.dynamics.di.model.MainViewModel
-import ru.rian.dynamics.di.model.MainViewModel.LoadingObserver.addLoadingObserver
-import ru.rian.dynamics.di.model.MainViewModel.LoadingObserver.removeLoadingObserver
 import ru.rian.dynamics.retrofit.model.Article
 import ru.rian.dynamics.retrofit.model.Feed
 import ru.rian.dynamics.retrofit.model.HSResult
 import ru.rian.dynamics.retrofit.model.Source
+import ru.rian.dynamics.ui.LoadingObserver.addLoadingObserver
+import ru.rian.dynamics.ui.LoadingObserver.removeLoadingObserver
 import ru.rian.dynamics.ui.fragments.ArticleFragment
 import ru.rian.dynamics.ui.fragments.UserFeedsFragment
 import ru.rian.dynamics.utils.*
@@ -54,10 +51,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     @Inject
     lateinit var mainViewModel: MainViewModel
+
+    @Inject
+    lateinit var viewModelFeed: FeedViewModel
+
     private lateinit var compositeDisposable: CompositeDisposable
-    private lateinit var viewModelFeed: FeedViewModel
-    private lateinit var viewModelFactory: ViewModelFactory
+
     private var showBadgeFeedBtnFlag = false
+
     private var hsResult: HSResult? = null
 
     companion object : KLoggerWrap(MainActivity::class)
@@ -107,16 +108,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val activityComponent = DaggerActivityComponent
             .builder()
             .appComponent(InitApp.get(this).component())
-            .activityModule(ActivityModule(SchedulerProvider()))
+            .activityModule(ActivityModule(this, SchedulerProvider()))
             .build()
         activityComponent.inject(this)
 
         addLoadingObserver(::onLoadingStateChanged)
-
-
-        viewModelFactory = Injection.provideViewModelFactory(this)
-
-        viewModelFeed = ViewModelProviders.of(this, viewModelFactory).get(FeedViewModel::class.java)
 
         window.setBackgroundDrawableResource(R.color.transparent)
 

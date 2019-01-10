@@ -4,7 +4,6 @@
     android:id="@+id/fragment_user_feeds_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clickable="true"
     android:gravity="center">
 
     <ImageView
@@ -25,7 +24,7 @@
         android:textAlignment="center" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragment_user_feeds_list"
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -45,9 +44,5 @@
         app:elevation="8dp"
         android:layout_alignParentRight="true" />
 
-    <ru.rian.dynamics.views.ProgressView
-        android:id="@+id/fragment_user_feeds_progress_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </RelativeLayout>

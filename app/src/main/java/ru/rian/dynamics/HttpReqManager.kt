@@ -17,7 +17,7 @@ import javax.inject.Singleton
 
 
 @Singleton
-class DataManager @Inject constructor(var apiInterface: ApiInterface) {
+class HttpReqManager @Inject constructor(var apiInterface: ApiInterface) {
 
     inline fun <reified T> requestGet(
         path: String,

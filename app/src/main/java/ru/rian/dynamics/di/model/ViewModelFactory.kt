@@ -19,11 +19,12 @@ package ru.rian.dynamics.db
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import ru.rian.dynamics.di.model.FeedViewModel
+import javax.inject.Inject
 
 /**
  * Factory for ViewModels
  */
-class ViewModelFactory(private val dataSource: FeedDao) : ViewModelProvider.Factory {
+class ViewModelFactory @Inject constructor(var dataSource: FeedDao) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(FeedViewModel::class.java)) {
