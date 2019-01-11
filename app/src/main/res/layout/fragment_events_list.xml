@@ -6,30 +6,30 @@
                 android:gravity="center">
 
     <ImageView
-        android:id="@+id/fragment_events_list_stub_image_view"
-        android:layout_width="118dp"
-        android:layout_height="118dp"
-        android:layout_centerInParent="true"
-        android:src="@drawable/event_placeholder" />
+            android:id="@+id/fragment_events_list_stub_image_view"
+            android:layout_width="118dp"
+            android:layout_height="118dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/event_placeholder"/>
 
     <TextView
-        android:id="@+id/fragment_events_list_stub_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/fragment_events_list_stub_image_view"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="7dp"
-        android:text="@string/notification_empty_title"
-        android:textAlignment="center" />
+            android:id="@+id/fragment_events_list_stub_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fragment_events_list_stub_image_view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="7dp"
+            android:text="@string/notification_empty_title"
+            android:textAlignment="center"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragment_events_list_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+            android:id="@+id/fragment_events_list_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     <ru.rian.dynamics.views.ProgressView
-        android:id="@+id/fragment_events_list_progress_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+            android:id="@+id/fragment_events_list_progress_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
 </RelativeLayout>

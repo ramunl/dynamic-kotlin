@@ -1,32 +1,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="ru.rian.dynamics.EnterActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="ru.rian.dynamics.EnterActivity">
 
-    <include layout="@layout/layout_splash" />
+    <include layout="@layout/layout_splash"/>
 
     <ImageView
-        android:id="@+id/splash_logo"
-        android:scaleType="centerCrop"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:src="@drawable/splash_logo" />
+            android:id="@+id/splash_logo"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:src="@drawable/splash_logo"/>
 
     <com.devspark.robototextview.widget.RobotoButton
-        android:id="@+id/enter_button"
-        android:visibility="gone"
-        android:layout_width="@dimen/enter_button_width"
-        android:layout_height="@dimen/enter_button_height"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/btn_bg_selector"
-        android:gravity="center"
-        android:textAllCaps="false"
-        android:text="@string/continue_action"
-        android:textColor="@color/white"
-        android:textSize="@dimen/top_bar_button_text_size" />
+            android:id="@+id/enter_button"
+            android:visibility="gone"
+            android:layout_width="@dimen/enter_button_width"
+            android:layout_height="@dimen/enter_button_height"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/btn_bg_selector"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:text="@string/continue_action"
+            android:textColor="@color/white"
+            android:textSize="@dimen/top_bar_button_text_size"/>
 
     <!--<com.devspark.robototextview.widget.RobotoButton
         android:id="@+id/enter_button"

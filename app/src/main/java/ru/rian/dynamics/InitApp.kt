@@ -37,7 +37,7 @@ class InitApp : Application() {
     override fun onCreate() {
         super.onCreate()
         HandroidLoggerAdapter.DEBUG = BuildConfig.DEBUG
-       // HandroidLoggerAdapter.APP_NAME = getString(R.string.app_name)
+        // HandroidLoggerAdapter.APP_NAME = getString(R.string.app_name)
 
         OneSignal.startInit(this).autoPromptLocation(false)
             .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)

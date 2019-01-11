@@ -1,40 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/modal_bottom_sheet_delete_user_feed_delete_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:minHeight="56dp">
+            android:id="@+id/modal_bottom_sheet_delete_user_feed_delete_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:minHeight="56dp">
 
         <ImageView
-            android:id="@+id/modal_bottom_sheet_delete_user_feed_delete_image_view"
-            android:layout_width="56dp"
-            android:layout_height="24dp"
-            android:layout_centerVertical="true"
-            android:paddingLeft="@dimen/menu_margin_left"
-            android:paddingRight="@dimen/menu_margin_left"
-            android:src="@drawable/ic_delete_orange" />
+                android:id="@+id/modal_bottom_sheet_delete_user_feed_delete_image_view"
+                android:layout_width="56dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:paddingLeft="@dimen/menu_margin_left"
+                android:paddingRight="@dimen/menu_margin_left"
+                android:src="@drawable/ic_delete_orange"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/menu_item_height"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/modal_bottom_sheet_delete_user_feed_delete_image_view"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:lines="1"
-            android:maxLines="1"
-            android:paddingLeft="@dimen/menu_margin_left"
-            android:paddingRight="@dimen/menu_margin_left"
-            android:text="@string/tapes_remove"
-            android:textColor="@color/black_87"
-            android:textSize="18sp"
-            android:layout_toRightOf="@id/modal_bottom_sheet_delete_user_feed_delete_image_view" />
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/menu_item_height"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/modal_bottom_sheet_delete_user_feed_delete_image_view"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingLeft="@dimen/menu_margin_left"
+                android:paddingRight="@dimen/menu_margin_left"
+                android:text="@string/tapes_remove"
+                android:textColor="@color/black_87"
+                android:textSize="18sp"
+                android:layout_toRightOf="@id/modal_bottom_sheet_delete_user_feed_delete_image_view"/>
 
     </RelativeLayout>
 

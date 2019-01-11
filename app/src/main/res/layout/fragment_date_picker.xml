@@ -1,40 +1,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical"
-    tools:context=".MainActivity$RiaDatePickerFragment">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:gravity="center"
+              android:orientation="vertical"
+              tools:context=".MainActivity$RiaDatePickerFragment">
 
     <TextView
-        android:id="@+id/reset_to_archive_btn"
-        android:layout_width="@dimen/filter_dialog_button_width"
-        android:layout_height="@dimen/filter_dialog_button_height"
-        android:gravity="center"
-        android:text="" />
+            android:id="@+id/reset_to_archive_btn"
+            android:layout_width="@dimen/filter_dialog_button_width"
+            android:layout_height="@dimen/filter_dialog_button_height"
+            android:gravity="center"
+            android:text=""/>
 
     <ImageView
-        android:layout_width="@dimen/filter_dialog_button_width"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray" />
+            android:layout_width="@dimen/filter_dialog_button_width"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
 
     <DatePicker
-        android:id="@+id/datePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:calendarViewShown="false" />
+            android:id="@+id/datePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:calendarViewShown="false"/>
 
     <ImageView
-        android:layout_width="@dimen/filter_dialog_button_width"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray" />
+            android:layout_width="@dimen/filter_dialog_button_width"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
 
     <TextView
-        android:id="@+id/ready_btn"
-        android:layout_width="@dimen/filter_dialog_button_width"
-        android:layout_height="@dimen/filter_dialog_button_height"
-        android:background="@color/white"
-        android:gravity="center"
-        android:text="@string/button_done" />
+            android:id="@+id/ready_btn"
+            android:layout_width="@dimen/filter_dialog_button_width"
+            android:layout_height="@dimen/filter_dialog_button_height"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="@string/button_done"/>
 
 </LinearLayout>

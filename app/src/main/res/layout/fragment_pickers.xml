@@ -1,67 +1,67 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity$PickersFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".MainActivity$PickersFragment">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="100">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="100">
 
         <com.devspark.robototextview.widget.RobotoButton
-            android:id="@+id/archive_btn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="2dp"
-            android:layout_marginEnd="2dp"
-            android:layout_marginLeft="0dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="2dp"
-            android:layout_weight="37"
-            android:background="#FFFFFF"
-            android:text=""
-            android:textSize="13sp" />
+                android:id="@+id/archive_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="37"
+                android:background="#FFFFFF"
+                android:text=""
+                android:textSize="13sp"/>
 
         <ImageView
-            android:id="@+id/flash_btn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="2dp"
-            android:layout_weight="25"
-            android:background="#FFFFFF"
-            android:clickable="true"
-            android:gravity="center"
-            android:scaleType="center"
-            android:src="@drawable/btn_flash_icon_selector" />
+                android:id="@+id/flash_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="25"
+                android:background="#FFFFFF"
+                android:clickable="true"
+                android:gravity="center"
+                android:scaleType="center"
+                android:src="@drawable/btn_flash_icon_selector"/>
 
         <com.devspark.robototextview.widget.RobotoButton
-            android:id="@+id/day_btn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="0dp"
-            android:layout_marginTop="2dp"
-            android:layout_weight="37"
-            android:background="#FFFFFF"
-            android:text=""
-            android:textSize="13sp"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="0dp" />
+                android:id="@+id/day_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="2dp"
+                android:layout_weight="37"
+                android:background="#FFFFFF"
+                android:text=""
+                android:textSize="13sp"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="0dp"/>
     </LinearLayout>
 
     <com.devspark.robototextview.widget.RobotoButton
-        android:id="@+id/show_new_articles"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="2dp"
-        android:background="@drawable/show_articles_btn_bg_selector"
-        android:gravity="center"
-        android:text="@string/news_show_new_articles"
-        android:textSize="13sp"
-        android:visibility="gone" />
+            android:id="@+id/show_new_articles"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2dp"
+            android:background="@drawable/show_articles_btn_bg_selector"
+            android:gravity="center"
+            android:text="@string/news_show_new_articles"
+            android:textSize="13sp"
+            android:visibility="gone"/>
 </RelativeLayout>

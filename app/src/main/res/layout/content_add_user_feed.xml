@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="?attr/actionBarSize"
-    tools:context="ru.rian.dynamics.activity.AddUserFeedActivity"
-    tools:showIn="@layout/activity_add_user_feed">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="?attr/actionBarSize"
+                tools:context="ru.rian.dynamics.activity.AddUserFeedActivity"
+                tools:showIn="@layout/activity_add_user_feed">
 
     <EditText
-        android:id="@+id/content_add_user_feed_query_edit_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:hint="@string/create_feed_query_placeholder"
-        android:minHeight="56dp"
-        android:textColorHint="@color/drawer_item_additional_text_color" />
+            android:id="@+id/content_add_user_feed_query_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="@string/create_feed_query_placeholder"
+            android:minHeight="56dp"
+            android:textColorHint="@color/drawer_item_additional_text_color"/>
 
     <EditText
-        android:id="@+id/content_add_user_feed_name_edit_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/content_add_user_feed_query_edit_text"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:hint="@string/create_feed_title_placeholder"
-        android:minHeight="48dp"
-        android:textColorHint="@color/drawer_item_additional_text_color" />
+            android:id="@+id/content_add_user_feed_name_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/content_add_user_feed_query_edit_text"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="@string/create_feed_title_placeholder"
+            android:minHeight="48dp"
+            android:textColorHint="@color/drawer_item_additional_text_color"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/content_add_user_feed_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/content_add_user_feed_name_edit_text"
-        android:layout_marginTop="6dp" />
+            android:id="@+id/content_add_user_feed_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/content_add_user_feed_name_edit_text"
+            android:layout_marginTop="6dp"/>
 
 </RelativeLayout>

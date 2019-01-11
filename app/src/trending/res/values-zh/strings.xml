@@ -54,7 +54,9 @@
     <string name="settings_about_title">关于此应用</string>
     <string name="settings_about_version">版本</string>
     <string name="settings_about_copyright">© Sputnik</string>
-    <string name="settings_about_text">感谢您使用“卫星新闻”应用。该应用首先针对的是包括政府机关和商业人士在内的专业用户群。我们的联系方式：\n电话号码： +7 (495) 645-6405 \n 传真: +7 (495) 637-2746 \nE-mail: podpiska@rian.ru; sales@rian.ru</string>
+    <string name="settings_about_text">感谢您使用“卫星新闻”应用。该应用首先针对的是包括政府机关和商业人士在内的专业用户群。我们的联系方式：\n电话号码： +7 (495) 645-6405 \n
+        传真: +7 (495) 637-2746 \nE-mail: podpiska@rian.ru; sales@rian.ru
+    </string>
     <string name="settings_lang_title">语言</string>
     <string name="sharing_postfix">© Sputnik</string>
     <string name="promo_alert_open">打开</string>

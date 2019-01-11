@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="progress_bar" type="id" />
-    <item name="app_message_view" type="id" />
-    <item name="buttonFloat" type="id" />
+
+    <item name="toolbarDynamic" type="id"/>
+    <item name="progress_bar" type="id"/>
+    <item name="app_message_view" type="id"/>
+    <item name="buttonFloatDynamic" type="id"/>
 
     <item name="menu_action_toolbar_add_user_feeds_save" type="id"/>
     <item name="menu_action_toolbar_add_user_feeds_disabled_save" type="id"/>

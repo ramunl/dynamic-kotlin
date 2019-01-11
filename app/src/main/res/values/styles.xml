@@ -19,7 +19,7 @@
     </style>
 
     <!-- Backward-compatible version of ?android:attr/buttonBarButtonStyle -->
-    <style name="ButtonBarButton" />
+    <style name="ButtonBarButton"/>
 
     <style name="AddNewLineEditText">
         <item name="android:layout_marginStart">2dp</item>
@@ -121,7 +121,7 @@
         <item name="android:visibility">invisible</item>
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <!-- Used for the buttons -->
@@ -155,7 +155,7 @@
         <item name="windowActionBarOverlay">true</item>
     </style>
 
-    <style name="CustomWidgetSwitchCompat" >
+    <style name="CustomWidgetSwitchCompat">
         <!--textColor on activated state -->
         <item name="android:textColorPrimary">@color/white</item>
         <!-- Active thumb color & Active track color(30% transparency) -->
@@ -166,10 +166,14 @@
         <item name="android:colorForeground">@color/gray</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="ToolbarStyle" parent="@style/ThemeOverlay.AppCompat.ActionBar">
         <!-- Customize color of navigation drawer icon and back arrow -->
         <item name="colorControlNormal">@color/white</item>
+    </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 </resources>

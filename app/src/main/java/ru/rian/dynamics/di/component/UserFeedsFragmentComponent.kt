@@ -8,7 +8,7 @@ import ru.rian.dynamics.di.model.HttpModule
 import ru.rian.dynamics.ui.fragments.UserFeedsFragment
 
 @PerActivity
-@Component(modules = [HttpModule::class, ActivityModule::class,  DaoModule::class], dependencies = [AppComponent::class])
+@Component(modules = [HttpModule::class, ActivityModule::class, DaoModule::class], dependencies = [AppComponent::class])
 
 interface UserFeedsFragmentComponent {
     fun inject(fragment: UserFeedsFragment)

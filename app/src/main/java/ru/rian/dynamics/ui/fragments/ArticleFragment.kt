@@ -21,17 +21,19 @@ import ru.rian.dynamics.di.model.ActivityModule
 import ru.rian.dynamics.di.model.MainViewModel
 import ru.rian.dynamics.retrofit.model.Article
 import ru.rian.dynamics.retrofit.model.Source
-import ru.rian.dynamics.ui.ArticlesAdapter
-import ru.rian.dynamics.ui.SnackContainerProvider
+import ru.rian.dynamics.ui.fragments.adapters.ArticlesAdapter
+import ru.rian.dynamics.ui.fragments.listeners.OnArticlesListInteractionListener
+import ru.rian.dynamics.ui.helpers.SnackContainerProvider
 import java.util.*
 import javax.inject.Inject
 
 /**
  * A fragment representing a list of article items.
  * Activities containing this fragment MUST implement the
- * [ArticleFragment.OnListFragmentInteractionListener] interface.
  */
-class ArticleFragment : Fragment() {
+
+
+class ArticleFragment : Fragment(), OnArticlesListInteractionListener {
     private lateinit var searchView: SearchView
 
     private lateinit var swipeRefreshArticleList: SwipeRefreshLayout
@@ -46,8 +48,6 @@ class ArticleFragment : Fragment() {
     private lateinit var feedId: String
     @Inject
     lateinit var mainViewModel: MainViewModel
-
-    private var listener: OnListFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,7 +123,8 @@ class ArticleFragment : Fragment() {
     }
 
     private fun requestArticles(query: String? = null) {
-        var disposable=  mainViewModel.provideArticles(feedSource, feedId, query = query, showProgress = !isRefreshing())
+        var disposable =
+            mainViewModel.provideArticles(feedSource, feedId, query = query, showProgress = !isRefreshing())
                 ?.subscribe(
                     { result ->
                         updateList(result?.articles)
@@ -178,7 +179,7 @@ class ArticleFragment : Fragment() {
 
         if (view.recyclerView is RecyclerView) {
 
-            articlesAdapter = ArticlesAdapter(view.context, listener)
+            articlesAdapter = ArticlesAdapter(view.context, this)
 
             view.recyclerView.adapter = articlesAdapter
 
@@ -218,30 +219,16 @@ class ArticleFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnListFragmentInteractionListener) {
-            listener = context
-        }
     }
 
     override fun onDetach() {
         super.onDetach()
-        listener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson
-     * [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: Article?)
+
+
+    override fun onArticlesListInteraction(item: Article?) {
+
     }
 
     companion object {

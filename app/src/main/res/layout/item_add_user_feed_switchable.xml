@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/android:selectableItemBackground"
-    android:minHeight="56dp">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/android:selectableItemBackground"
+                android:minHeight="56dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginBottom="@dimen/menu_margin_left"
-        android:layout_marginTop="@dimen/menu_margin_left"
-        android:layout_toLeftOf="@+id/item_add_user_feed_toggle_button"
-        android:layout_toStartOf="@id/item_add_user_feed_toggle_button"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/menu_margin_left"
-        android:paddingRight="@dimen/menu_margin_left">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/menu_margin_left"
+            android:layout_marginTop="@dimen/menu_margin_left"
+            android:layout_toLeftOf="@+id/item_add_user_feed_toggle_button"
+            android:layout_toStartOf="@id/item_add_user_feed_toggle_button"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/menu_margin_left"
+            android:paddingRight="@dimen/menu_margin_left">
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/item_add_user_feed_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:fontFamily="@font/roboto_regular"
-            android:lines="1"
-            android:singleLine="true"
-            android:textColor="@color/black_87"
-            android:textSize="16sp"
-            app:fontFamily="@font/roboto_regular" />
+                android:id="@+id/item_add_user_feed_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/roboto_regular"
+                android:lines="1"
+                android:singleLine="true"
+                android:textColor="@color/black_87"
+                android:textSize="16sp"
+                app:fontFamily="@font/roboto_regular"/>
 
     </LinearLayout>
 
     <android.support.v7.widget.SwitchCompat
-        android:id="@+id/item_add_user_feed_toggle_button"
-        style="@style/CustomWidgetSwitchCompat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:checked="true"
-        android:minHeight="@dimen/menu_item_height"
-        android:paddingLeft="@dimen/menu_margin_left"
-        android:paddingRight="@dimen/menu_margin_left"
-        android:textOff=""
-        android:textOn=""
-        android:theme="@style/CustomWidgetSwitchCompat"
-        android:layout_alignParentEnd="true" />
+            android:id="@+id/item_add_user_feed_toggle_button"
+            style="@style/CustomWidgetSwitchCompat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:checked="true"
+            android:minHeight="@dimen/menu_item_height"
+            android:paddingLeft="@dimen/menu_margin_left"
+            android:paddingRight="@dimen/menu_margin_left"
+            android:textOff=""
+            android:textOn=""
+            android:theme="@style/CustomWidgetSwitchCompat"
+            android:layout_alignParentEnd="true"/>
 
 </RelativeLayout>

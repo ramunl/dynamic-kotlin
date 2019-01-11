@@ -1,4 +1,4 @@
-package ru.rian.dynamics.ui
+package ru.rian.dynamics.ui.fragments.adapters
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -8,19 +8,19 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.list_item_user_feeds.view.*
 import ru.rian.dynamics.R
 import ru.rian.dynamics.retrofit.model.Feed
-import ru.rian.dynamics.ui.fragments.UserFeedsFragment
+import ru.rian.dynamics.ui.fragments.listeners.OnUserFeedsListInteractionListener
 import java.util.*
 import java.util.logging.Logger
 
 /**
  * Created by Amanjeet Singh on 17/1/18.
  */
-class FeedsAdapter(
+class UserFeedsAdapter(
     val context: Context,
-    private val mListener: UserFeedsFragment.OnListFragmentInteractionListener?,
+    private val mListener: OnUserFeedsListInteractionListener?,
     var dataList: ArrayList<Feed> = ArrayList()
 ) :
-    RecyclerView.Adapter<FeedsAdapter.FeedViewHolder>() {
+    RecyclerView.Adapter<UserFeedsAdapter.FeedViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
 
@@ -29,7 +29,7 @@ class FeedsAdapter(
             val item = v.tag as Feed
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
-            mListener?.onListFragmentInteraction(item)
+            mListener?.onUserFeedsListInteraction(item)
         }
     }
 
@@ -55,7 +55,7 @@ class FeedsAdapter(
 
 
     companion object {
-        val log = Logger.getLogger("FeedsAdapter")
+        val log = Logger.getLogger("UserFeedsAdapter")
     }
 
     override fun getItemCount(): Int {
@@ -68,7 +68,7 @@ class FeedsAdapter(
             val feed = feedList[position]
             itemView.item_user_feeds_text_view.text = feed.title
         }
-        
+
     }
 
 

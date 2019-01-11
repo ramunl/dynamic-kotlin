@@ -5,5 +5,5 @@
             android:id="@+id/search_news"
             android:title="@string/search_hint"
             app:actionLayout="@layout/search_layout"
-            app:showAsAction="always" />
+            app:showAsAction="always"/>
 </menu>

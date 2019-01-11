@@ -19,7 +19,9 @@
     <string name="button_yes">Да</string>
     <string name="button_no">Нет</string>
     <string name="connection_error_title">Ошибка соединения</string>
-    <string name="connection_error_info">Не удается подключиться к удаленному серверу, убедитесь, что интернет соединение активно, и повторите запрос.</string>
+    <string name="connection_error_info">Не удается подключиться к удаленному серверу, убедитесь, что интернет
+        соединение активно, и повторите запрос.
+    </string>
     <!-- Название раздела внутри приложения -->
     <string name="news_tab_title">Динамика дня</string>
     <string name="news_today">Сегодня</string>
@@ -54,12 +56,17 @@
     <string name="settings_about_title">О приложении</string>
     <string name="settings_about_version">Версия:</string>
     <string name="settings_about_copyright">© МИА Россия сегодня</string>
-    <string name="settings_about_text">Спасибо, что Вы установили мобильное приложение «Динамика дня». Оно предназначено в первую очередь для профессиональной аудитории, включая представителей органов власти и бизнеса.\n\nКонтакты:\n\nТел.: +7 (495) 645-6405\n\nФакс: +7 (495) 637-2746\n\nE-mail: podpiska@rian.ru; sales@rian.ru</string>
+    <string name="settings_about_text">Спасибо, что Вы установили мобильное приложение «Динамика дня». Оно предназначено
+        в первую очередь для профессиональной аудитории, включая представителей органов власти и
+        бизнеса.\n\nКонтакты:\n\nТел.: +7 (495) 645-6405\n\nФакс: +7 (495) 637-2746\n\nE-mail: podpiska@rian.ru;
+        sales@rian.ru
+    </string>
     <string name="settings_lang_title">Язык</string>
     <string name="sharing_postfix">© РИА Новости</string>
     <string name="promo_alert_open">Открыть</string>
     <string name="promo_alert_notification_title">Включить уведомления для ленты</string>
-    <string name="promo_alert_notification_message">В дальнейшем уведомления всегда можно выключить в настройках</string>
+    <string name="promo_alert_notification_message">В дальнейшем уведомления всегда можно выключить в настройках
+    </string>
     <string name="promo_alert_tape_title">Добавлена новая новостная лента</string>
     <string name="promo_alert_tape_message">Лента посвящена</string>
     <string name="terminal_title">Терминал</string>
@@ -69,7 +76,9 @@
     <string name="settings_notification_story_feeds">Сюжеты</string>
     <string name="settings_terminal_login_placeholder">Логин</string>
     <string name="settings_terminal_password_placeholder">Пароль</string>
-    <string name="settings_terminal_description">Новостной терминал — круглосуточный сервис доступа к оперативным информационным продуктам  МИА «Россия сегодня».\nДля оформления доступа обратитесь: sales@rian.ru</string>
+    <string name="settings_terminal_description">Новостной терминал — круглосуточный сервис доступа к оперативным
+        информационным продуктам МИА «Россия сегодня».\nДля оформления доступа обратитесь: sales@rian.ru
+    </string>
     <string name="settings_terminal_feed_waitings">Обновление данных</string>
     <string name="settings_terminal_feed_waitings_error">Ошибка загрузки данных</string>
     <string name="done_button">Готово</string>

@@ -8,7 +8,7 @@ import ru.rian.dynamics.retrofit.model.ArticleResponse
 import ru.rian.dynamics.retrofit.model.FeedResponse
 import ru.rian.dynamics.retrofit.model.HSResult
 import ru.rian.dynamics.retrofit.model.Source
-import ru.rian.dynamics.ui.LoadingObserver.loading
+import ru.rian.dynamics.ui.helpers.LoadingObserver.loading
 import ru.rian.dynamics.utils.ARTICLE_LIST_LIMIT
 import ru.rian.dynamics.utils.HS_PATH
 import ru.rian.dynamics.utils.PreferenceHelper.get

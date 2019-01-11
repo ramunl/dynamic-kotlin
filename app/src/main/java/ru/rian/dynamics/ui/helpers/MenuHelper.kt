@@ -1,4 +1,4 @@
-package ru.rian.dynamics.ui
+package ru.rian.dynamics.ui.helpers
 
 import android.view.Menu
 import android.view.MenuItem

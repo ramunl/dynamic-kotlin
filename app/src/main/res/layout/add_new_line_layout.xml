@@ -1,15 +1,15 @@
 <android.support.v7.widget.AppCompatEditText xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/edit_query"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@null"
-    android:fontFamily="@font/roboto_regular"
-    android:gravity="center|start"
-    android:hint="@string/tapes_creation_hint"
-    android:inputType="textCapSentences"
-    android:textColor="@color/white"
-    app:fontFamily="@font/roboto_regular">
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             android:id="@+id/edit_query"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:background="@null"
+                                             android:fontFamily="@font/roboto_regular"
+                                             android:gravity="center|start"
+                                             android:hint="@string/tapes_creation_hint"
+                                             android:inputType="textCapSentences"
+                                             android:textColor="@color/white"
+                                             app:fontFamily="@font/roboto_regular">
 
-    <requestFocus />
+    <requestFocus/>
 </android.support.v7.widget.AppCompatEditText>

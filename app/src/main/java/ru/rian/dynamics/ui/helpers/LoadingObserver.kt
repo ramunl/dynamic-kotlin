@@ -1,4 +1,4 @@
-package ru.rian.dynamics.ui
+package ru.rian.dynamics.ui.helpers
 
 import kotlin.properties.Delegates
 

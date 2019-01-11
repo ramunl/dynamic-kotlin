@@ -19,7 +19,9 @@
     <string name="button_yes">Si</string>
     <string name="button_no">No</string>
     <string name="connection_error_title">Error de conexión</string>
-    <string name="connection_error_info">No es posible la conexión con el servidor, confirme que la conexión a internet y vuelva a intentarlo.</string>
+    <string name="connection_error_info">No es posible la conexión con el servidor, confirme que la conexión a internet
+        y vuelva a intentarlo.
+    </string>
     <!-- Название раздела внутри приложения -->
     <string name="news_tab_title">Al filo Sputnik Nóvosti</string>
     <string name="news_today">Hoy</string>
@@ -54,7 +56,9 @@
     <string name="settings_about_title">Sobre la aplicación</string>
     <string name="settings_about_version">Versión</string>
     <string name="settings_about_copyright">Sputnik Nóvosti</string>
-    <string name="settings_about_text">Gracias por instalar la aplicación Al filo. Está destinado ante todo a profesionales de la información, los negocios y la administración.Contáctenos: e-mail: sales@sputniknews.com</string>
+    <string name="settings_about_text">Gracias por instalar la aplicación Al filo. Está destinado ante todo a
+        profesionales de la información, los negocios y la administración.Contáctenos: e-mail: sales@sputniknews.com
+    </string>
     <string name="settings_lang_title">Idioma</string>
     <string name="sharing_postfix">© Sputnik Nóvosti</string>
     <string name="promo_alert_open">Abrir</string>
@@ -69,7 +73,9 @@
     <string name="settings_notification_story_feeds">Temas</string>
     <string name="settings_terminal_login_placeholder">Usuario</string>
     <string name="settings_terminal_password_placeholder">Contraseña</string>
-    <string name="settings_terminal_description">La terminal de noticias permite acceder las 24 horas a los productos informativos operativos de Rossiya Segodnya. Para suscribirse contacte sales@rian.ru</string>
+    <string name="settings_terminal_description">La terminal de noticias permite acceder las 24 horas a los productos
+        informativos operativos de Rossiya Segodnya. Para suscribirse contacte sales@rian.ru
+    </string>
     <string name="settings_terminal_feed_waitings">Actualización de datos</string>
     <string name="settings_terminal_feed_waitings_error">Error al cargar los datos</string>
     <string name="done_button">Listo</string>
@@ -99,7 +105,9 @@
     <string name="auth_terminal_no_filled_login_or_password">No se ha indicado el usuario o la constraseña</string>
     <string name="auth_terminal_success">Ha accedido a la termninal</string>
     <string name="content_add_user_feed_disabled_save_button_check_query">No se ha indicado la consulta</string>
-    <string name="content_add_user_feed_disabled_save_button_check_feeds">No está seleccionado ningún servicio de noticias</string>
+    <string name="content_add_user_feed_disabled_save_button_check_feeds">No está seleccionado ningún servicio de
+        noticias
+    </string>
     <string name="content_add_user_feed_save_button">Guardar</string>
     <string name="story_title">Tema:</string>
     <!-- Warning: Empty value for "login_passsword_error" -->

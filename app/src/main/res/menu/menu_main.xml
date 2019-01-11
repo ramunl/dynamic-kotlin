@@ -1,23 +1,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".MainActivity">
 
     <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/btn_search_icon_selector"
-        android:orderInCategory="1"
-        android:title=""
-        app:showAsAction="always" />
+            android:id="@+id/action_search"
+            android:icon="@drawable/btn_search_icon_selector"
+            android:orderInCategory="1"
+            android:title=""
+            app:showAsAction="always"/>
 
     <item
-        android:id="@+id/action_logout"
-        android:orderInCategory="2"
-        android:title=""
-        app:showAsAction="never" />
+            android:id="@+id/action_logout"
+            android:orderInCategory="2"
+            android:title=""
+            app:showAsAction="never"/>
     <item
-        android:id="@+id/action_about"
-        android:orderInCategory="2"
-        android:title=""
-        app:showAsAction="never" />
+            android:id="@+id/action_about"
+            android:orderInCategory="2"
+            android:title=""
+            app:showAsAction="never"/>
 </menu>

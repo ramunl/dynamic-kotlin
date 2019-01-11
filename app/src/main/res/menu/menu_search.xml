@@ -1,21 +1,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/search_news"
-        android:title="@string/search_hint"
-        app:actionLayout="@layout/search_layout"
-        app:showAsAction="always" />
+            android:id="@+id/search_news"
+            android:title="@string/search_hint"
+            app:actionLayout="@layout/search_layout"
+            app:showAsAction="always"/>
 
     <item
-        android:id="@+id/action_search_filter"
-        android:title=""
-        app:actionLayout="@layout/action_btn_search_filter"
-        app:showAsAction="always" />
+            android:id="@+id/action_search_filter"
+            android:title=""
+            app:actionLayout="@layout/action_btn_search_filter"
+            app:showAsAction="always"/>
     <item
-        android:id="@+id/action_add_news_line"
-        android:title="filter"
-        app:actionLayout="@layout/action_btn_add_news_line"
-        app:showAsAction="always" />
+            android:id="@+id/action_add_news_line"
+            android:title="filter"
+            app:actionLayout="@layout/action_btn_add_news_line"
+            app:showAsAction="always"/>
     <!--        <item android:id="@+id/search_news"
             android:title="@string/title_search"
 

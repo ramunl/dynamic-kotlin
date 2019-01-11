@@ -1,4 +1,4 @@
-package ru.rian.dynamics.ui
+package ru.rian.dynamics.ui.fragments.adapters
 
 import android.content.Context
 import android.os.Bundle
@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.list_item_article.view.*
 import ru.rian.dynamics.R
 import ru.rian.dynamics.retrofit.model.Article
 import ru.rian.dynamics.ui.fragments.ArticleFragment
+import ru.rian.dynamics.ui.fragments.listeners.OnArticlesListInteractionListener
 import ru.rian.dynamics.utils.FEED_TYPE_STORY
 import ru.rian.dynamics.utils.RiaDateUtils
 import ru.rian.dynamics.utils.RiaDateUtils.areTheDatesAtTheSameDay
@@ -31,7 +32,7 @@ import java.util.logging.Logger
  */
 class ArticlesAdapter(
     val context: Context,
-    private val mListener: ArticleFragment.OnListFragmentInteractionListener?,
+    private val mListener: OnArticlesListInteractionListener?,
     var dataList: ArrayList<Article> = ArrayList()
 ) :
     RecyclerView.Adapter<ArticlesAdapter.ArticleViewHolder>() {
@@ -43,7 +44,7 @@ class ArticlesAdapter(
             val item = v.tag as Article
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
-            mListener?.onListFragmentInteraction(item)
+            mListener?.onArticlesListInteraction(item)
         }
     }
 

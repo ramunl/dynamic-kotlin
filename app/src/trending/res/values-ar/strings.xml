@@ -54,7 +54,9 @@
     <string name="settings_about_title">حول التطبيق</string>
     <string name="settings_about_version">الإصدار</string>
     <string name="settings_about_copyright">وكالة الأنباء الدولية روسيا سيغودنيا كافة الحقوق محفوظة © 2015</string>
-    <string name="settings_about_text">شكرا لتثبيتكم تطبيق &quot;أخبار اليوم&quot;. هذا التطبيق مخصص في المقام الأول للجمهور المحترف، بمن فيهم المسؤولين ورجال الأعمال.\nاتصل بنا:\n\n البريد الإلكتروني: sales@sputniknews.com</string>
+    <string name="settings_about_text">شكرا لتثبيتكم تطبيق &quot;أخبار اليوم&quot;. هذا التطبيق مخصص في المقام الأول
+        للجمهور المحترف، بمن فيهم المسؤولين ورجال الأعمال.\nاتصل بنا:\n\n البريد الإلكتروني: sales@sputniknews.com
+    </string>
     <string name="settings_lang_title">اللغة</string>
     <string name="sharing_postfix">©وكالة سبوتنيك</string>
     <string name="promo_alert_open">فتح</string>
@@ -69,7 +71,9 @@
     <string name="settings_notification_story_feeds">المواضيع</string>
     <string name="settings_terminal_login_placeholder">إسم المستخدم</string>
     <string name="settings_terminal_password_placeholder">كلمة المرور</string>
-    <string name="settings_terminal_description">المنصة الإخبارية – 24/7 امكانية دخول إلى مواد وكالة الأنباء الدولية روسيا سيغودنيا. للحصول على اشتراك الرجاء الكتابة إلى sales@rian.ru</string>
+    <string name="settings_terminal_description">المنصة الإخبارية – 24/7 امكانية دخول إلى مواد وكالة الأنباء الدولية
+        روسيا سيغودنيا. للحصول على اشتراك الرجاء الكتابة إلى sales@rian.ru
+    </string>
     <string name="settings_terminal_feed_waitings">تم تحديث البيانات</string>
     <string name="settings_terminal_feed_waitings_error">خطأ في تحميل البيانات</string>
     <string name="done_button">جاهز</string>

@@ -4,12 +4,8 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
-import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
@@ -19,7 +15,9 @@ import com.onesignal.OneSignal
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_content_common.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.app_bar.*
 import ru.rian.dynamics.BuildConfig
 import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
@@ -32,14 +30,16 @@ import ru.rian.dynamics.di.component.DaggerActivityComponent
 import ru.rian.dynamics.di.model.ActivityModule
 import ru.rian.dynamics.di.model.FeedViewModel
 import ru.rian.dynamics.di.model.MainViewModel
-import ru.rian.dynamics.retrofit.model.Article
 import ru.rian.dynamics.retrofit.model.Feed
 import ru.rian.dynamics.retrofit.model.HSResult
 import ru.rian.dynamics.retrofit.model.Source
-import ru.rian.dynamics.ui.LoadingObserver.addLoadingObserver
-import ru.rian.dynamics.ui.LoadingObserver.removeLoadingObserver
 import ru.rian.dynamics.ui.fragments.ArticleFragment
 import ru.rian.dynamics.ui.fragments.UserFeedsFragment
+import ru.rian.dynamics.ui.helpers.LoadingObserver.addLoadingObserver
+import ru.rian.dynamics.ui.helpers.LoadingObserver.removeLoadingObserver
+import ru.rian.dynamics.ui.helpers.SnackContainerProvider
+import ru.rian.dynamics.ui.helpers.addDrawerMenuItem
+import ru.rian.dynamics.ui.helpers.addMainMenuItem
 import ru.rian.dynamics.utils.*
 import ru.rian.dynamics.utils.PreferenceHelper.get
 import ru.rian.dynamics.utils.PreferenceHelper.prefs
@@ -47,8 +47,8 @@ import ru.rian.dynamics.utils.PreferenceHelper.set
 import javax.inject.Inject
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    ArticleFragment.OnListFragmentInteractionListener, SnackContainerProvider {
+class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener,
+    SnackContainerProvider {
 
     @Inject
     lateinit var mainViewModel: MainViewModel
@@ -77,17 +77,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .show()
     }
 
-    override fun onListFragmentInteraction(item: Article?) {
-
-    }
-
-    private inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> FragmentTransaction) {
-        beginTransaction().func().commit()
-    }
-
-    private fun AppCompatActivity.replaceFragment(fragment: Fragment, frameId: FragmentId) {
-        supportFragmentManager.inTransaction { replace(R.id.fragmentContainer, fragment, frameId.name) }
-    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -103,7 +92,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbarDynamic)
 
         compositeDisposable = CompositeDisposable()
         val activityComponent = DaggerActivityComponent
@@ -141,7 +130,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun requestFeeds() {
         kDebug("requestFeeds")
-        val apiRequestArray = hsResult!!.apiRequestArray
+        val apiRequestArray = apiRequestArray()
         var disposable = mainViewModel.provideFeeds(apiRequestArray?.getFeeds!!).subscribe(
             { result ->
                 result?.feeds?.let {
@@ -207,6 +196,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    private fun setupFloatButton(fragmentId: FragmentId) {
+        val color = ContextCompat.getColor(this, R.color.fab_color)
+        buttonFloatDynamic.backgroundTintList = ColorStateList.valueOf(color)
+        when (fragmentId) {
+            FragmentId.ARTICLE_FRAGMENT_ID -> setFloatFlashFloatButton(feedSelected!!)
+            FragmentId.USER_FEEDS_FRAGMENT_ID -> setFloatCreateUserFeedButton()
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         addMainMenuItem(
             menu,
@@ -232,74 +230,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_tapes -> showUserFeedsFragment()
-            R.id.nav_news -> showArticlesFragment()
+            R.id.nav_news -> {
+                if (feedSelected == null)
+                    requestHS()
+                else
+                    showArticlesFragment(feedSelected!!, apiRequestArray()!!.getArticles!!)
+            }
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
 
+
+    private fun apiRequestArray() = hsResult!!.apiRequestArray
+
     private fun showUserFeedsFragment() {
         val fragmentId = FragmentId.USER_FEEDS_FRAGMENT_ID
         setupFloatButton(fragmentId)
-        replaceFragment(UserFeedsFragment.newInstance(), fragmentId)
+        val apiRequestArray = apiRequestArray()
+        replaceFragment(UserFeedsFragment.newInstance(apiRequestArray!!.getArticles!!), fragmentId)
     }
 
-    private fun getNotificationRes(feed: Feed?): Int {
-        var res = R.drawable.ic_notifications_none_gray
-        if (feed?.notification != null) {
-            if (TYPE_FEED_SUBSCRIPTION_BREAKING == feed.notification) {
-                res = R.drawable.ic_notifications_flash_gray
-            } else if (TYPE_FEED_SUBSCRIPTION_ALL == feed.notification) {
-                res = R.drawable.ic_notifications_all_gray
-            }
-        }
-        return res
-    }
-
-    private fun setFloatCreateUserFeedButton() {
-        var res = R.drawable.plus_fab
-        buttonFloat.setImageDrawable(ContextCompat.getDrawable(this, res))
-    }
-
-    private fun setFloatFlashFloatButton() {
-        var res = getNotificationRes(feedSelected)
-        buttonFloat.setImageDrawable(ContextCompat.getDrawable(this, res))
-        /*buttonFloat.setOnClickListener { v ->
-            //    BottomSheetChangePushFeedsDialogFragment.onClickProcess(getFragmentFeedSelected(), null);
-            val bottomSheetDialogFragment = BottomSheetChangePushFeedsDialogFragment()
-            val bundle = Bundle()
-            bundle.putParcelable("feed", getFragmentFeedSelected())
-            bottomSheetDialogFragment.setArguments(bundle)
-            bottomSheetDialogFragment.show(
-                (v.context as AppCompatActivity).supportFragmentManager,
-                bottomSheetDialogFragment.getTag()
-            )
-        }*/
-    }
-
-    private fun setupFloatButton(fragmentId: FragmentId) {
-        val color = ContextCompat.getColor(this, R.color.fab_color)
-        buttonFloat.backgroundTintList = ColorStateList.valueOf(color)
-        when (fragmentId) {
-            FragmentId.ARTICLE_FRAGMENT_ID -> setFloatFlashFloatButton()
-            FragmentId.USER_FEEDS_FRAGMENT_ID -> setFloatCreateUserFeedButton()
-        }
-    }
-
-    private fun showArticlesFragment() {
-        if (feedSelected == null) {
-            requestHS()
-        } else {
-            val apiRequestArray = hsResult!!.apiRequestArray
-            showArticlesFragment(feedSelected!!, apiRequestArray!!.getArticles!!)
-        }
-    }
 
     var feedSelected: Feed? = null
 
     private fun showArticlesFragment(feed: Feed, source: Source) {
-        feedSelected = feed
         val fragmentId = FragmentId.ARTICLE_FRAGMENT_ID
         setupFloatButton(fragmentId)
         replaceFragment(ArticleFragment.newInstance(feed.sid, source), fragmentId)
@@ -325,7 +281,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     {
                         if (it.isNotEmpty()) {
                             showBadgeFeedBtnFlag = it.size > 1
-                            toolbar.title = it[0].title
+                            toolbarDynamic.title = it[0].title
                             invalidateOptionsMenu()
                         }
                     },

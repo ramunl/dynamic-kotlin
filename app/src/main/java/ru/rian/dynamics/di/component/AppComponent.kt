@@ -14,5 +14,6 @@ import javax.inject.Singleton
 interface AppComponent {
     @ApplicationContext
     fun context(): Context
+
     fun httpReqManager(): HttpReqManager
 }

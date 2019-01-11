@@ -1,0 +1,17 @@
+<android.support.design.widget.AppBarLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+    <android.support.v7.widget.Toolbar
+            android:id="@id/toolbarDynamic"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:elevation="0dp"
+            android:background="@color/dark_purple"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:layout_alignParentTop="true"/>
+
+</android.support.design.widget.AppBarLayout>

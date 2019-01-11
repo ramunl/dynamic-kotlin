@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
-    android:minHeight="56dp">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:minHeight="56dp">
 
     <TextView
-        android:id="@+id/item_user_feeds_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:ellipsize="end"
-        android:textAlignment="textStart"
-        android:gravity="center_vertical|start"
-        android:lines="1"
-        android:maxLines="1"
+            android:id="@+id/item_user_feeds_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:ellipsize="end"
+            android:textAlignment="textStart"
+            android:gravity="center_vertical|start"
+            android:lines="1"
+            android:maxLines="1"
 
-        android:paddingStart="@dimen/menu_margin_left"
-        android:paddingEnd="@dimen/menu_margin_left"
-        android:paddingLeft="@dimen/menu_margin_left"
-        android:paddingRight="@dimen/menu_margin_left"
-        android:textColor="@color/black_87"
-        android:textSize="18sp"
-        tools:text="Feed item" />
+            android:paddingStart="@dimen/menu_margin_left"
+            android:paddingEnd="@dimen/menu_margin_left"
+            android:paddingLeft="@dimen/menu_margin_left"
+            android:paddingRight="@dimen/menu_margin_left"
+            android:textColor="@color/black_87"
+            android:textSize="18sp"
+            tools:text="Feed item"/>
 
 </RelativeLayout>

@@ -1,11 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/action_btn_width"
-    android:layout_height="match_parent"
-    android:background="@drawable/abc_item_background_holo_dark"
-    android:gravity="center">
+                android:layout_width="@dimen/action_btn_width"
+                android:layout_height="match_parent"
+                android:background="@drawable/abc_item_background_holo_dark"
+                android:gravity="center">
 
     <com.malinskiy.materialicons.widget.IconTextView
-        style="@style/LoginViewIconImage"
-        android:text="{zmdi-tune}"
-        android:textSize="20sp" />
+            style="@style/LoginViewIconImage"
+            android:text="{zmdi-tune}"
+            android:textSize="20sp"/>
 </RelativeLayout>

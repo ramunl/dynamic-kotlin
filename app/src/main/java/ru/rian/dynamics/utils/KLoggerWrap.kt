@@ -16,7 +16,7 @@ open class KLoggerWrap(clazz: KClass<*>) {
     }
 
     fun kError(err: Throwable) {
-        logger.error( err.message)
+        logger.error(err.message)
     }
 
     fun kWarn(message: String) {
@@ -24,7 +24,7 @@ open class KLoggerWrap(clazz: KClass<*>) {
     }
 
     fun kDebug(message: String) {
-        logger.debug( message)
+        logger.debug(message)
     }
 }
 

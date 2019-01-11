@@ -19,7 +19,9 @@
     <string name="button_yes">Yes</string>
     <string name="button_no">No</string>
     <string name="connection_error_title">Connection error</string>
-    <string name="connection_error_info">Cannot connect to server. Please check your Internet connection and try again.</string>
+    <string name="connection_error_info">Cannot connect to server. Please check your Internet connection and try
+        again.
+    </string>
     <!-- Название раздела внутри приложения -->
     <string name="news_tab_title">Sputnik Trending</string>
     <string name="news_today">Today</string>
@@ -44,7 +46,9 @@
     <string name="tapes_created">The newswire has been added</string>
     <string name="tapes_remove">Delete newswire</string>
     <string name="tapes_delete">Delete</string>
-    <string name="tapes_tape_no_content">Artciles cannot be found. You will receive a notification when an article appears</string>
+    <string name="tapes_tape_no_content">Artciles cannot be found. You will receive a notification when an article
+        appears
+    </string>
     <!-- Название раздела внутри приложения -->
     <string name="settings_tab_title">Settings</string>
     <string name="settings_notification_title">Notification</string>
@@ -54,7 +58,10 @@
     <string name="settings_about_title">About</string>
     <string name="settings_about_version">Version:</string>
     <string name="settings_about_copyright">© Sputnik</string>
-    <string name="settings_about_text">Thank you for downloading the “Sputnik Trending” app. It is primarily intended for a professional audience, including representatives of state authorities and business.\n\nContact details:\nE-mail: sales@sputniknews.com</string>
+    <string name="settings_about_text">Thank you for downloading the “Sputnik Trending” app. It is primarily intended
+        for a professional audience, including representatives of state authorities and business.\n\nContact
+        details:\nE-mail: sales@sputniknews.com
+    </string>
     <string name="settings_lang_title">Language</string>
     <string name="sharing_postfix">© Sputnik</string>
     <string name="promo_alert_open">Open</string>
@@ -69,7 +76,9 @@
     <string name="settings_notification_story_feeds">Stories</string>
     <string name="settings_terminal_login_placeholder">Login</string>
     <string name="settings_terminal_password_placeholder">Password</string>
-    <string name="settings_terminal_description">News terminal -- 24/7 access to Rossiya Segodnya Internatioanl Information Agency media products. To receive access, write to sales@rian.ru</string>
+    <string name="settings_terminal_description">News terminal -- 24/7 access to Rossiya Segodnya Internatioanl
+        Information Agency media products. To receive access, write to sales@rian.ru
+    </string>
     <string name="settings_terminal_feed_waitings">Data being updated</string>
     <string name="settings_terminal_feed_waitings_error">Error in loading data</string>
     <string name="done_button">Ready</string>

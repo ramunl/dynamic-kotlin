@@ -1,4 +1,4 @@
-package ru.rian.dynamics.ui
+package ru.rian.dynamics.ui.fragments.adapters
 
 import android.os.Bundle
 import android.support.v7.util.DiffUtil

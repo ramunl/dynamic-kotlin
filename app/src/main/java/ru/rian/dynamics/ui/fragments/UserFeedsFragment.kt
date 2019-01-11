@@ -1,19 +1,20 @@
 package ru.rian.dynamics.ui.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_article_list.view.*
+import kotlinx.android.synthetic.main.fragment_user_feeds.view.*
 import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
 import ru.rian.dynamics.SchedulerProvider
@@ -21,39 +22,49 @@ import ru.rian.dynamics.di.component.DaggerUserFeedsFragmentComponent
 import ru.rian.dynamics.di.model.ActivityModule
 import ru.rian.dynamics.di.model.FeedViewModel
 import ru.rian.dynamics.retrofit.model.Feed
-import ru.rian.dynamics.ui.FeedsAdapter
-import ru.rian.dynamics.ui.SnackContainerProvider
+import ru.rian.dynamics.retrofit.model.Source
+import ru.rian.dynamics.ui.FeedActivity
+import ru.rian.dynamics.ui.fragments.adapters.UserFeedsAdapter
+import ru.rian.dynamics.ui.fragments.listeners.OnUserFeedsListInteractionListener
+import ru.rian.dynamics.ui.helpers.SnackContainerProvider
 import ru.rian.dynamics.utils.FEED_TYPE_USER
 import ru.rian.dynamics.utils.KLoggerWrap
 import javax.inject.Inject
 
-class UserFeedsFragment: Fragment() {
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = UserFeedsFragment()
-        var logger = KLoggerWrap(UserFeedsFragment::class)
+class UserFeedsFragment : Fragment(), OnUserFeedsListInteractionListener {
+
+    override fun onUserFeedsListInteraction(item: Feed?) {
+        val intent = Intent(this.context, FeedActivity::class.java)
+        startActivity(intent)
     }
 
-    interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onListFragmentInteraction(item: Feed?)
+    companion object {
+        const val ARG_FEED_SOURCE = "feed_url"
+        @JvmStatic
+        fun newInstance(feedSource: Source) = UserFeedsFragment().apply {
+            arguments = Bundle().apply {
+                putSerializable(UserFeedsFragment.ARG_FEED_SOURCE, feedSource)
+            }
+        }
+
+        var logger = KLoggerWrap(UserFeedsFragment::class)
     }
 
     @Inject
     lateinit var viewModelFeed: FeedViewModel
 
-    private lateinit var listAdapter: FeedsAdapter
+    private lateinit var listAdapter: UserFeedsAdapter
 
     private lateinit var recyclerView: RecyclerView
 
     private lateinit var compositeDisposable: CompositeDisposable
 
-    private var listener: OnListFragmentInteractionListener? = null
+    private lateinit var placeHolder: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+        setHasOptionsMenu(true)
         compositeDisposable = CompositeDisposable()
         val fragmentComponent = DaggerUserFeedsFragmentComponent
             .builder()
@@ -62,7 +73,7 @@ class UserFeedsFragment: Fragment() {
             .build()
         fragmentComponent.inject(this)
     }
-    
+
 
     private fun snackContainerProvider(): SnackContainerProvider {
         return context as SnackContainerProvider
@@ -77,11 +88,11 @@ class UserFeedsFragment: Fragment() {
 
         if (view.recyclerView is RecyclerView) {
 
-            listAdapter = FeedsAdapter(view.context, listener)
+            listAdapter = UserFeedsAdapter(view.context, this)
 
             view.recyclerView.adapter = listAdapter
 
-            (view.recyclerView.adapter as FeedsAdapter)
+            (view.recyclerView.adapter as UserFeedsAdapter)
 
             with(view.recyclerView) {
                 layoutManager = LinearLayoutManager(context)
@@ -93,20 +104,17 @@ class UserFeedsFragment: Fragment() {
                 recyclerView.addItemDecoration(dividerItemDecoration)
             }
         }
+        placeHolder = view.placeHolder
         setupFeedsLoaderListener()
         return view
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnListFragmentInteractionListener) {
-            listener = context
-        }
     }
 
     override fun onDetach() {
         super.onDetach()
-        listener = null
     }
 
     private fun setupFeedsLoaderListener() {
@@ -116,10 +124,19 @@ class UserFeedsFragment: Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
-                        listAdapter.updateData(it)
+                        if (it.isNotEmpty()) {
+                            view!!.placeHolder.visibility = GONE
+                            listAdapter.updateData(it)
+                        } else {
+                            view!!.placeHolder.visibility = VISIBLE
+                        }
                     },
                     { e -> logger.kError(e) })
         )
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
     }
 
 
