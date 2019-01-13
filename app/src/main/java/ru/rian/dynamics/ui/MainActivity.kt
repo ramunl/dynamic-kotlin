@@ -1,10 +1,8 @@
 package ru.rian.dynamics.ui
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.text.TextUtils
 import android.view.Menu
@@ -17,7 +15,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_content_common.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar.*
+import kotlinx.android.synthetic.main.dynamic_app_bar.*
 import ru.rian.dynamics.BuildConfig
 import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
@@ -108,9 +106,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         hsResult = savedInstanceState?.getSerializable("hsResult") as HSResult?
 
-        if (hsResult != null) {
-            addDrawerMenuItems(hsResult)
-        }
+        hsResult?.let { addDrawerMenuItems(hsResult) }
+
         setupFeedsLoaderListener()
 
     }
@@ -162,6 +159,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         var isToken = mainViewModel.isTokenPresented()
 
         var menu = navView.menu
+        menu.clear()
         addDrawerMenuItem(
             menu,
             R.drawable.ic_menu_ddn,
@@ -248,7 +246,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     var feedSelected: Feed? = null
 
     private fun showArticlesFragment(feed: Feed, source: Source) {
-        val fragmentId = FragmentId.ARTICLE_FRAGMENT_ID
+        val fragmentId = FragmentId.MAIN_FEED_FRAGMENT_ID
         replaceFragment(ArticleFragment.newInstance(feed, source), fragmentId)
     }
 
@@ -272,7 +270,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                     {
                         if (it.isNotEmpty()) {
                             showBadgeFeedBtnFlag = it.size > 1
-                            toolbarDynamic.title = it[0].title
                             invalidateOptionsMenu()
                         }
                     },

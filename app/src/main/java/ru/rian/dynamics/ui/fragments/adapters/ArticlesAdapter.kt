@@ -19,7 +19,6 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.list_item_article.view.*
 import ru.rian.dynamics.R
 import ru.rian.dynamics.retrofit.model.Article
-import ru.rian.dynamics.ui.fragments.ArticleFragment
 import ru.rian.dynamics.ui.fragments.listeners.OnArticlesListInteractionListener
 import ru.rian.dynamics.utils.FEED_TYPE_STORY
 import ru.rian.dynamics.utils.RiaDateUtils

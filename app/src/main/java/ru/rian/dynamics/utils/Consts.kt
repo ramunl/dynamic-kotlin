@@ -24,7 +24,8 @@ const val TYPE_FEED_SUBSCRIPTION_ALL = "allnews"
 const val TYPE_FEED_SUBSCRIPTION_BREAKING = "breakingnews"
 
 enum class FragmentId {
-    ARTICLE_FRAGMENT_ID,
+    USER_FEED_FRAGMENT_ID,
+    MAIN_FEED_FRAGMENT_ID,
     USER_FEEDS_FRAGMENT_ID
 }
 

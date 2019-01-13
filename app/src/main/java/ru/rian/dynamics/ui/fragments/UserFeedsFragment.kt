@@ -1,7 +1,6 @@
 package ru.rian.dynamics.ui.fragments
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
@@ -35,7 +34,7 @@ import ru.rian.dynamics.utils.KLoggerWrap
 import javax.inject.Inject
 
 
-open class UserFeedsFragment : Fragment(), OnUserFeedsListInteractionListener {
+open class UserFeedsFragment : BaseFragment(), OnUserFeedsListInteractionListener {
 
     fun feedSource() = arguments!!.getSerializable(ArticleFragment.ARG_FEED_SOURCE) as Source
 
@@ -142,6 +141,7 @@ open class UserFeedsFragment : Fragment(), OnUserFeedsListInteractionListener {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
+        setupToolBarTitle(getString(R.string.tapes_tab_title))
     }
 
     private fun setFloatCreateUserFeedButton() {

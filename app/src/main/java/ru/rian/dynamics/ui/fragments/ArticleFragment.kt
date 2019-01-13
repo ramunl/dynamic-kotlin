@@ -1,5 +1,6 @@
 package ru.rian.dynamics.ui.fragments
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -25,8 +26,10 @@ import ru.rian.dynamics.di.model.MainViewModel
 import ru.rian.dynamics.retrofit.model.Article
 import ru.rian.dynamics.retrofit.model.Feed
 import ru.rian.dynamics.retrofit.model.Source
+import ru.rian.dynamics.ui.MainActivity
 import ru.rian.dynamics.ui.fragments.adapters.ArticlesAdapter
 import ru.rian.dynamics.ui.fragments.listeners.OnArticlesListInteractionListener
+import ru.rian.dynamics.ui.helpers.LoadingObserver
 import ru.rian.dynamics.ui.helpers.SnackContainerProvider
 import ru.rian.dynamics.utils.TYPE_FEED_SUBSCRIPTION_ALL
 import ru.rian.dynamics.utils.TYPE_FEED_SUBSCRIPTION_BREAKING
@@ -39,8 +42,8 @@ import javax.inject.Inject
  */
 
 
-class ArticleFragment : Fragment(), OnArticlesListInteractionListener {
-    private lateinit var searchView: SearchView
+class ArticleFragment : BaseFragment(), OnArticlesListInteractionListener {
+    private var searchView: SearchView? = null
 
     private lateinit var swipeRefreshArticleList: SwipeRefreshLayout
 
@@ -70,7 +73,7 @@ class ArticleFragment : Fragment(), OnArticlesListInteractionListener {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString("query", searchView.query.toString())
+        searchView?.let { outState.putString("query", it.query.toString()) }
         outState.putParcelableArrayList("dataList", articlesAdapter.dataList)
 
     }
@@ -79,27 +82,29 @@ class ArticleFragment : Fragment(), OnArticlesListInteractionListener {
         var menuItem = menu.findItem(R.id.search_news)
         if (menuItem != null) {
             searchView = menuItem.actionView as SearchView
-            if (!TextUtils.isEmpty(query)) {
-                searchView.setQuery(query, false)
-                searchView.isIconified = false
-            }
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String): Boolean {
-                    articlesAdapter.removeAll()
-                    requestArticles(query)
-                    return false
+            searchView?.let {
+                if (!TextUtils.isEmpty(query)) {
+                    it.setQuery(query, false)
+                    it.isIconified = false
                 }
+                it.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String): Boolean {
+                        articlesAdapter.removeAll()
+                        requestArticles(query)
+                        return false
+                    }
 
-                override fun onQueryTextChange(newText: String): Boolean {
-                    this@ArticleFragment.query = newText
-                    return true
+                    override fun onQueryTextChange(newText: String): Boolean {
+                        this@ArticleFragment.query = newText
+                        return true
+                    }
+                })
+                it.setOnCloseListener {
+                    onSearchClose()
                 }
-            })
-
-            searchView.setOnCloseListener {
-                onSearchClose()
             }
         }
+        setupToolBarTitle(feed().title!!)
     }
 
     private fun onSearchClose(): Boolean {
@@ -171,7 +176,7 @@ class ArticleFragment : Fragment(), OnArticlesListInteractionListener {
                 if (linearLayoutManager.childCount + linearLayoutManager.findFirstVisibleItemPosition()
                     >= linearLayoutManager.itemCount - 1
                 ) {  //if near fifth item from end
-                    onScrollNearEnd(searchView.query.toString())
+                    onScrollNearEnd(searchView?.query.toString())
                 }
             }
         })
@@ -226,11 +231,12 @@ class ArticleFragment : Fragment(), OnArticlesListInteractionListener {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
+        LoadingObserver.addLoadingObserver(::onLoadingStateChanged)
     }
 
     override fun onDetach() {
         super.onDetach()
+        LoadingObserver.removeLoadingObserver(::onLoadingStateChanged)
     }
 
 
@@ -290,5 +296,11 @@ class ArticleFragment : Fragment(), OnArticlesListInteractionListener {
             ArticleFragment().apply {
                 arguments = bundle
             }
+    }
+
+    private fun onLoadingStateChanged(isLoading: Boolean) {
+        MainActivity.kDebug("onLoadingStateChanged $isLoading")
+        if (isAdded)
+            (context as Activity).progressBarMain?.let { it.visibility = if (isLoading) View.VISIBLE else View.GONE }
     }
 }

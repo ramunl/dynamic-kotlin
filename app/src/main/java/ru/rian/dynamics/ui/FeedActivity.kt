@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.ActionBar
 import android.view.MenuItem
-import kotlinx.android.synthetic.main.app_bar.*
+import kotlinx.android.synthetic.main.dynamic_app_bar.*
 import ru.rian.dynamics.R
 import ru.rian.dynamics.retrofit.model.Feed
 import ru.rian.dynamics.retrofit.model.Source
@@ -34,9 +34,11 @@ class FeedActivity : BaseActivity() {
         supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayShowTitleEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true)
-        showArticlesFragment()
+        if(savedInstanceState == null) {
+            showArticlesFragment()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -55,7 +57,7 @@ class FeedActivity : BaseActivity() {
     }
 
     private fun showArticlesFragment() {
-        val fragmentId = FragmentId.ARTICLE_FRAGMENT_ID
+        val fragmentId = FragmentId.USER_FEED_FRAGMENT_ID
         replaceFragment(ArticleFragment.newInstance(intent.extras!!), fragmentId)
     }
 }
