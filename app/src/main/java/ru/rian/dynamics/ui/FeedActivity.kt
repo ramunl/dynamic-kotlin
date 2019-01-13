@@ -1,18 +1,30 @@
 package ru.rian.dynamics.ui
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.ActionBar
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.app_bar.*
-
 import ru.rian.dynamics.R
 import ru.rian.dynamics.retrofit.model.Feed
 import ru.rian.dynamics.retrofit.model.Source
 import ru.rian.dynamics.ui.fragments.ArticleFragment
+import ru.rian.dynamics.ui.fragments.ArticleFragment.Companion.ARG_FEED
+import ru.rian.dynamics.ui.fragments.ArticleFragment.Companion.ARG_FEED_SOURCE
 import ru.rian.dynamics.utils.FragmentId
 
 class FeedActivity : BaseActivity() {
+    companion object {
+        @JvmStatic
+        fun start(context: Context, feed: Feed, feedSource: Source) {
+            val intent = Intent(context, FeedActivity::class.java).apply {
+                putExtra(ARG_FEED, feed)
+                putExtra(ARG_FEED_SOURCE, feedSource)
+            }
+            context.startActivity(intent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +36,7 @@ class FeedActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setHomeButtonEnabled(true)
+        showArticlesFragment()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -41,9 +54,8 @@ class FeedActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun showArticlesFragment(feed: Feed, source: Source) {
+    private fun showArticlesFragment() {
         val fragmentId = FragmentId.ARTICLE_FRAGMENT_ID
-        //setupFloatButton(fragmentId)
-        replaceFragment(ArticleFragment.newInstance(feed.sid, source), fragmentId)
+        replaceFragment(ArticleFragment.newInstance(intent.extras!!), fragmentId)
     }
 }

@@ -136,7 +136,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 result?.feeds?.let {
                     kDebug("result $result")
                     insertFeeds(it)
-                    showArticlesFragment(it[0], apiRequestArray.getArticles!!)
+                    feedSelected = it[0]
+                    showArticlesFragment(feedSelected!!, apiRequestArray.getArticles!!)
                 }
             }, { e -> showError(e, SnackContainerProvider.ActionToInvoke(::requestFeeds)) })
         disposable?.let { compositeDisposable.add(it) }
@@ -196,14 +197,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
-    private fun setupFloatButton(fragmentId: FragmentId) {
-        val color = ContextCompat.getColor(this, R.color.fab_color)
-        buttonFloatDynamic.backgroundTintList = ColorStateList.valueOf(color)
-        when (fragmentId) {
-            FragmentId.ARTICLE_FRAGMENT_ID -> setFloatFlashFloatButton(feedSelected!!)
-            FragmentId.USER_FEEDS_FRAGMENT_ID -> setFloatCreateUserFeedButton()
-        }
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         addMainMenuItem(
@@ -247,7 +240,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     private fun showUserFeedsFragment() {
         val fragmentId = FragmentId.USER_FEEDS_FRAGMENT_ID
-        setupFloatButton(fragmentId)
         val apiRequestArray = apiRequestArray()
         replaceFragment(UserFeedsFragment.newInstance(apiRequestArray!!.getArticles!!), fragmentId)
     }
@@ -257,8 +249,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     private fun showArticlesFragment(feed: Feed, source: Source) {
         val fragmentId = FragmentId.ARTICLE_FRAGMENT_ID
-        setupFloatButton(fragmentId)
-        replaceFragment(ArticleFragment.newInstance(feed.sid, source), fragmentId)
+        replaceFragment(ArticleFragment.newInstance(feed, source), fragmentId)
     }
 
     private fun insertFeeds(feeds: List<Feed>) {

@@ -4,7 +4,9 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
+import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -12,6 +14,7 @@ import android.support.v7.widget.SearchView
 import android.text.TextUtils
 import android.view.*
 import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.activity_content_common.*
 import kotlinx.android.synthetic.main.fragment_article_list.view.*
 import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
@@ -20,10 +23,13 @@ import ru.rian.dynamics.di.component.DaggerFragmentComponent
 import ru.rian.dynamics.di.model.ActivityModule
 import ru.rian.dynamics.di.model.MainViewModel
 import ru.rian.dynamics.retrofit.model.Article
+import ru.rian.dynamics.retrofit.model.Feed
 import ru.rian.dynamics.retrofit.model.Source
 import ru.rian.dynamics.ui.fragments.adapters.ArticlesAdapter
 import ru.rian.dynamics.ui.fragments.listeners.OnArticlesListInteractionListener
 import ru.rian.dynamics.ui.helpers.SnackContainerProvider
+import ru.rian.dynamics.utils.TYPE_FEED_SUBSCRIPTION_ALL
+import ru.rian.dynamics.utils.TYPE_FEED_SUBSCRIPTION_BREAKING
 import java.util.*
 import javax.inject.Inject
 
@@ -44,19 +50,16 @@ class ArticleFragment : Fragment(), OnArticlesListInteractionListener {
 
     var query: String? = null
 
-    private lateinit var feedSource: Source
-    private lateinit var feedId: String
     @Inject
     lateinit var mainViewModel: MainViewModel
+
+    fun feed() = arguments!!.getSerializable(ARG_FEED) as Feed
+    fun feedSource() = arguments!!.getSerializable(ARG_FEED_SOURCE) as Source
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setHasOptionsMenu(true)
-        arguments?.let {
-            feedId = it.getString(ARG_FEED_ID)!!
-            feedSource = it.getSerializable(ARG_FEED_SOURCE) as Source
-        }
         compositeDisposable = CompositeDisposable()
         val fragmentComponent = DaggerFragmentComponent
             .builder()
@@ -73,26 +76,29 @@ class ArticleFragment : Fragment(), OnArticlesListInteractionListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        searchView = menu.findItem(R.id.search_news).actionView as SearchView
-        if (!TextUtils.isEmpty(query)) {
-            searchView.setQuery(query, false)
-            searchView.isIconified = false
-        }
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                articlesAdapter.removeAll()
-                requestArticles(query)
-                return false
+        var menuItem = menu.findItem(R.id.search_news)
+        if (menuItem != null) {
+            searchView = menuItem.actionView as SearchView
+            if (!TextUtils.isEmpty(query)) {
+                searchView.setQuery(query, false)
+                searchView.isIconified = false
             }
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    articlesAdapter.removeAll()
+                    requestArticles(query)
+                    return false
+                }
 
-            override fun onQueryTextChange(newText: String): Boolean {
-                this@ArticleFragment.query = newText
-                return true
+                override fun onQueryTextChange(newText: String): Boolean {
+                    this@ArticleFragment.query = newText
+                    return true
+                }
+            })
+
+            searchView.setOnCloseListener {
+                onSearchClose()
             }
-        })
-
-        searchView.setOnCloseListener {
-            onSearchClose()
         }
     }
 
@@ -104,7 +110,7 @@ class ArticleFragment : Fragment(), OnArticlesListInteractionListener {
 
     private fun requestMoreArticles(query: String? = null) {
         var disposable =
-            mainViewModel.provideArticles(feedSource, feedId!!, query = query, offset = articlesAdapter.itemCount)
+            mainViewModel.provideArticles(feedSource(), feed().sid, query = query, offset = articlesAdapter.itemCount)
                 ?.subscribe(
                     { result ->
                         updateList(result!!.articles, false)
@@ -124,7 +130,7 @@ class ArticleFragment : Fragment(), OnArticlesListInteractionListener {
 
     private fun requestArticles(query: String? = null) {
         var disposable =
-            mainViewModel.provideArticles(feedSource, feedId, query = query, showProgress = !isRefreshing())
+            mainViewModel.provideArticles(feedSource(), feed().sid, query = query, showProgress = !isRefreshing())
                 ?.subscribe(
                     { result ->
                         updateList(result?.articles)
@@ -214,11 +220,13 @@ class ArticleFragment : Fragment(), OnArticlesListInteractionListener {
         } else {
             requestArticles()
         }
+        setFloatFlashFloatButton()
         return view
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
     }
 
     override fun onDetach() {
@@ -226,21 +234,61 @@ class ArticleFragment : Fragment(), OnArticlesListInteractionListener {
     }
 
 
-
     override fun onArticlesListInteraction(item: Article?) {
 
     }
 
+    private fun getNotificationRes(): Int {
+        var res = R.drawable.ic_notifications_none_gray
+        var feed = feed()
+        if (feed.notification != null) {
+            if (TYPE_FEED_SUBSCRIPTION_BREAKING == feed.notification) {
+                res = R.drawable.ic_notifications_flash_gray
+            } else if (TYPE_FEED_SUBSCRIPTION_ALL == feed.notification) {
+                res = R.drawable.ic_notifications_all_gray
+            }
+        }
+        return res
+    }
+
+    fun setFloatFlashFloatButton() {
+        if (isAdded) {
+            var res = getNotificationRes()
+            (context as AppCompatActivity).buttonFloatDynamic.setImageDrawable(
+                ContextCompat.getDrawable(
+                    context!!,
+                    res
+                )
+            )
+        }
+        /*buttonFloatDynamic.setOnClickListener { v ->
+            //    BottomSheetChangePushFeedsDialogFragment.onClickProcess(getFragmentFeedSelected(), null);
+            val bottomSheetDialogFragment = BottomSheetChangePushFeedsDialogFragment()
+            val bundle = Bundle()
+            bundle.putParcelable("feed", getFragmentFeedSelected())
+            bottomSheetDialogFragment.setArguments(bundle)
+            bottomSheetDialogFragment.show(
+                (v.context as AppCompatActivity).supportFragmentManager,
+                bottomSheetDialogFragment.getTag()
+            )
+        }*/
+    }
+
     companion object {
-        const val ARG_FEED_ID = "feed_id"
+        const val ARG_FEED = "feed_id"
         const val ARG_FEED_SOURCE = "feed_url"
         @JvmStatic
-        fun newInstance(feedId: String, feedSource: Source) =
+        fun newInstance(feed: Feed, feedSource: Source) =
             ArticleFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_FEED_ID, feedId)
+                    putSerializable(ARG_FEED, feed)
                     putSerializable(ARG_FEED_SOURCE, feedSource)
                 }
+            }
+
+        fun newInstance(bundle: Bundle) =
+            ArticleFragment().apply {
+                arguments = bundle
             }
     }
 }

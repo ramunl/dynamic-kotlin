@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -14,6 +16,7 @@ import android.view.View.VISIBLE
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_content_common.*
 import kotlinx.android.synthetic.main.fragment_user_feeds.view.*
 import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
@@ -32,11 +35,12 @@ import ru.rian.dynamics.utils.KLoggerWrap
 import javax.inject.Inject
 
 
-class UserFeedsFragment : Fragment(), OnUserFeedsListInteractionListener {
+open class UserFeedsFragment : Fragment(), OnUserFeedsListInteractionListener {
+
+    fun feedSource() = arguments!!.getSerializable(ArticleFragment.ARG_FEED_SOURCE) as Source
 
     override fun onUserFeedsListInteraction(item: Feed?) {
-        val intent = Intent(this.context, FeedActivity::class.java)
-        startActivity(intent)
+        FeedActivity.start(context!!,item!!, feedSource())
     }
 
     companion object {
@@ -106,6 +110,7 @@ class UserFeedsFragment : Fragment(), OnUserFeedsListInteractionListener {
         }
         placeHolder = view.placeHolder
         setupFeedsLoaderListener()
+        setFloatCreateUserFeedButton()
         return view
     }
 
@@ -125,10 +130,10 @@ class UserFeedsFragment : Fragment(), OnUserFeedsListInteractionListener {
                 .subscribe(
                     {
                         if (it.isNotEmpty()) {
-                            view!!.placeHolder.visibility = GONE
+                            placeHolder.visibility = GONE
                             listAdapter.updateData(it)
                         } else {
-                            view!!.placeHolder.visibility = VISIBLE
+                            placeHolder.visibility = VISIBLE
                         }
                     },
                     { e -> logger.kError(e) })
@@ -139,5 +144,13 @@ class UserFeedsFragment : Fragment(), OnUserFeedsListInteractionListener {
         menu.clear()
     }
 
+    private fun setFloatCreateUserFeedButton() {
+        if (isAdded) {
+            val res = R.drawable.plus_fab
+            (context as AppCompatActivity).buttonFloatDynamic.setImageDrawable(
+                ContextCompat.getDrawable(context!!, res)
+            )
+        }
+    }
 
 }

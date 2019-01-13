@@ -26,27 +26,9 @@ open class BaseActivity: AppCompatActivity() {
     }
 
 
-
-    private fun getNotificationRes(feed: Feed?): Int {
-        var res = R.drawable.ic_notifications_none_gray
-        if (feed?.notification != null) {
-            if (TYPE_FEED_SUBSCRIPTION_BREAKING == feed.notification) {
-                res = R.drawable.ic_notifications_flash_gray
-            } else if (TYPE_FEED_SUBSCRIPTION_ALL == feed.notification) {
-                res = R.drawable.ic_notifications_all_gray
-            }
-        }
-        return res
-    }
-
-    protected fun setFloatCreateUserFeedButton() {
-        var res = R.drawable.plus_fab
-        buttonFloatDynamic.setImageDrawable(ContextCompat.getDrawable(this, res))
-    }
-
     protected fun setFloatFlashFloatButton(feed:Feed) {
-        var res = getNotificationRes(feed)
-        buttonFloatDynamic.setImageDrawable(ContextCompat.getDrawable(this, res))
+      //  var res = getNotificationRes(feed)
+      //  buttonFloatDynamic.setImageDrawable(ContextCompat.getDrawable(this, res))
         /*buttonFloatDynamic.setOnClickListener { v ->
             //    BottomSheetChangePushFeedsDialogFragment.onClickProcess(getFragmentFeedSelected(), null);
             val bottomSheetDialogFragment = BottomSheetChangePushFeedsDialogFragment()

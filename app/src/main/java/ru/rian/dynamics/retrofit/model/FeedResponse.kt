@@ -3,6 +3,7 @@ package ru.rian.dynamics.retrofit.model
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class FeedResponse(
     @SerializedName("feeds") var feeds: List<Feed>? = null
@@ -19,4 +20,4 @@ data class Feed(
     @SerializedName("notification") var notification: String? = null,
     @SerializedName("query") var query: String? = null,
     @SerializedName("match") var match: String? = null
-)
+): Serializable
