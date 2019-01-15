@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.*
 import android.widget.EditText
 import kotlinx.android.synthetic.main.fragment_terminal_login.view.*
+import ru.rian.dynamics.BuildConfig
 import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
 import ru.rian.dynamics.SchedulerProvider
@@ -18,6 +19,9 @@ import ru.rian.dynamics.retrofit.model.Source
 import ru.rian.dynamics.ui.helpers.SnackContainerProvider
 import ru.rian.dynamics.ui.helpers.addMainMenuItem
 import ru.rian.dynamics.utils.KLoggerWrap
+import ru.rian.dynamics.utils.PreferenceHelper.getUserName
+import ru.rian.dynamics.utils.PreferenceHelper.saveTokent
+import ru.rian.dynamics.utils.PreferenceHelper.saveUserName
 import ru.rian.dynamics.utils.hideKeyboard
 import javax.inject.Inject
 
@@ -77,7 +81,7 @@ class TerminalLoginFragment : BaseFragment() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 checkLoginButtonVisibility()
-                terminalViewModel.saveUserName(p0.toString())
+                saveUserName(p0.toString())
             }
         })
 
@@ -93,7 +97,7 @@ class TerminalLoginFragment : BaseFragment() {
             }
         })
 
-        usernameEditText.setText(terminalViewModel.getUserName())
+        usernameEditText.setText(getUserName())
 
         return view
     }
@@ -151,10 +155,12 @@ class TerminalLoginFragment : BaseFragment() {
                 ?.subscribe(
                     { result ->
                         logger.kDebug(result.toString())
-                        if(result!!.token.isNullOrEmpty() && !result.message.isNullOrEmpty()) {
-
-                        } else {
-                            result.token?.let { saveTokent(it) }
+                        result?.apply {
+                            if (token.isNullOrEmpty() ) {
+                                showMessage(if(BuildConfig.DEBUG) message!! else getString(R.string.login_passsword_error))
+                            } else {
+                                token?.let { saveTokent(it) }
+                            }
                         }
                     }, { e -> showError(e, SnackContainerProvider.ActionToInvoke(::login)) })
             disposable?.let { compositeDisposable.add(it) }

@@ -4,7 +4,7 @@ import android.text.TextUtils
 import io.reactivex.Observable
 import ru.rian.dynamics.HttpReqManager
 import ru.rian.dynamics.SchedulerProvider
-import ru.rian.dynamics.retrofit.model.TerminalLoginModel
+import ru.rian.dynamics.retrofit.model.LoginDataModel
 import ru.rian.dynamics.ui.helpers.LoadingObserver.loading
 import ru.rian.dynamics.utils.LOGIN_PATH
 import ru.rian.dynamics.utils.LOGIN_STRING_KEY
@@ -22,29 +22,14 @@ class TerminalViewModel @Inject constructor(
 
     private val prefs = prefs()
 
-    fun getUserName(): String? {
-        return prefs[LOGIN_STRING_KEY]
-    }
-
-    fun saveUserName(username: String) {
-        prefs[LOGIN_STRING_KEY] = username
-    }
-
-    fun getToken(): String? {
-        return prefs[TOKEN_STRING_KEY]
-    }
-
-    fun saveTokent(username: String) {
-        prefs[TOKEN_STRING_KEY] = username
-    }
     fun isTokenPresented(): Boolean {
         val isToken: String? = prefs[TOKEN_STRING_KEY]
         return !TextUtils.isEmpty(isToken)
     }
 
-    fun provideTerminalLogin(username: String, password: String): Observable<TerminalLoginModel?>? {
+    fun provideTerminalLogin(username: String, password: String): Observable<LoginDataModel?>? {
         loading = true
-        return httpReqManager.requestLogin<TerminalLoginModel?>(LOGIN_PATH, username, password)
+        return httpReqManager.requestLogin<LoginDataModel?>(LOGIN_PATH, username, password)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .doFinally { loading = false }

@@ -3,6 +3,7 @@ package ru.rian.dynamics.ui.helpers
 interface SnackContainerProvider {
 
     fun showError(e: Throwable, methodToInvoke: ActionToInvoke)
+    fun showMessage(message:String)
 
     class ActionToInvoke {
 

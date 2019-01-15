@@ -9,29 +9,30 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.TextView
 import com.onesignal.OneSignal
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_content_common.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dynamic_app_bar.*
+import kotlinx.android.synthetic.main.nav_header_main.view.*
 import ru.rian.dynamics.BuildConfig
 import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
 import ru.rian.dynamics.R.drawable.ic_terminal_feeds
 import ru.rian.dynamics.R.drawable.ic_terminal_feeds_badge
 import ru.rian.dynamics.R.id.menu_action_toolbar_select_feed
+import ru.rian.dynamics.R.layout.nav_header_main
 import ru.rian.dynamics.R.string.*
 import ru.rian.dynamics.SchedulerProvider
 import ru.rian.dynamics.di.component.DaggerActivityComponent
-import ru.rian.dynamics.di.module.ActivityModule
 import ru.rian.dynamics.di.model.FeedViewModel
 import ru.rian.dynamics.di.model.MainViewModel
+import ru.rian.dynamics.di.module.ActivityModule
 import ru.rian.dynamics.retrofit.model.Feed
 import ru.rian.dynamics.retrofit.model.HSResult
 import ru.rian.dynamics.retrofit.model.Source
-import ru.rian.dynamics.retrofit.model.TerminalLoginModel
 import ru.rian.dynamics.ui.fragments.FeedFragment
 import ru.rian.dynamics.ui.fragments.TerminalLoginFragment
 import ru.rian.dynamics.ui.fragments.UserFeedsFragment
@@ -42,6 +43,8 @@ import ru.rian.dynamics.ui.helpers.addDrawerMenuItem
 import ru.rian.dynamics.ui.helpers.addMainMenuItem
 import ru.rian.dynamics.utils.*
 import ru.rian.dynamics.utils.PreferenceHelper.get
+import ru.rian.dynamics.utils.PreferenceHelper.getToken
+import ru.rian.dynamics.utils.PreferenceHelper.getUserName
 import ru.rian.dynamics.utils.PreferenceHelper.prefs
 import ru.rian.dynamics.utils.PreferenceHelper.set
 import javax.inject.Inject
@@ -62,6 +65,18 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private var hsResult: HSResult? = null
 
     companion object : KLoggerWrap(MainActivity::class)
+
+    override fun showMessage(message: String) {
+        val ctx = InitApp.appContext()
+        kDebug(message)
+        Snackbar.make(
+            activityRootLayout,
+            message,
+            Snackbar.LENGTH_SHORT
+        )
+            .setActionTextColor(ctx.resources.getColor(R.color.action_color))
+            .show()
+    }
 
     override fun showError(err: Throwable, methodToInvoke: SnackContainerProvider.ActionToInvoke) {
         val ctx = InitApp.appContext()
@@ -107,6 +122,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         hsResult = savedInstanceState?.getSerializable("hsResult") as HSResult?
 
         hsResult?.let { addDrawerMenuItems(hsResult) }
+
 
         setupFeedsLoaderListener()
 
@@ -184,6 +200,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             addDrawerMenuItem(menu, choose_lang_title, R.drawable.ic_menu_language, R.id.nav_lang)
         }
         navView.setNavigationItemSelectedListener(this)
+
+        navView.inflateHeaderView(nav_header_main)?.apply {
+            getToken()?.let { username_text_view.text = getUserName() }
+        }
+
     }
 
 
@@ -235,14 +256,20 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     private fun showTerminalLoginFragment() {
-        replaceFragment(TerminalLoginFragment.newInstance(apiRequestArray()!!.login!!), FragmentId.TERMINAL_LOGIN_FRAGMENT_ID)
+        replaceFragment(
+            TerminalLoginFragment.newInstance(apiRequestArray()!!.login!!),
+            FragmentId.TERMINAL_LOGIN_FRAGMENT_ID
+        )
     }
 
 
     private fun apiRequestArray() = hsResult!!.apiRequestArray
 
     private fun showUserFeedsFragment() {
-        replaceFragment(UserFeedsFragment.newInstance(apiRequestArray()!!.getArticles!!), FragmentId.USER_FEEDS_FRAGMENT_ID)
+        replaceFragment(
+            UserFeedsFragment.newInstance(apiRequestArray()!!.getArticles!!),
+            FragmentId.USER_FEEDS_FRAGMENT_ID
+        )
     }
 
 

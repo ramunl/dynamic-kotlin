@@ -9,6 +9,10 @@ import ru.rian.dynamics.ui.helpers.SnackContainerProvider
 
 open class BaseFragment : Fragment() {
 
+    protected fun showMessage(message:String) {
+        (context as SnackContainerProvider).showMessage(message)
+    }
+
     protected fun showError(e: Throwable, methodToInvoke: SnackContainerProvider.ActionToInvoke) {
         (context as SnackContainerProvider).showError(e, methodToInvoke)
     }

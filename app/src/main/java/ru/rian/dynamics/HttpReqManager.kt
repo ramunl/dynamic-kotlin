@@ -58,11 +58,15 @@ class HttpReqManager @Inject constructor(var apiInterface: ApiInterface) {
     }
 
     inline fun <reified T> requestLogin(path: String, username: String, password: String): Observable<T> {
+        val bld = MultipartBody.Builder()
+        bld.setType(MultipartBody.FORM)
+        bld.addFormDataPart("username", username)
+        bld.addFormDataPart("password", password)
+        bld.addFormDataPart("deviceId", prefs()[PLAYER_ID]!!)
+        val requestBody = bld.build()
         return apiInterface.terminalLogin(
             Uri.encode(path),
-            prefs()[PLAYER_ID]!!,
-            username,
-            password
+            requestBody
         ) as Observable<T>
     }
 
