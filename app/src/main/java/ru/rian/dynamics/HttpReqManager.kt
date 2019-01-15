@@ -3,6 +3,7 @@ package ru.rian.dynamics
 import android.net.Uri
 import common.FlavorConstants
 import io.reactivex.Observable
+import okhttp3.MultipartBody
 import ru.rian.dynamics.retrofit.ApiInterface
 import ru.rian.dynamics.retrofit.model.ArticleResponse
 import ru.rian.dynamics.retrofit.model.FeedResponse
@@ -18,7 +19,6 @@ import javax.inject.Singleton
 
 @Singleton
 class HttpReqManager @Inject constructor(var apiInterface: ApiInterface) {
-
     inline fun <reified T> requestGet(
         path: String,
         feed: String? = null,
@@ -56,4 +56,15 @@ class HttpReqManager @Inject constructor(var apiInterface: ApiInterface) {
             }
         }
     }
+
+    inline fun <reified T> requestLogin(path: String, username: String, password: String): Observable<T> {
+        return apiInterface.terminalLogin(
+            Uri.encode(path),
+            prefs()[PLAYER_ID]!!,
+            username,
+            password
+        ) as Observable<T>
+    }
+
+
 }

@@ -3,7 +3,6 @@ package ru.rian.dynamics.ui.fragments
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
@@ -20,8 +19,8 @@ import kotlinx.android.synthetic.main.fragment_article_list.view.*
 import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
 import ru.rian.dynamics.SchedulerProvider
-import ru.rian.dynamics.di.component.DaggerFragmentComponent
-import ru.rian.dynamics.di.model.ActivityModule
+import ru.rian.dynamics.di.component.DaggerFeedFragmentComponent
+import ru.rian.dynamics.di.module.ActivityModule
 import ru.rian.dynamics.di.model.MainViewModel
 import ru.rian.dynamics.retrofit.model.Article
 import ru.rian.dynamics.retrofit.model.Feed
@@ -42,14 +41,12 @@ import javax.inject.Inject
  */
 
 
-class ArticleFragment : BaseFragment(), OnArticlesListInteractionListener {
+class FeedFragment : BaseFragment(), OnArticlesListInteractionListener {
     private var searchView: SearchView? = null
 
     private lateinit var swipeRefreshArticleList: SwipeRefreshLayout
 
     private lateinit var recyclerView: RecyclerView
-
-    private lateinit var compositeDisposable: CompositeDisposable
 
     var query: String? = null
 
@@ -62,9 +59,7 @@ class ArticleFragment : BaseFragment(), OnArticlesListInteractionListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setHasOptionsMenu(true)
-        compositeDisposable = CompositeDisposable()
-        val fragmentComponent = DaggerFragmentComponent
+        val fragmentComponent = DaggerFeedFragmentComponent
             .builder()
             .appComponent(InitApp.get(context!!).component())
             .activityModule(ActivityModule(context as FragmentActivity, SchedulerProvider()))
@@ -95,7 +90,7 @@ class ArticleFragment : BaseFragment(), OnArticlesListInteractionListener {
                     }
 
                     override fun onQueryTextChange(newText: String): Boolean {
-                        this@ArticleFragment.query = newText
+                        this@FeedFragment.query = newText
                         return true
                     }
                 })
@@ -121,7 +116,7 @@ class ArticleFragment : BaseFragment(), OnArticlesListInteractionListener {
                         updateList(result!!.articles, false)
                     },
                     { e ->
-                        snackContainerProvider().showError(
+                        showError(
                             e,
                             SnackContainerProvider.ActionToInvoke(::requestMoreArticles, query)
                         )
@@ -129,9 +124,6 @@ class ArticleFragment : BaseFragment(), OnArticlesListInteractionListener {
         disposable?.let { compositeDisposable.add(it) }
     }
 
-    private fun snackContainerProvider(): SnackContainerProvider {
-        return context as SnackContainerProvider
-    }
 
     private fun requestArticles(query: String? = null) {
         var disposable =
@@ -143,7 +135,7 @@ class ArticleFragment : BaseFragment(), OnArticlesListInteractionListener {
                     },
                     { e ->
                         setRefreshing(false)
-                        snackContainerProvider().showError(
+                        showError(
                             e,
                             SnackContainerProvider.ActionToInvoke(::requestArticles, query)
                         )
@@ -285,7 +277,7 @@ class ArticleFragment : BaseFragment(), OnArticlesListInteractionListener {
         const val ARG_FEED_SOURCE = "feed_url"
         @JvmStatic
         fun newInstance(feed: Feed, feedSource: Source) =
-            ArticleFragment().apply {
+            FeedFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(ARG_FEED, feed)
                     putSerializable(ARG_FEED_SOURCE, feedSource)
@@ -293,7 +285,7 @@ class ArticleFragment : BaseFragment(), OnArticlesListInteractionListener {
             }
 
         fun newInstance(bundle: Bundle) =
-            ArticleFragment().apply {
+            FeedFragment().apply {
                 arguments = bundle
             }
     }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package ru.rian.dynamics.di.model
+package ru.rian.dynamics.di.module
 
 import dagger.Module
 import dagger.Provides
@@ -25,16 +25,9 @@ import ru.rian.dynamics.db.ViewModelFactory
 
 @Module
 class DaoModule {
-
     @Provides
     fun provideFeedDataSource(): FeedDao {
         val database = DynamicsDataBase.getInstance()
         return database.feedDao()
-    }
-
-
-    fun provideViewModelFactory(): ViewModelFactory {
-        val dataSource = provideFeedDataSource()
-        return ViewModelFactory(dataSource)
     }
 }

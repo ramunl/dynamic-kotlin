@@ -9,9 +9,9 @@ import kotlinx.android.synthetic.main.dynamic_app_bar.*
 import ru.rian.dynamics.R
 import ru.rian.dynamics.retrofit.model.Feed
 import ru.rian.dynamics.retrofit.model.Source
-import ru.rian.dynamics.ui.fragments.ArticleFragment
-import ru.rian.dynamics.ui.fragments.ArticleFragment.Companion.ARG_FEED
-import ru.rian.dynamics.ui.fragments.ArticleFragment.Companion.ARG_FEED_SOURCE
+import ru.rian.dynamics.ui.fragments.FeedFragment
+import ru.rian.dynamics.ui.fragments.FeedFragment.Companion.ARG_FEED
+import ru.rian.dynamics.ui.fragments.FeedFragment.Companion.ARG_FEED_SOURCE
 import ru.rian.dynamics.utils.FragmentId
 
 class FeedActivity : BaseActivity() {
@@ -58,6 +58,6 @@ class FeedActivity : BaseActivity() {
 
     private fun showArticlesFragment() {
         val fragmentId = FragmentId.USER_FEED_FRAGMENT_ID
-        replaceFragment(ArticleFragment.newInstance(intent.extras!!), fragmentId)
+        replaceFragment(FeedFragment.newInstance(intent.extras!!), fragmentId)
     }
 }

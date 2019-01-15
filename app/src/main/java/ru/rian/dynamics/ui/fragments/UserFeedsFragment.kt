@@ -2,7 +2,6 @@ package ru.rian.dynamics.ui.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -21,7 +20,7 @@ import ru.rian.dynamics.InitApp
 import ru.rian.dynamics.R
 import ru.rian.dynamics.SchedulerProvider
 import ru.rian.dynamics.di.component.DaggerUserFeedsFragmentComponent
-import ru.rian.dynamics.di.model.ActivityModule
+import ru.rian.dynamics.di.module.ActivityModule
 import ru.rian.dynamics.di.model.FeedViewModel
 import ru.rian.dynamics.retrofit.model.Feed
 import ru.rian.dynamics.retrofit.model.Source
@@ -36,7 +35,7 @@ import javax.inject.Inject
 
 open class UserFeedsFragment : BaseFragment(), OnUserFeedsListInteractionListener {
 
-    fun feedSource() = arguments!!.getSerializable(ArticleFragment.ARG_FEED_SOURCE) as Source
+    fun feedSource() = arguments!!.getSerializable(FeedFragment.ARG_FEED_SOURCE) as Source
 
     override fun onUserFeedsListInteraction(item: Feed?) {
         FeedActivity.start(context!!,item!!, feedSource())
@@ -61,25 +60,17 @@ open class UserFeedsFragment : BaseFragment(), OnUserFeedsListInteractionListene
 
     private lateinit var recyclerView: RecyclerView
 
-    private lateinit var compositeDisposable: CompositeDisposable
-
     private lateinit var placeHolder: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-        compositeDisposable = CompositeDisposable()
+
         val fragmentComponent = DaggerUserFeedsFragmentComponent
             .builder()
             .appComponent(InitApp.get(context!!).component())
             .activityModule(ActivityModule(context as FragmentActivity, SchedulerProvider()))
             .build()
         fragmentComponent.inject(this)
-    }
-
-
-    private fun snackContainerProvider(): SnackContainerProvider {
-        return context as SnackContainerProvider
     }
 
 

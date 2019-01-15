@@ -1,4 +1,5 @@
 <resources>
+    <item name="menu_action_toolbar_login" type="id"/>
     <item name="menu_action_toolbar_select_feed" type="id"/>
     <item name="activityRootLayout" type="id"/>
     <item name="menu_action_toolbar_search_view" type="id"/>

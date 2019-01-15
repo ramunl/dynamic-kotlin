@@ -1,12 +1,12 @@
 package ru.rian.dynamics.retrofit
 
 import io.reactivex.Observable
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import okhttp3.MultipartBody
+import retrofit2.http.*
 import ru.rian.dynamics.retrofit.model.ArticleResponse
 import ru.rian.dynamics.retrofit.model.FeedResponse
 import ru.rian.dynamics.retrofit.model.HSResult
+import ru.rian.dynamics.retrofit.model.TerminalLoginModel
 
 
 interface ApiInterface {
@@ -37,4 +37,12 @@ interface ApiInterface {
         @Query("deviceId") deviceId: String?
     ): Observable<HSResult>
 
+    @POST("{loginPath}")
+    @Multipart
+    fun terminalLogin(
+        @Path("loginPath") loginPath: String,
+        @Part("deviceId") deviceId: String,
+        @Part("username") username: String,
+        @Part("password") password: String
+    ): Observable<TerminalLoginModel>
 }

@@ -9,7 +9,7 @@ import org.json.JSONException
 import org.slf4j.impl.HandroidLoggerAdapter
 import ru.rian.dynamics.di.component.AppComponent
 import ru.rian.dynamics.di.component.DaggerAppComponent
-import ru.rian.dynamics.di.model.AppModule
+import ru.rian.dynamics.di.module.AppModule
 import ru.rian.dynamics.di.model.HttpModule
 import ru.rian.dynamics.ui.MainActivity
 

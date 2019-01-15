@@ -8,7 +8,7 @@
                 android:gravity="center|top">
 
     <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/fragment_auth_terminal_login_edit_text"
+            android:id="@+id/usernameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -22,13 +22,14 @@
             android:textColorHint="@color/text_edit_auth_terminal_hint_color"/>
 
     <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/fragment_auth_terminal_password_edit_text"
+            android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/fragment_auth_terminal_login_edit_text"
+            android:layout_below="@id/usernameEditText"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:gravity="start"
+            android:text="Button006"
             android:hint="@string/settings_terminal_password_placeholder"
             android:inputType="textPassword"
             android:maxLines="1"
@@ -39,7 +40,7 @@
     <android.support.v7.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/fragment_auth_terminal_password_edit_text"
+            android:layout_below="@id/passwordEditText"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
@@ -51,10 +52,5 @@
             android:textColor="@color/dark_purple"
             android:textSize="17sp"
             app:fontFamily="@font/roboto_regular"/>
-
-    <ru.rian.dynamics.views.ProgressView
-            android:id="@+id/fragment_auth_terminal_progress_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
 
 </RelativeLayout>

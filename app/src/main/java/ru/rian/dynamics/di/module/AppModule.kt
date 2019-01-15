@@ -1,4 +1,4 @@
-package ru.rian.dynamics.di.model
+package ru.rian.dynamics.di.module
 
 import android.app.Application
 import android.content.Context

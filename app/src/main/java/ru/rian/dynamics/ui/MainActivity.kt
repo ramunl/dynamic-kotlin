@@ -25,13 +25,15 @@ import ru.rian.dynamics.R.id.menu_action_toolbar_select_feed
 import ru.rian.dynamics.R.string.*
 import ru.rian.dynamics.SchedulerProvider
 import ru.rian.dynamics.di.component.DaggerActivityComponent
-import ru.rian.dynamics.di.model.ActivityModule
+import ru.rian.dynamics.di.module.ActivityModule
 import ru.rian.dynamics.di.model.FeedViewModel
 import ru.rian.dynamics.di.model.MainViewModel
 import ru.rian.dynamics.retrofit.model.Feed
 import ru.rian.dynamics.retrofit.model.HSResult
 import ru.rian.dynamics.retrofit.model.Source
-import ru.rian.dynamics.ui.fragments.ArticleFragment
+import ru.rian.dynamics.retrofit.model.TerminalLoginModel
+import ru.rian.dynamics.ui.fragments.FeedFragment
+import ru.rian.dynamics.ui.fragments.TerminalLoginFragment
 import ru.rian.dynamics.ui.fragments.UserFeedsFragment
 import ru.rian.dynamics.ui.helpers.LoadingObserver.addLoadingObserver
 import ru.rian.dynamics.ui.helpers.LoadingObserver.removeLoadingObserver
@@ -54,7 +56,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     @Inject
     lateinit var viewModelFeed: FeedViewModel
 
-    private lateinit var compositeDisposable: CompositeDisposable
 
     private var showBadgeFeedBtnFlag = false
 
@@ -92,7 +93,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbarDynamic)
 
-        compositeDisposable = CompositeDisposable()
         val activityComponent = DaggerActivityComponent
             .builder()
             .appComponent(InitApp.get(this).component())
@@ -220,6 +220,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
+            R.id.nav_terminal -> showTerminalLoginFragment()
             R.id.nav_tapes -> showUserFeedsFragment()
             R.id.nav_news -> {
                 if (feedSelected == null)
@@ -233,13 +234,15 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         return true
     }
 
+    private fun showTerminalLoginFragment() {
+        replaceFragment(TerminalLoginFragment.newInstance(apiRequestArray()!!.login!!), FragmentId.TERMINAL_LOGIN_FRAGMENT_ID)
+    }
+
 
     private fun apiRequestArray() = hsResult!!.apiRequestArray
 
     private fun showUserFeedsFragment() {
-        val fragmentId = FragmentId.USER_FEEDS_FRAGMENT_ID
-        val apiRequestArray = apiRequestArray()
-        replaceFragment(UserFeedsFragment.newInstance(apiRequestArray!!.getArticles!!), fragmentId)
+        replaceFragment(UserFeedsFragment.newInstance(apiRequestArray()!!.getArticles!!), FragmentId.USER_FEEDS_FRAGMENT_ID)
     }
 
 
@@ -247,7 +250,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     private fun showArticlesFragment(feed: Feed, source: Source) {
         val fragmentId = FragmentId.MAIN_FEED_FRAGMENT_ID
-        replaceFragment(ArticleFragment.newInstance(feed, source), fragmentId)
+        replaceFragment(FeedFragment.newInstance(feed, source), fragmentId)
     }
 
     private fun insertFeeds(feeds: List<Feed>) {
@@ -301,12 +304,4 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
-
-    override fun onPause() {
-        super.onPause()
-        kDebug("onPause")
-        if (compositeDisposable.size() > 0) {
-            compositeDisposable.clear()
-        }
-    }
 }

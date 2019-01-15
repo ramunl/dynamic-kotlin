@@ -3,6 +3,16 @@ package ru.rian.dynamics.utils
 import org.slf4j.Marker
 import org.slf4j.MarkerFactory
 
+const val HTTP_TIMEOUT_REQUEST = 20 * 1000
+const val HTTP_TIMEOUT_CONNECTION = 5 * 1000
+
+const val HEADER_ACCEPT = "Accept"
+const val HEADER_ACCEPT_VALUE_APP_JSON = "application/json"
+const val HEADER_USER_AGENT = "User-Agent"
+const val HEADER_TOKEN = "Mterm-Token"
+
+val DEFAULT_USER_AGENT =
+    "Mozilla/5.0 (Linux; Android 6.0.1; SM-A510F Build/MMB29K; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/59.0.3071.125 Mobile Safari/537.36"
 
 val ACTIVITY_MARKER: Marker = MarkerFactory.getMarker("Activity")
 internal val ARTICLE_LIST_LIMIT = 20
@@ -26,7 +36,8 @@ const val TYPE_FEED_SUBSCRIPTION_BREAKING = "breakingnews"
 enum class FragmentId {
     USER_FEED_FRAGMENT_ID,
     MAIN_FEED_FRAGMENT_ID,
-    USER_FEEDS_FRAGMENT_ID
+    USER_FEEDS_FRAGMENT_ID,
+    TERMINAL_LOGIN_FRAGMENT_ID
 }
 
 const val FEED_TYPE_STORY: String = "story"
@@ -34,6 +45,7 @@ const val FEED_TYPE_USER: String = "user-feed"
 const val FEED_TYPE_COMMON: String = "feed"
 
 const val BASE_URL: String = "http://mterm.rian.ru/api/v3/"
+const val LOGIN_PATH: String = "login"
 const val HS_PATH: String = "handshake"
 const val TRENDING: String = "trending"
 const val PLAYER_ID: String = "PLAYER_ID"

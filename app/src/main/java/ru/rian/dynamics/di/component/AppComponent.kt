@@ -4,7 +4,7 @@ import android.content.Context
 import dagger.Component
 import ru.rian.dynamics.HttpReqManager
 import ru.rian.dynamics.di.ApplicationContext
-import ru.rian.dynamics.di.model.AppModule
+import ru.rian.dynamics.di.module.AppModule
 import ru.rian.dynamics.di.model.HttpModule
 import javax.inject.Singleton
 
