@@ -10,9 +10,11 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.SearchView
+import android.widget.SearchView
 import android.text.TextUtils
 import android.view.*
+import com.jakewharton.rxbinding2.widget.RxSearchView
+import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_content_common.*
 import kotlinx.android.synthetic.main.fragment_article_list.view.*
@@ -77,23 +79,22 @@ class FeedFragment : BaseFragment(), OnArticlesListInteractionListener {
         var menuItem = menu.findItem(R.id.search_news)
         if (menuItem != null) {
             searchView = menuItem.actionView as SearchView
+
+            var disposable = RxSearchView.queryTextChanges(searchView!!)
+                .map { text ->text.toString().trim() }
+                .filter { text -> text.isNotEmpty() && text.length > 3 }
+                .subscribe { result ->
+                    articlesAdapter.removeAll()
+                    requestArticles(result)
+                }
+
+            disposable?.let { compositeDisposable.add(it) }
+
             searchView?.let {
                 if (!TextUtils.isEmpty(query)) {
                     it.setQuery(query, false)
                     it.isIconified = false
                 }
-                it.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String): Boolean {
-                        articlesAdapter.removeAll()
-                        requestArticles(query)
-                        return false
-                    }
-
-                    override fun onQueryTextChange(newText: String): Boolean {
-                        this@FeedFragment.query = newText
-                        return true
-                    }
-                })
                 it.setOnCloseListener {
                     onSearchClose()
                 }

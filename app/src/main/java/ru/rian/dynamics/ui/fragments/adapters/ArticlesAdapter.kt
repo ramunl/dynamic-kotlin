@@ -26,9 +26,7 @@ import ru.rian.dynamics.utils.RiaDateUtils.areTheDatesAtTheSameDay
 import java.util.*
 import java.util.logging.Logger
 
-/**
- * Created by Amanjeet Singh on 17/1/18.
- */
+
 class ArticlesAdapter(
     val context: Context,
     private val mListener: OnArticlesListInteractionListener?,

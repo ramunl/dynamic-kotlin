@@ -50,7 +50,7 @@ object NetworkHelper {
     private fun userId(): String {
         return lazy {
             Settings.Secure.getString(
-                InitApp.appContext().getContentResolver(),
+                InitApp.appContext().contentResolver,
                 Settings.Secure.ANDROID_ID
             )
         }.value

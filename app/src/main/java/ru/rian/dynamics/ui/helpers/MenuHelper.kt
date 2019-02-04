@@ -13,21 +13,24 @@ fun addDrawerMenuItem(menu: Menu, title: Int, iconResId: Int, itemId: Int) {
 }
 
 fun addDrawerMenuItem(menu: Menu, iconResId: Int, itemId: Int, title: String?) {
-    val menuItem = menu.add(0, itemId, 0, null)
-    var menuItemActionView = View.inflate(InitApp.appContext(), R.layout.drawer_menu_item_layout, null)
-    menuItemActionView.drawerMenuItemIcon.setImageResource(iconResId)
-    menuItemActionView.drawerMenuItemTitle.text = title
-    menuItem.actionView = menuItemActionView
+    menu.add(0, itemId, 0, null).apply {
+        View.inflate(InitApp.appContext(), R.layout.drawer_menu_item_layout, null).apply {
+            drawerMenuItemIcon.setImageResource(iconResId)
+            drawerMenuItemTitle.text = title
+            actionView = this
+        }
+    }
 }
 
 fun addMainMenuItem(menu: Menu, iconResId: Int, itemId: Int, actionViewResId: View? = null, title: String? = "") {
-    val menuItem = menu.add(0, itemId, 0, title)
-    if (actionViewResId != null) {
-        menuItem.actionView = actionViewResId
-        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW or MenuItem.SHOW_AS_ACTION_ALWAYS)
-    } else {
-        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-    }
-    menuItem.icon = InitApp.appContext().resources.getDrawable(iconResId)
+     menu.add(0, itemId, 0, title).apply {
+         if (actionViewResId != null) {
+             actionView = actionViewResId
+             setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW or MenuItem.SHOW_AS_ACTION_ALWAYS)
+         } else {
+             setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+         }
+         icon = InitApp.appContext().resources.getDrawable(iconResId)
+     }
 }
 

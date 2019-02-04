@@ -35,7 +35,6 @@ class MainViewModel @Inject constructor(
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
             .doFinally { loading = false }
-            .map { result -> result }
     }
 
     fun provideFeeds(source: Source): Observable<FeedResponse?> {
@@ -43,9 +42,8 @@ class MainViewModel @Inject constructor(
         return source.url.let {
             httpReqManager.requestGet<FeedResponse?>(it!!)
                 .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
                 .doFinally { loading = false }
-                .map { result -> result }
+                .observeOn(schedulerProvider.ui())
         }
     }
 
@@ -70,7 +68,6 @@ class MainViewModel @Inject constructor(
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .doFinally { loading = false }
-                .map { result -> result }
         }
     }
 }

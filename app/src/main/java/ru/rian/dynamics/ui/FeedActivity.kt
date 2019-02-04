@@ -30,12 +30,15 @@ class FeedActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed)
         setSupportActionBar(toolbarDynamic)
-        supportActionBar?.setDisplayShowCustomEnabled(true)
-        supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(true)
-        supportActionBar?.setHomeButtonEnabled(true)
+        with(supportActionBar!!) {
+            setDisplayShowCustomEnabled(true)
+            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            setDisplayShowHomeEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowTitleEnabled(true)
+            setHomeButtonEnabled(true)
+        }
+
         if(savedInstanceState == null) {
             showArticlesFragment()
         }

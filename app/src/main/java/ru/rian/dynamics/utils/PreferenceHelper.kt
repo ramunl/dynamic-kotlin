@@ -12,7 +12,7 @@ object PreferenceHelper {
 
     fun getUserName(): String? = prefs()[LOGIN_STRING_KEY]
     fun getToken(): String? = prefs()[TOKEN_STRING_KEY]
-    fun saveUserName(username: String) = { prefs()[LOGIN_STRING_KEY] = username }
+    fun saveUserName(username: String) { prefs()[LOGIN_STRING_KEY] = username }
     fun saveTokent(username: String) = { prefs()[TOKEN_STRING_KEY] = username }
 
     fun prefs(): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(InitApp.appContext())

@@ -32,6 +32,5 @@ class TerminalViewModel @Inject constructor(
         return httpReqManager.requestLogin<LoginDataModel?>(LOGIN_PATH, username, password)
             .subscribeOn(schedulerProvider.io())
             .observeOn(schedulerProvider.ui())
-            .doFinally { loading = false }
-            .map { result -> result} }
+            .doFinally { loading = false } }
     }
